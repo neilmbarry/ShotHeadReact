@@ -1,0 +1,10 @@
+.main {
+  /* background-color: green; */
+  border: rgb(255, 141, 20) dashed 2px;
+  flex: 2;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}

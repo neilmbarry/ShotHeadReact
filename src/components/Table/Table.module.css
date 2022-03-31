@@ -1,0 +1,8 @@
+.main {
+  display: flex;
+  width: 50%;
+  /* height: 50%; */
+  margin: auto;
+  align-items: center;
+  flex: 1;
+}

@@ -1,0 +1,9 @@
+.main {
+  flex: 2;
+  border: 2px dashed red;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+}
