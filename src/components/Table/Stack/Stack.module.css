@@ -1,9 +1,43 @@
 .main {
   flex: 2;
-  border: 2px dashed red;
+  /* border: 2px dashed red; */
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
   height: 100%;
+  position: relative;
+  background-color: rgba(222, 215, 135, 0.201);
+  border-radius: 10px;
+}
+
+.card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.card:hover {
+  transform: translate(-50%, -50%);
+}
+
+.card:nth-child(0) {
+  transform: translate(-50%, -50%) rotate(5deg);
+}
+
+.card:nth-child(1) {
+  transform: translate(-50%, -50%) rotate(-30deg);
+}
+.card:nth-child(2) {
+  transform: translate(-50%, -50%) rotate(55deg);
+}
+.card:nth-child(3) {
+  transform: translate(-50%, -50%) rotate(-20deg);
+}
+.card:nth-child(4) {
+  transform: translate(-50%, -50%) rotate(10deg);
+}
+.card:nth-child(5) {
+  transform: translate(-50%, -50%) rotate(40deg);
 }

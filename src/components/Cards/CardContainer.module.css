@@ -1,0 +1,33 @@
+.main {
+  display: flex;
+  width: 100%;
+  max-width: 300px;
+  justify-content: space-around;
+  background-color: transparent;
+}
+
+.inHand {
+  /* border: dashed 1px yellow; */
+  z-index: 6;
+}
+.faceUp {
+  /* border: dashed 1px greenyellow; */
+  z-index: 5;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(4px, -4px);
+}
+.faceDown {
+  /* border: dashed 1px skyblue; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-4px, 4px);
+}
+
+/* .faceDown img {
+  opacity: 0;
+
+  background-color: green;
+} */

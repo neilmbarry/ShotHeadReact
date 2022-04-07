@@ -1,0 +1,27 @@
+/* @import url("../../card-images/KingClubs.png"); */
+
+.main {
+  height: 90px;
+  width: 60px;
+  background-color: green;
+  border-radius: 5px;
+  overflow: hidden;
+  /* margin: 0 0.2rem; */
+  border: black 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all ease 0.3s;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.377);
+}
+
+.main:hover {
+  transform: translateY(-5px);
+  box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.192);
+}
+
+.faceDown img {
+  opacity: 0;
+  background-color: green;
+}

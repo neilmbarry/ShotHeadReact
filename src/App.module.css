@@ -1,6 +1,6 @@
 .main {
   height: 100vh;
-
+  background: radial-gradient(#74c69d, #2d6a4f);
   color: white;
   display: flex;
   flex-direction: column;

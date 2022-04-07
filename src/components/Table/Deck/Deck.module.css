@@ -1,9 +1,23 @@
 .main {
   flex: 1;
-  border: 2px dashed red;
+  /* border: 2px dashed red; */
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
   height: 70%;
+  position: relative;
+  background-color: rgba(150, 222, 135, 0.201);
+  border-radius: 10px;
+}
+
+.card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.btn {
+  width: 30px !important;
 }

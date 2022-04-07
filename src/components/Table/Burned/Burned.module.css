@@ -1,9 +1,11 @@
 .main {
   flex: 1;
-  border: 2px dashed red;
+  /* border: 2px dashed red; */
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
   height: 70%;
+  background-color: rgba(222, 184, 135, 0.201);
+  border-radius: 10px;
 }
