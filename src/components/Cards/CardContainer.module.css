@@ -9,7 +9,21 @@
 .inHand {
   /* border: dashed 1px yellow; */
   z-index: 6;
+  justify-content: center;
 }
+
+/* .inHand div:nth-child(1) {
+  transform: rotate(-20deg);
+}
+
+.inHand div:nth-child(2) {
+  transform: rotate(0deg);
+}
+
+.inHand div:nth-child(3) {
+  transform: rotate(20deg);
+} */
+
 .faceUp {
   /* border: dashed 1px greenyellow; */
   z-index: 5;

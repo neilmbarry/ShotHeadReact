@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import classes from "./Player.module.css";
 import Button from "../UI/Button";
 import CardContainer from "../Cards/CardContainer";
+import InHandContainer from "../Cards/InHandContainer";
 
 const Player = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
@@ -20,8 +21,16 @@ const Player = ({ className }) => {
     "back.png",
     "back.png",
   ]);
-  const playCardsHandler = (cards, hand) => {
-    return;
+  const [selected, setSelected] = useState([]);
+
+  const playCardsHandler = () => {
+    setInHandCards([...inHandCards].filter((name) => name !== selected));
+    setSelected([]);
+  };
+
+  const selectCardHandler = (card) => {
+    console.log("----->" + card);
+    setSelected(card);
   };
 
   const playInHandHandler = () => {
@@ -59,10 +68,11 @@ const Player = ({ className }) => {
           playCards={(cards) => playCardsHandler(cards, "faceUp")}
         />
       </div>
-      <CardContainer
+      <InHandContainer
         type="inHand"
         cards={inHandCards}
         playCards={(cards) => playCardsHandler(cards, "inHand")}
+        onClick={selectCardHandler}
       />
       <Button text="Pick Up Card" onClick={addCardToHand}></Button>
       {inHandCards.length ? (

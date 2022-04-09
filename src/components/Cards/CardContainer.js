@@ -2,9 +2,13 @@ import React from "react";
 import classes from "./CardContainer.module.css";
 import Card from "./Card";
 
-const CardContainer = ({ className, quantity, type, cards }) => {
+const CardContainer = ({ className, quantity, type, cards, onClick }) => {
   const classesList = `${classes.main} ${className} ${classes[type]}`;
-  const displayCards = cards.map((name) => <Card name={name} />);
+  const cardQuantityMiddle = cards.length / 2;
+
+  const displayCards = cards.map((name, i) => (
+    <Card name={name} key={name + i} onClick={onClick} />
+  ));
   return (
     <div className={classesList}>
       {displayCards}

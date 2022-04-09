@@ -7,7 +7,6 @@ const PlayerContainer = ({ className }) => {
   return (
     <div className={classesList}>
       <Player />
-      {/* <Player className={classes.player1} /> */}
       <Player />
       {/* <Player />
       <Player />

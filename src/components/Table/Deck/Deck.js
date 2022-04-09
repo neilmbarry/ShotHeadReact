@@ -9,7 +9,7 @@ const Deck = ({ className }) => {
   const takeCard = (quantity) => setDeck(deck - quantity);
   const tableDeck = [];
   for (let i = deck; i > 0; i--) {
-    tableDeck.push(<Card className={classes.card} />);
+    tableDeck.push(<Card className={classes.card} key={i} />);
   }
   return (
     <>
