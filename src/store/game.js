@@ -1,4 +1,4 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const suits = ["Hearts", "Clubs", "Diamonds", "Spades"];
 const deck = [];
@@ -35,12 +35,14 @@ const initialState = {
   burned: [],
   activePlayer: 0,
   loser: false,
+  test: false,
   players: [
     {
       name: "Neil",
       inHandCards: [],
       faceUpCards: [],
       faceDownCards: [],
+      message: "",
     },
   ],
 };
@@ -57,9 +59,11 @@ export const gameSlice = createSlice({
     },
     playCard: (state, action) => {
       // Take card from player
+      // REFACTOR
       state.value.players[action.payload.player][action.payload.hand] =
         state.value.players[action.payload.player][action.payload.hand].filter(
-          (card) => !action.payload.cards.includes(card)
+          (card) =>
+            !action.payload.cards.map((card) => card).includes(card.name)
         );
       // Add card to stack
       state.value.stack.push(...action.payload.cards);
@@ -90,15 +94,34 @@ export const gameSlice = createSlice({
     selectFaceUpCards: (state, action) => {
       state.value.players[action.payload.player].inHandCards =
         state.value.players[action.payload.player].inHandCards.filter(
-          (card) => !action.payload.cards.includes(card)
+          (card) =>
+            !action.payload.cards.map((card) => card.name).includes(card.name)
         );
       state.value.players[action.payload.player].faceUpCards =
         action.payload.cards;
     },
+    addPlayer: (state, action) => {
+      state.value.players.push(action.payload);
+    },
+    setActivePlayer: (state, action) => {
+      state.value.activePlayer = 0;
+    },
+    test: (state, action) => {
+      state.value.test = true;
+    },
   },
 });
 
-export const { drawCard, playCard, takeStack, dealCards, selectFaceUpCards } =
-  gameSlice.actions;
+export const {
+  drawCard,
+  playCard,
+  takeStack,
+  dealCards,
+  selectFaceUpCards,
+  setDeck,
+  addPlayer,
+  setActivePlayer,
+  test,
+} = gameSlice.actions;
 
 export default gameSlice.reducer;

@@ -29,13 +29,15 @@ const Burned = ({ className }) => {
         onClick={() => {
           dispatch(
             playCard({
-              card: [
+              cards: [
+                "6Hearts",
+
                 {
                   value: "6",
                   suit: "Hearts",
                   worth: 6,
                   power: null,
-                  name: "6Hearts",
+                  name: "7Hearts",
                 },
               ],
               player: 0,
@@ -48,7 +50,34 @@ const Burned = ({ className }) => {
       </button>
       <button
         onClick={() => {
-          dispatch(selectFaceUpCards());
+          dispatch(
+            selectFaceUpCards({
+              cards: [
+                {
+                  value: "4",
+                  suit: "Hearts",
+                  worth: 4,
+                  power: null,
+                  name: "4Hearts",
+                },
+                {
+                  value: "5",
+                  suit: "Hearts",
+                  worth: 100,
+                  power: "skip",
+                  name: "5Hearts",
+                },
+                {
+                  value: "6",
+                  suit: "Hearts",
+                  worth: 6,
+                  power: null,
+                  name: "6Hearts",
+                },
+              ],
+              player: 0,
+            })
+          );
         }}
       >
         Select face up cards

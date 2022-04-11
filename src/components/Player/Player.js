@@ -3,54 +3,66 @@ import classes from "./Player.module.css";
 import Button from "../UI/Button";
 import CardContainer from "../Cards/CardContainer";
 import InHandContainer from "../Cards/InHandContainer";
+import { useSelector, useDispatch } from "react-redux";
+import { playCard } from "../../store/game";
+import { myTest } from "../../controller/controller";
 
 const Player = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
-  const [inHandCards, setInHandCards] = useState([
-    "2Diamonds.png",
-    "9Hearts.png",
-    "AceSpades.png",
-  ]);
-  const [faceUpCards, setFaceUpCards] = useState([
-    "KingClubs.png",
-    "KingDiamonds.png",
-    "10Hearts.png",
-  ]);
-  const [faceDownCards, setFaceDownCards] = useState([
-    "back.png",
-    "back.png",
-    "back.png",
-  ]);
+  const dispatch = useDispatch();
+
   const [selected, setSelected] = useState([]);
 
+  const gameState = useSelector((state) => state.game);
+
+  const faceUpCardsRedux = gameState.value.players[0].faceUpCards.map(
+    (card) => card.name
+  );
+  const faceDownCardsRedux = gameState.value.players[0].faceDownCards.map(
+    () => "back"
+  );
+  const inHandCardsRedux = gameState.value.players[0].inHandCards.map(
+    (card) => card.name
+  );
+
   const playCardsHandler = () => {
-    setInHandCards([...inHandCards].filter((name) => name !== selected));
-    setSelected([]);
+    // setInHandCards([...inHandCards].filter((name) => name !== selected));
+    // setSelected([]);
   };
 
   const selectCardHandler = (card) => {
-    console.log("----->" + card);
-    setSelected(card);
+    // console.log("----->" + card);
+    if (selected.includes(card)) {
+      return setSelected(selected.filter((cards) => cards !== card));
+    }
+    setSelected([...selected, card]);
   };
 
-  const playInHandHandler = () => {
-    const inHandCardsTemp = [...inHandCards];
-    inHandCardsTemp.pop();
-    setInHandCards(inHandCardsTemp);
+  // myTest();
+
+  const playCardHandler = (hand) => {
+    dispatch(
+      playCard({
+        cards: selected,
+        player: 0,
+        hand,
+      })
+    );
+    setSelected([]);
   };
   const playFaceUpHandler = () => {
-    const faceUpTemp = [...faceUpCards];
-    faceUpTemp.pop();
-    setFaceUpCards(faceUpTemp);
+    // const faceUpTemp = [...faceUpCards];
+    // faceUpTemp.pop();
+    // setFaceUpCards(faceUpTemp);
   };
   const playFaceDownHandler = () => {
-    const faceDownTemp = [...faceDownCards];
-    faceDownTemp.pop();
-    setFaceDownCards(faceDownTemp);
+    // const faceDownTemp = [...faceDownCards];
+    // faceDownTemp.pop();
+    // setFaceDownCards(faceDownTemp);
   };
 
   const addCardToHand = () => {
-    setInHandCards([...inHandCards, "AceSpades.png"]);
+    // setInHandCards([...inHandCards, "AceSpades.png"]);
   };
 
   return (
@@ -59,33 +71,39 @@ const Player = ({ className }) => {
       <div className={classes.tableCards}>
         <CardContainer
           type="faceDown"
-          cards={faceDownCards}
+          cards={faceDownCardsRedux}
           playCards={(cards) => playCardsHandler(cards, "faceDown")}
+          selected={selected}
         />
         <CardContainer
           type="faceUp"
-          cards={faceUpCards}
+          cards={faceUpCardsRedux}
           playCards={(cards) => playCardsHandler(cards, "faceUp")}
+          selected={selected}
         />
       </div>
       <InHandContainer
         type="inHand"
-        cards={inHandCards}
+        cards={inHandCardsRedux}
         playCards={(cards) => playCardsHandler(cards, "inHand")}
         onClick={selectCardHandler}
+        selected={selected}
       />
       <Button text="Pick Up Card" onClick={addCardToHand}></Button>
-      {inHandCards.length ? (
-        <Button text="Play In Hand" onClick={playInHandHandler}></Button>
+      {inHandCardsRedux.length ? (
+        <Button
+          text="Play In Hand"
+          onClick={() => playCardHandler("inHandCards")}
+        ></Button>
       ) : null}
 
-      {!inHandCards.length && faceUpCards.length ? (
+      {!inHandCardsRedux.length && faceUpCardsRedux.length ? (
         <Button text="Play Face Up" onClick={playFaceUpHandler}></Button>
       ) : null}
-      {!inHandCards.length && !faceUpCards.length ? (
+      {!inHandCardsRedux.length && !faceUpCardsRedux.length ? (
         <Button text="Play Face Down" onClick={playFaceDownHandler}></Button>
       ) : null}
-      {/* <Button text="Play"></Button> */}
+      <Button text="test" onClick={myTest}></Button>
     </div>
   );
 };

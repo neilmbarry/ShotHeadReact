@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./InHandContainer.module.css";
 import Card from "./Card";
 
-const InHandContainer = ({ className, quantity, cards, onClick }) => {
+const InHandContainer = ({ className, selected, cards, onClick }) => {
   const classesList = `${classes.main} ${className}`;
 
   const displayCards = cards.map((name, i) => (
@@ -11,6 +11,7 @@ const InHandContainer = ({ className, quantity, cards, onClick }) => {
       key={name + i}
       onClick={onClick}
       className={classes.card}
+      selected={selected.includes(name)}
     />
   ));
   return (
