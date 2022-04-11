@@ -10,7 +10,12 @@ const Stack = ({ className }) => {
   const stackOfCards = stackState.map((name, i) => {
     // console.log(name);
     return (
-      <Card className={classes.card} name={name} key={name} rotate={i % 8} />
+      <Card
+        className={classes.card}
+        name={name}
+        key={name + i}
+        rotate={i % 8}
+      />
     );
   });
   return (

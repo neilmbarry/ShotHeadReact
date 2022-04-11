@@ -10,6 +10,8 @@ import {
   selectFaceUpCards,
 } from "../../../store/game";
 
+import { startGame } from "../../../controller/controller";
+
 const Burned = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
   const gameState = useSelector((state) => state.game.value);
@@ -25,29 +27,7 @@ const Burned = ({ className }) => {
       >
         Deal Cards
       </button>
-      <button
-        onClick={() => {
-          dispatch(
-            playCard({
-              cards: [
-                "6Hearts",
-
-                {
-                  value: "6",
-                  suit: "Hearts",
-                  worth: 6,
-                  power: null,
-                  name: "7Hearts",
-                },
-              ],
-              player: 0,
-              hand: "inHandCards",
-            })
-          );
-        }}
-      >
-        Play Card
-      </button>
+      <button onClick={() => startGame()}>Start Game</button>
       <button
         onClick={() => {
           dispatch(

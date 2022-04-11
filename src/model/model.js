@@ -49,8 +49,20 @@ export function shuffleDeck(deck) {
   return shuffledDeck;
 }
 
-export function checkLegalMove(card, topStackCard) {
+const getTopStackCard = (stack) => {
+  return stack[stack.length - 1];
+};
+
+const allCardsHaveEqualValue = (cards) => {
+  return cards.every((card) => card.value === cards[0].value);
+};
+
+export function checkLegalMove(card, stack) {
+  const topStackCard = getTopStackCard(stack);
   if (!topStackCard) {
+    return true;
+  }
+  if (card.power) {
     return true;
   }
   if (topStackCard.power) {
@@ -74,6 +86,32 @@ export function checkLegalMove(card, topStackCard) {
     }
   }
   if (card.worth >= topStackCard.worth) {
+    return true;
+  }
+  return false;
+}
+
+export function checkBurnStack(stack) {
+  const topStackCard = getTopStackCard(stack);
+  if (!topStackCard) return;
+  const isBurnCard = () => {
+    if (topStackCard.power === "burn") {
+      return true;
+    }
+    return false;
+  };
+  const isFourOfAKind = () => {
+    if (this.stack.length < 4) return false;
+    const lastFourCards = this.stack.filter(
+      (card, i) => i >= this.stack.length - 4
+    );
+    if (allCardsHaveEqualValue(lastFourCards)) {
+      console.warn("Four of a kind!");
+      return true;
+    }
+    return false;
+  };
+  if (isBurnCard() || isFourOfAKind()) {
     return true;
   }
   return false;

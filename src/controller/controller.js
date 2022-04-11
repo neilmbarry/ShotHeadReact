@@ -21,35 +21,54 @@ import {
   checkLegalMove,
 } from "../model/model";
 
+//remove
 const allCardsHaveEqualValue = (cards) => {
   return cards.every((card) => card.value === cards[0].value);
 };
 
-const getTopStackCard = () => {
-  return store.getState().game.value.stack[
-    store.getState().game.value.stack.length - 1
-  ];
+const getStack = () => {
+  return store.getState().game.value.stack;
 };
 
 export function myTest() {
   store.dispatch(test());
-  console.log(getTopStackCard());
+  console.log(getStack());
 }
 
-export function playCards(cards, player) {
-  checkLegalMove(cards);
-  //
-  //
-  //
+export function setFaceUpCards(cards, player) {
   store.dispatch(
-    playCard({
+    selectFaceUpCards({
       cards,
       player,
     })
   );
 }
 
+export function playCards(cards, hand, player) {
+  // Check Active Player
+  // Check All Cards Equal
+  allCardsHaveEqualValue(cards);
+  // Check If Playing Blind
+  // Check Move Is Legal
+  checkLegalMove(cards[0], getStack())
+    ? console.warn("legal move")
+    : console.error("ILLEGAL MOVE");
+  // Move Card From Player to Stack
+  store.dispatch(
+    playCard({
+      cards,
+      hand,
+      player,
+    })
+  );
+  // Check Burn
+  // Check Skip or change direction
+  // Set Active Player
+  // Check Winner
+}
+
 export function startGame() {
+  const shuffledDeck = shuffleDeck(generateDeck(suits, cardValuePairs));
   store.dispatch(setDeck(shuffledDeck));
   store.dispatch(dealCards());
   store.dispatch(setActivePlayer());
@@ -58,5 +77,3 @@ export function startGame() {
 const addNewPlayer = (player) => {
   store.dispatch(addPlayer(player));
 };
-
-const shuffledDeck = shuffleDeck(generateDeck(suits, cardValuePairs));

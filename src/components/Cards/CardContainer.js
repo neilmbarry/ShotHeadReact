@@ -7,7 +7,11 @@ const CardContainer = ({ className, quantity, type, cards, onClick }) => {
   const cardQuantityMiddle = cards.length / 2;
 
   const displayCards = cards.map((name, i) => (
-    <Card name={name} key={name + i} onClick={onClick} />
+    <Card
+      name={type == "faceDown" ? { name: "back" } : name}
+      key={name + i}
+      onClick={onClick}
+    />
   ));
   return (
     <div className={classesList}>

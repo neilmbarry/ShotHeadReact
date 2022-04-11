@@ -44,6 +44,13 @@ const initialState = {
       faceDownCards: [],
       message: "",
     },
+    {
+      name: "Stephanie",
+      inHandCards: [],
+      faceUpCards: [],
+      faceDownCards: [],
+      message: "",
+    },
   ],
 };
 
@@ -63,7 +70,7 @@ export const gameSlice = createSlice({
       state.value.players[action.payload.player][action.payload.hand] =
         state.value.players[action.payload.player][action.payload.hand].filter(
           (card) =>
-            !action.payload.cards.map((card) => card).includes(card.name)
+            !action.payload.cards.map((card) => card.name).includes(card.name)
         );
       // Add card to stack
       state.value.stack.push(...action.payload.cards);
@@ -84,12 +91,16 @@ export const gameSlice = createSlice({
       state.value.stack = [];
     },
     dealCards: (state, action) => {
-      state.value.players[action.payload].faceDownCards =
-        state.value.deck.splice(0, 3);
-      state.value.players[action.payload].inHandCards = state.value.deck.splice(
-        0,
-        6
-      );
+      state.value.players.forEach((player) => {
+        player.faceDownCards = state.value.deck.splice(0, 3);
+        player.inHandCards = state.value.deck.splice(0, 6);
+      });
+      //   state.value.players[action.payload].faceDownCards =
+      //     state.value.deck.splice(0, 3);
+      //   state.value.players[action.payload].inHandCards = state.value.deck.splice(
+      //     0,
+      //     6
+      //   );
     },
     selectFaceUpCards: (state, action) => {
       state.value.players[action.payload.player].inHandCards =

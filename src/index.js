@@ -5,9 +5,9 @@ import App from "./App";
 import { Provider } from "react-redux";
 import store from "./store/store";
 
-store.subscribe(() => {
-  console.warn("STATE UPDATED");
-});
+// store.subscribe(() => {
+//   console.warn("STATE UPDATED");
+// });
 
 ReactDOM.render(
   <React.StrictMode>
