@@ -1,5 +1,8 @@
 import * as actions from "./actionTypes";
 
-export const drawCard = () => ({
-  type: actions.DRAW_CARD,
-});
+export const drawCard = (card) => {
+  return {
+    type: actions.DRAW_CARD,
+    payload: card,
+  };
+};
