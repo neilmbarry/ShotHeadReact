@@ -1,17 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./Player.module.css";
 import Button from "../UI/Button";
 import CardContainer from "../Cards/CardContainer";
 import InHandContainer from "../Cards/InHandContainer";
-import { pickUpStack, playCards } from "../../controller/controller";
+import {
+  pickUpStack,
+  playCards,
+  sortCards,
+  playValidMove,
+} from "../../controller/controller";
 
 import { myTest } from "../../controller/controller";
 import { selectFaceUpCards } from "../../store/game";
 import { setFaceUpCards } from "../../controller/controller";
+import { useSelector } from "react-redux";
 
-const Player = ({ className, state, playerNumber }) => {
+const Player = ({ className, state, playerNumber, computer }) => {
+  const burned = useSelector((state) => state.game.value.burned);
+  const activePlayer = useSelector((state) => state.game.value.activePlayer);
+  const active = activePlayer === playerNumber;
   // console.log(state);
-  const classesList = `${classes.main} ${className}`;
+  const classesList = `${classes.main} ${className} ${classes[active]}`;
 
   const [ready, setReady] = useState(false);
 
@@ -30,6 +39,20 @@ const Player = ({ className, state, playerNumber }) => {
     if (faceDownCards.length) {
       return "faceDownCards";
     }
+    return false;
+  };
+
+  const sortHandler = () => {
+    sortCards(playerNumber);
+  };
+
+  const validMoveHandler = () => {
+    if (!playValidMove(getActiveHand(), playerNumber)) {
+      console.error("HAS TO PICK UP!");
+      setTimeout(() => {
+        pickUpStackHandler();
+      }, 1000);
+    }
   };
 
   const selectCardHandler = (card) => {
@@ -37,6 +60,19 @@ const Player = ({ className, state, playerNumber }) => {
     if (selected.includes(card)) {
       return setSelected(selected.filter((cards) => cards !== card));
     }
+
+    if (!ready) {
+      if (selected.length === 3) {
+        return setSelected([...selected.slice(1, 3), card]);
+      }
+    }
+
+    if (ready) {
+      if (selected.length > 0 && selected[0].value !== card.value) {
+        return setSelected([card]);
+      }
+    }
+
     setSelected([...selected, card]);
   };
 
@@ -51,10 +87,32 @@ const Player = ({ className, state, playerNumber }) => {
   };
 
   const setFaceCardsHandler = () => {
-    setFaceUpCards(selected, playerNumber);
-    setReady(true);
+    if (selected.length === 3) {
+      setFaceUpCards(selected, playerNumber);
+      setReady(true);
+    }
+    if (selected.length === 0) {
+      const sortedCards = [...inHandCards].sort((a, b) => a.worth - b.worth);
+
+      setFaceUpCards(sortedCards.slice(3, 6), playerNumber);
+      setReady(true);
+    }
+
     setSelected([]);
   };
+
+  useEffect(() => {
+    if (active && computer && ready) {
+      setTimeout(() => {
+        // console.log("computer playing card");
+
+        validMoveHandler();
+      }, 2500);
+    }
+
+    // return clearTimeout(timeout);
+    return;
+  }, [active, computer, ready, burned]);
 
   return (
     <div className={classesList}>
@@ -85,6 +143,7 @@ const Player = ({ className, state, playerNumber }) => {
         playCards={playCardHandler}
         onClick={selectCardHandler}
         selected={selected}
+        computer={!computer}
       />
       {/* <Button text="Pick Up Card" onClick={addCardToHand}></Button> */}
       {!ready && (
@@ -94,16 +153,20 @@ const Player = ({ className, state, playerNumber }) => {
         ></Button>
       )}
       <br />
-      {faceDownCards.length && ready ? (
+      <Button text="Valid Move" onClick={() => validMoveHandler()} />
+      <br />
+      <Button text="Sort" onClick={() => sortHandler()} />
+      <br />
+      {(faceDownCards.length || inHandCards.length) && ready ? (
         <Button
-          text="Play Selected"
+          text={active ? "Play Selected" : "Please wait..."}
           onClick={() => playCardHandler(getActiveHand())}
         ></Button>
       ) : null}
       <br />
       {ready && (
         <Button
-          text="Pick Up Stack"
+          text={active ? "Pick Up Stack" : "Please wait..."}
           onClick={() => pickUpStackHandler()}
         ></Button>
       )}

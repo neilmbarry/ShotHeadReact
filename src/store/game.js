@@ -36,6 +36,7 @@ const initialState = {
   activePlayer: 0,
   loser: false,
   test: false,
+  direction: 1,
   players: [
     {
       name: "Neil",
@@ -43,6 +44,8 @@ const initialState = {
       faceUpCards: [],
       faceDownCards: [],
       message: "",
+      ready: false,
+      winner: false,
     },
     {
       name: "Amar",
@@ -50,6 +53,31 @@ const initialState = {
       faceUpCards: [],
       faceDownCards: [],
       message: "",
+      winner: false,
+    },
+    {
+      name: "Computer",
+      inHandCards: [],
+      faceUpCards: [],
+      faceDownCards: [],
+      message: "",
+      winner: false,
+    },
+    {
+      name: "Computer",
+      inHandCards: [],
+      faceUpCards: [],
+      faceDownCards: [],
+      message: "",
+      winner: false,
+    },
+    {
+      name: "Computer",
+      inHandCards: [],
+      faceUpCards: [],
+      faceDownCards: [],
+      message: "",
+      winner: false,
     },
   ],
 };
@@ -62,7 +90,10 @@ export const gameSlice = createSlice({
       // Take card from deck
       const newCard = state.value.deck.pop();
       // Add to players hand
-      state.value.players[action.payload].inHandCards.push(newCard);
+      state.value.players[action.payload].inHandCards = [
+        newCard,
+        ...state.value.players[action.payload].inHandCards,
+      ];
     },
     playCard: (state, action) => {
       // Take card from player
@@ -73,7 +104,7 @@ export const gameSlice = createSlice({
             !action.payload.cards.map((card) => card.name).includes(card.name)
         );
       // Add card to stack
-      state.value.stack.push(...action.payload.cards);
+      state.value.stack = [...state.value.stack, ...action.payload.cards];
     },
     takeStack: (state, action) => {
       // Add stack to players hand
@@ -111,6 +142,9 @@ export const gameSlice = createSlice({
       state.value.players[action.payload.player].faceUpCards =
         action.payload.cards;
     },
+    changeDirection: (state, action) => {
+      state.value.direction *= action.payload;
+    },
     addPlayer: (state, action) => {
       state.value.players.push(action.payload);
     },
@@ -119,6 +153,14 @@ export const gameSlice = createSlice({
     },
     switchActivePlayer: (state, action) => {
       state.value.activePlayer = action.payload;
+    },
+    setWinner: (state, action) => {
+      state.value.players[action.payload].winner = true;
+    },
+    sortHandCards: (state, action) => {
+      state.value.players[action.payload].inHandCards.sort(
+        (a, b) => a.worth - b.worth
+      );
     },
     test: (state, action) => {
       state.value.test = true;
@@ -138,6 +180,9 @@ export const {
   test,
   burnStack,
   switchActivePlayer,
+  changeDirection,
+  setWinner,
+  sortHandCards,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

@@ -11,5 +11,5 @@
 
   cursor: pointer;
   box-shadow: -4px 4px 5px rgba(0, 0, 0, 0.377);
-  transition: all ease 0.4s;
+  transition: all ease 0.1s;
 }

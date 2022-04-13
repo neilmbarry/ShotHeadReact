@@ -57,12 +57,17 @@ const allCardsHaveEqualValue = (cards) => {
   return cards.every((card) => card.value === cards[0].value);
 };
 
-export function checkLegalMove(card, stack) {
+export function checkLegalMove(cards, stack) {
+  const topCard = cards[0];
   const topStackCard = getTopStackCard(stack);
   if (!topStackCard) {
     return true;
   }
-  if (card.power && !(card.power === "reverse")) {
+  if (allCardsHaveEqualValue(cards) && cards.length === 4) {
+    return true;
+  }
+
+  if (topCard.power && !(topCard.power === "reverse")) {
     return true;
   }
   if (topStackCard.power && !(topStackCard.power === "reverse")) {
@@ -70,23 +75,25 @@ export function checkLegalMove(card, stack) {
       case "reset":
         return true;
       case "skip":
-        if (card.worth > 5) {
+        if (topCard.worth > 5) {
           return true;
         } else {
           return false;
         }
       case "lower":
-        if (card.worth < 8 || card.worth > 15) {
+        if (topCard.worth < 8 || topCard.worth > 15) {
           return true;
         } else {
           return false;
         }
+      case "burn":
+        return true;
 
       default:
-        return;
+        return false;
     }
   }
-  if (card.worth >= topStackCard.worth) {
+  if (topCard.worth >= topStackCard.worth) {
     return true;
   }
   return false;
