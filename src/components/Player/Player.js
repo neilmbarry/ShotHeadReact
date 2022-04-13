@@ -3,7 +3,7 @@ import classes from "./Player.module.css";
 import Button from "../UI/Button";
 import CardContainer from "../Cards/CardContainer";
 import InHandContainer from "../Cards/InHandContainer";
-import { playCards } from "../../controller/controller";
+import { pickUpStack, playCards } from "../../controller/controller";
 
 import { myTest } from "../../controller/controller";
 import { selectFaceUpCards } from "../../store/game";
@@ -17,10 +17,20 @@ const Player = ({ className, state, playerNumber }) => {
 
   const [selected, setSelected] = useState([]);
 
-  let { inHandCards, faceDownCards, faceUpCards } = state;
-  // inHandCards = inHandCards.map((card) => card.name);
-  // faceDownCards = faceDownCards.map((card) => card.name);
-  // faceUpCards = faceUpCards.map((card) => card.name);
+  // console.log(selected);
+
+  const { inHandCards, faceDownCards, faceUpCards } = state;
+  const getActiveHand = () => {
+    if (inHandCards.length) {
+      return "inHandCards";
+    }
+    if (faceUpCards.length) {
+      return "faceUpCards";
+    }
+    if (faceDownCards.length) {
+      return "faceDownCards";
+    }
+  };
 
   const selectCardHandler = (card) => {
     // console.log("----->" + card);
@@ -32,6 +42,11 @@ const Player = ({ className, state, playerNumber }) => {
 
   const playCardHandler = (hand) => {
     playCards(selected, hand, playerNumber);
+    setSelected([]);
+  };
+
+  const pickUpStackHandler = () => {
+    pickUpStack(playerNumber);
     setSelected([]);
   };
 
@@ -50,13 +65,19 @@ const Player = ({ className, state, playerNumber }) => {
           cards={faceDownCards}
           playCards={(cards) => null}
           selected={selected}
+          active={!faceUpCards}
+          onClick={selectCardHandler}
         />
-        <CardContainer
-          type="faceUp"
-          cards={faceUpCards}
-          playCards={(cards) => null}
-          selected={selected}
-        />
+        {faceUpCards && (
+          <CardContainer
+            type="faceUp"
+            cards={faceUpCards}
+            playCards={(cards) => null}
+            selected={selected}
+            active={!inHandCards}
+            onClick={selectCardHandler}
+          />
+        )}
       </div>
       <InHandContainer
         type="inHand"
@@ -68,17 +89,24 @@ const Player = ({ className, state, playerNumber }) => {
       {/* <Button text="Pick Up Card" onClick={addCardToHand}></Button> */}
       {!ready && (
         <Button
-          text="Place Face Up Cards"
+          text="Select Face Up Cards"
           onClick={() => setFaceCardsHandler()}
         ></Button>
       )}
       <br />
-      {inHandCards.length && ready ? (
+      {faceDownCards.length && ready ? (
         <Button
-          text="Play In Hand"
-          onClick={() => playCardHandler("inHandCards")}
+          text="Play Selected"
+          onClick={() => playCardHandler(getActiveHand())}
         ></Button>
       ) : null}
+      <br />
+      {ready && (
+        <Button
+          text="Pick Up Stack"
+          onClick={() => pickUpStackHandler()}
+        ></Button>
+      )}
 
       {/* {!inHandCardsRedux.length && faceUpCardsRedux.length ? (
         <Button text="Play Face Up" onClick={playFaceUpHandler}></Button>

@@ -6,15 +6,16 @@ import { useSelector } from "react-redux";
 const Stack = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
   const stackState = useSelector((state) => state.game.value.stack);
+  // console.log(stackState);
 
   const stackOfCards = stackState.map((name, i) => {
     // console.log(name);
     return (
       <Card
-        className={classes.card}
+        className={classes.stackCard + " " + classes[`rotate${[i % 8] + ""}`]}
         name={name}
         key={name + i}
-        rotate={i % 8}
+        // rotate={i % 8}
       />
     );
   });

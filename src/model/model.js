@@ -62,10 +62,10 @@ export function checkLegalMove(card, stack) {
   if (!topStackCard) {
     return true;
   }
-  if (card.power) {
+  if (card.power && !(card.power === "reverse")) {
     return true;
   }
-  if (topStackCard.power) {
+  if (topStackCard.power && !(topStackCard.power === "reverse")) {
     switch (topStackCard.power) {
       case "reset":
         return true;
@@ -81,6 +81,7 @@ export function checkLegalMove(card, stack) {
         } else {
           return false;
         }
+
       default:
         return;
     }
@@ -96,15 +97,14 @@ export function checkBurnStack(stack) {
   if (!topStackCard) return;
   const isBurnCard = () => {
     if (topStackCard.power === "burn") {
+      console.warn("A CHEEKY 10!!");
       return true;
     }
     return false;
   };
   const isFourOfAKind = () => {
-    if (this.stack.length < 4) return false;
-    const lastFourCards = this.stack.filter(
-      (card, i) => i >= this.stack.length - 4
-    );
+    if (stack.length < 4) return false;
+    const lastFourCards = stack.filter((card, i) => i >= stack.length - 4);
     if (allCardsHaveEqualValue(lastFourCards)) {
       console.warn("Four of a kind!");
       return true;

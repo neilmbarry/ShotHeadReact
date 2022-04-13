@@ -2,17 +2,33 @@ import React from "react";
 import classes from "./CardContainer.module.css";
 import Card from "./Card";
 
-const CardContainer = ({ className, quantity, type, cards, onClick }) => {
-  const classesList = `${classes.main} ${className} ${classes[type]}`;
-  const cardQuantityMiddle = cards.length / 2;
+const CardContainer = ({
+  className,
+  quantity,
+  type,
+  cards,
+  onClick,
+  active,
+  selected,
+}) => {
+  const classesList = `${classes.main} ${className} ${classes[type]} ${
+    !active && classes.unactive
+  }`;
 
-  const displayCards = cards.map((name, i) => (
-    <Card
-      name={type == "faceDown" ? { name: "back" } : name}
-      key={name + i}
-      onClick={onClick}
-    />
-  ));
+  const displayCards = cards.map((name, i) => {
+    const CardClassesList = `${classes.card} ${
+      selected.includes(name) && classes.active
+    }`;
+    return (
+      <Card
+        name={name}
+        back={type === "faceDown"}
+        key={name + i}
+        onClick={onClick}
+        className={CardClassesList}
+      />
+    );
+  });
   return (
     <div className={classesList}>
       {displayCards}

@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import classes from "./Deck.module.css";
 import Card from "../../Cards/Card";
-import Button from "../../UI/Button";
+import { useSelector } from "react-redux";
 
 const Deck = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
+  const stateDeck = useSelector((state) => state.game.value.deck.length);
   const [deck, setDeck] = useState(10);
-  const takeCard = (quantity) => setDeck(deck - quantity);
+
   const tableDeck = [];
-  for (let i = deck; i > 0; i--) {
-    tableDeck.push(<Card className={classes.card} key={i} />);
+  for (let i = stateDeck; i > 0; i--) {
+    tableDeck.push(<Card className={classes.card} key={i} shift={i} />);
   }
   return (
     <>

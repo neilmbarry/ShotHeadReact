@@ -1,36 +1,36 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const suits = ["Hearts", "Clubs", "Diamonds", "Spades"];
-const deck = [];
-const cardValuePairs = [
-  ["Ace", 14, null],
-  ["2", 100, "reset"], // POWER CARD
-  ["3", 3, null],
-  ["4", 4, null],
-  ["5", 100, "skip"], // POWER CARD
-  ["6", 6, null],
-  ["7", 7, null],
-  ["8", 100, "lower"], // POWER CARD
-  ["9", 9, null],
-  ["10", 100, "burn"], // POWER CARD
-  ["Jack", 11, "reverse"],
-  ["Queen", 12, null],
-  ["King", 13, null],
-];
-suits.forEach((suit) => {
-  cardValuePairs.forEach((value) => {
-    deck.push({
-      value: value[0],
-      suit,
-      worth: value[1],
-      power: value[2],
-      name: value[0] + suit,
-    });
-  });
-});
+// const suits = ["Hearts", "Clubs", "Diamonds", "Spades"];
+// const deck = [];
+// const cardValuePairs = [
+//   ["Ace", 14, null],
+//   ["2", 100, "reset"], // POWER CARD
+//   ["3", 3, null],
+//   ["4", 4, null],
+//   ["5", 100, "skip"], // POWER CARD
+//   ["6", 6, null],
+//   ["7", 7, null],
+//   ["8", 100, "lower"], // POWER CARD
+//   ["9", 9, null],
+//   ["10", 100, "burn"], // POWER CARD
+//   ["Jack", 11, "reverse"],
+//   ["Queen", 12, null],
+//   ["King", 13, null],
+// ];
+// suits.forEach((suit) => {
+//   cardValuePairs.forEach((value) => {
+//     deck.push({
+//       value: value[0],
+//       suit,
+//       worth: value[1],
+//       power: value[2],
+//       name: value[0] + suit,
+//     });
+//   });
+// });
 
 const initialState = {
-  deck,
+  deck: [],
   stack: [],
   burned: [],
   activePlayer: 0,
@@ -45,7 +45,7 @@ const initialState = {
       message: "",
     },
     {
-      name: "Stephanie",
+      name: "Amar",
       inHandCards: [],
       faceUpCards: [],
       faceDownCards: [],
@@ -77,7 +77,7 @@ export const gameSlice = createSlice({
     },
     takeStack: (state, action) => {
       // Add stack to players hand
-      state.value.players[action.payload.player].inHandCards.push(
+      state.value.players[action.payload].inHandCards.push(
         ...state.value.stack
       );
       // Reset stack
@@ -117,6 +117,9 @@ export const gameSlice = createSlice({
     setActivePlayer: (state, action) => {
       state.value.activePlayer = 0;
     },
+    switchActivePlayer: (state, action) => {
+      state.value.activePlayer = action.payload;
+    },
     test: (state, action) => {
       state.value.test = true;
     },
@@ -133,6 +136,8 @@ export const {
   addPlayer,
   setActivePlayer,
   test,
+  burnStack,
+  switchActivePlayer,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

@@ -7,7 +7,7 @@
   flex-wrap: wrap;
   margin: 5rem;
   flex: 1;
-  border: dashed 1px yellow;
+  /* border: dashed 1px yellow; */
   z-index: 6;
   justify-content: center;
   align-items: center;
@@ -22,4 +22,18 @@
 
 .card {
   margin: -3rem -1rem;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: -5px 5px 7px rgba(0, 0, 0, 0.192);
+}
+
+.active {
+  transform: scale(1.2);
+}
+
+.active:hover {
+  transform: translateY(-5px) scale(1.2);
+  box-shadow: -5px 5px 7px rgba(0, 0, 0, 0.192);
 }
