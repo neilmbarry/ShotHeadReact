@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import classes from "./Card.module.css";
 import cardImages from "../../util/CardImages";
+import { motion } from "framer-motion";
 
 const Card = ({
   className,
