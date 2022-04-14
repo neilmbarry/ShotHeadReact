@@ -25,22 +25,13 @@ import {
   shuffleDeck,
   checkLegalMove,
   checkBurnStack,
+  allCardsHaveEqualValue,
 } from "../model/model";
-
-//remove
-const allCardsHaveEqualValue = (cards) => {
-  return cards.every((card) => card.value === cards[0].value);
-};
 
 const getGameState = () => store.getState().game.value;
 
 const getStack = () => {
   return getGameState().stack;
-};
-
-const numberOfPlayers = () => {
-  // return getGameState().players.filter((player) => !player.winner).length;
-  return getGameState().players.length;
 };
 
 const getDeck = () => {
@@ -51,13 +42,21 @@ const getActivePlayer = () => {
   return getGameState().activePlayer;
 };
 
+const numberOfPlayers = () => {
+  return getGameState().players.length;
+};
+
 const checkActivePlayer = (player) => {
   return player === getActivePlayer();
 };
 
+const cardsInHand = (player) => {
+  return getGameState().players[player].inHandCards.length;
+};
+
 const cardsToDraw = (player) => {
-  if (getGameState().players[player].inHandCards.length < 3) {
-    const cardsToPickUp = 3 - getGameState().players[player].inHandCards.length;
+  if (cardsInHand(player) < 3) {
+    const cardsToPickUp = 3 - cardsInHand(player);
     return cardsToPickUp;
   }
   return 0;
@@ -176,6 +175,8 @@ export function playValidMove(hand, player) {
   playCards(playingCards, hand, player);
   return true;
 }
+
+// TODO -- SKIP CURRENTLY DOESNT ACCOUNT FOR WINNERS
 
 export function playCards(cards, hand, player) {
   // Check Active Player

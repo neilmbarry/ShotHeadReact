@@ -143,7 +143,7 @@ const Player = ({ className, state, playerNumber, computer }) => {
         playCards={playCardHandler}
         onClick={selectCardHandler}
         selected={selected}
-        computer={!computer}
+        computer={computer}
       />
       {/* <Button text="Pick Up Card" onClick={addCardToHand}></Button> */}
       {!ready && (
@@ -153,9 +153,7 @@ const Player = ({ className, state, playerNumber, computer }) => {
         ></Button>
       )}
       <br />
-      <Button text="Valid Move" onClick={() => validMoveHandler()} />
-      <br />
-      <Button text="Sort" onClick={() => sortHandler()} />
+
       <br />
       {(faceDownCards.length || inHandCards.length) && ready ? (
         <Button
@@ -163,6 +161,8 @@ const Player = ({ className, state, playerNumber, computer }) => {
           onClick={() => playCardHandler(getActiveHand())}
         ></Button>
       ) : null}
+      <br />
+      {active && <Button text="Sort" onClick={() => sortHandler()} />}
       <br />
       {ready && (
         <Button

@@ -53,7 +53,7 @@ const getTopStackCard = (stack) => {
   return stack[stack.length - 1];
 };
 
-const allCardsHaveEqualValue = (cards) => {
+export const allCardsHaveEqualValue = (cards) => {
   return cards.every((card) => card.value === cards[0].value);
 };
 

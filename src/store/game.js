@@ -55,30 +55,6 @@ const initialState = {
       message: "",
       winner: false,
     },
-    {
-      name: "Computer",
-      inHandCards: [],
-      faceUpCards: [],
-      faceDownCards: [],
-      message: "",
-      winner: false,
-    },
-    {
-      name: "Computer",
-      inHandCards: [],
-      faceUpCards: [],
-      faceDownCards: [],
-      message: "",
-      winner: false,
-    },
-    {
-      name: "Computer",
-      inHandCards: [],
-      faceUpCards: [],
-      faceDownCards: [],
-      message: "",
-      winner: false,
-    },
   ],
 };
 
