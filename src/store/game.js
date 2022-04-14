@@ -48,7 +48,7 @@ const initialState = {
       winner: false,
     },
     {
-      name: "Amar",
+      name: "Warren",
       inHandCards: [],
       faceUpCards: [],
       faceDownCards: [],
