@@ -29,16 +29,6 @@ const initialState = {
       hasSetFaceUpCards: false,
       winner: false,
     },
-    {
-      name: "Warren",
-      inHandCards: [],
-      faceUpCards: [],
-      faceDownCards: [],
-      message: "",
-      ready: false,
-      hasSetFaceUpCards: false,
-      winner: false,
-    },
   ],
 };
 
