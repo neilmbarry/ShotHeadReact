@@ -6,11 +6,12 @@
   background-color: transparent;
   flex-wrap: wrap;
   margin: 5rem;
-  flex: 1;
+  /* flex: 1; */
   /* border: dashed 1px yellow; */
   z-index: 6;
   justify-content: center;
   align-items: center;
+  padding: 0 5rem;
   /* overflow: scroll; */
 }
 

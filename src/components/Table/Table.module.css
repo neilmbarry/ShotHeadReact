@@ -3,8 +3,8 @@
   width: 100%;
   padding: 2rem;
   max-width: 1000px;
-  /* height: 50%; */
+  min-height: 250px;
   margin: auto;
   align-items: center;
-  flex: 1;
+  /* flex: 1; */
 }

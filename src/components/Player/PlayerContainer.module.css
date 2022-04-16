@@ -7,11 +7,6 @@
   padding: 0 1rem;
   /* flex-direction: column; */
   justify-content: space-around;
-  align-items: center;
-  flex: 2;
-}
-
-.player1 {
-  flex: 3;
-  transform: scale(1.05);
+  /* align-items: center; */
+  flex: 1;
 }

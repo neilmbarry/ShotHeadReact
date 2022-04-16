@@ -12,9 +12,9 @@ const Burned = ({ className }) => {
   return (
     <div className={classesList}>
       <Button onClick={() => startGame()} text="Start Game"></Button>
-      <motion.button whileHover={{ scale: 1.8 }} whileTap={{ scale: 0.8 }}>
+      {/* <motion.button whileHover={{ scale: 1.8 }} whileTap={{ scale: 0.8 }}>
         Click
-      </motion.button>
+      </motion.button> */}
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React from "react";
 import classes from "./InHandContainer.module.css";
 import Card from "./Card";
+import { motion } from "framer-motion";
 
 const InHandContainer = ({ className, selected, cards, onClick, computer }) => {
   const classesList = `${classes.main} ${className}`;

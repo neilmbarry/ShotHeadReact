@@ -11,10 +11,7 @@ const CardContainer = ({
   active,
   selected,
 }) => {
-  const classesList = `${classes.main} ${className} ${classes[type]} ${
-    !active && classes.unactive
-  }`;
-
+  const classesList = `${classes.main} ${className} ${classes[type]}`;
   const displayCards = cards.map((name, i) => {
     const CardClassesList = `${classes.card} ${
       selected.includes(name) && classes.active
@@ -29,6 +26,7 @@ const CardContainer = ({
       />
     );
   });
+
   return (
     <div className={classesList}>
       {displayCards}

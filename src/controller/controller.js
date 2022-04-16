@@ -9,7 +9,6 @@ import {
   setDeck,
   addPlayer,
   setActivePlayer,
-  test,
   takeStack,
   burnStack,
   switchActivePlayer,
@@ -42,29 +41,35 @@ const getActivePlayer = () => {
   return getGameState().activePlayer;
 };
 
+const getPlayersHand = (hand, player) => {
+  return getGameState().players[player][hand];
+};
+
+const getDirection = () => {
+  return getGameState().direction;
+};
+
 const numberOfPlayers = () => {
   return getGameState().players.length;
 };
 
 const checkActivePlayer = (player) => {
-  return player === getActivePlayer();
+  return getActivePlayer() === player;
 };
 
-const cardsInHand = (player) => {
+const cardsInHandQuantity = (player) => {
   return getGameState().players[player].inHandCards.length;
 };
 
 const cardsToDraw = (player) => {
-  if (cardsInHand(player) < 3) {
-    const cardsToPickUp = 3 - cardsInHand(player);
+  if (cardsInHandQuantity(player) < 3) {
+    const cardsToPickUp = 3 - cardsInHandQuantity(player);
     return cardsToPickUp;
   }
   return 0;
 };
 
 function drawCardFromDeck(number, player) {
-  if (getDeck().length === 0) return;
-  // use splice instead
   for (let i = 1; i <= number; i++) {
     if (getDeck().length !== 0) {
       store.dispatch(drawCard(player));
@@ -84,25 +89,22 @@ const activePlayerIsWinner = () => {
   return getGameState().players[getActivePlayer()].winner;
 };
 
-const checkWinner = () => {
-  const activePlayer = getGameState().players[getActivePlayer()];
+const checkAndSetWinner = (player) => {
+  const activePlayer = getGameState().players[player];
   if (
     !activePlayer.inHandCards.length &&
     !activePlayer.faceDownCards.length &&
     !activePlayer.faceUpCards.length
   ) {
-    console.log("we have a winner");
-    store.dispatch(setWinner(getActivePlayer()));
+    console.log(getActivePlayerName(player), " is a WINNER!!");
+    store.dispatch(setWinner(player));
     return true;
   }
   return false;
 };
 
 const checkCardsInHand = (cards, hand, player) => {
-  // console.log(cards, hand);
-  return cards.every((card) =>
-    getGameState().players[player][hand].includes(card)
-  );
+  return cards.every((card) => getPlayersHand(hand, player).includes(card));
 };
 
 const switchPlayer = (skip = 0) => {
@@ -130,15 +132,6 @@ const switchPlayer = (skip = 0) => {
   }
 };
 
-const getDirection = () => {
-  return getGameState().direction;
-};
-
-export function myTest() {
-  store.dispatch(test());
-  console.log(getStack());
-}
-
 export function setFaceUpCards(cards, player) {
   store.dispatch(
     selectFaceUpCards({
@@ -150,7 +143,7 @@ export function setFaceUpCards(cards, player) {
 
 export function playValidMove(hand, player) {
   if (hand === "faceDownCards") {
-    const availableCards = getGameState().players[player][hand];
+    const availableCards = getPlayersHand(hand, player);
     console.log("available face down", availableCards);
     const playedCard = availableCards[0];
     if (!playCards([playedCard], hand, player)) {
@@ -159,36 +152,34 @@ export function playValidMove(hand, player) {
     }
     return true;
   }
-  const availableCards = getGameState().players[player][hand];
-  // console.log(availableCards, "---->available");
+  const availableCards = getPlayersHand(hand, player);
+
   const validCards = availableCards
     .filter((card) => checkLegalMove([card], getStack()))
     .sort((a, b) => a.worth - b.worth);
-  // console.log(validCards, "validCards");
+
   if (!validCards.length) {
     return false;
   }
   const playingCards = validCards.filter(
     (card) => card.value === validCards[0].value
   );
-  // console.log(playingCards, "--->playingvards");
+
   playCards(playingCards, hand, player);
   return true;
 }
 
-// TODO -- SKIP CURRENTLY DOESNT ACCOUNT FOR WINNERS
+// TODO -- SKIP CURRENTLY DOESN'T ACCOUNT FOR WINNERS
 
 export function playCards(cards, hand, player) {
   // Check Active Player
   if (!checkActivePlayer(player)) {
-    //  console.error("It's not you're turn yet!");
     return;
   }
   if (!cards.length) {
     return console.error("Please select you desired cards.");
   }
   // Check Cards are in Hand
-  // console.log(hand, cards);
   if (!checkCardsInHand(cards, hand, player)) {
     return console.error("Cards selected must be from the current hand.");
   }
@@ -211,6 +202,7 @@ export function playCards(cards, hand, player) {
       })
     );
     if (!checkLegalMove(cards, stackCopy)) {
+      // If the blind card fails
       const cardNames = cards
         .map((card) => `${card.value} of ${card.suit}`)
         .join(", ");
@@ -246,7 +238,7 @@ export function playCards(cards, hand, player) {
   // Check Burn
   if (checkBurnStack(getStack())) {
     console.error("IT BURNS!!!");
-    if (checkWinner()) {
+    if (checkAndSetWinner(player)) {
       switchPlayer();
     }
     // Set Active Player
@@ -262,7 +254,7 @@ export function playCards(cards, hand, player) {
     return switchPlayer(cards.length);
   }
   // Check Winner
-  checkWinner();
+  checkAndSetWinner(player);
   // Set Active Player
   switchPlayer();
   return true;
