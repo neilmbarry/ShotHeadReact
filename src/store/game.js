@@ -29,6 +29,36 @@ const initialState = {
       hasSetFaceUpCards: false,
       winner: false,
     },
+    {
+      name: "Warren",
+      inHandCards: [],
+      faceUpCards: [],
+      faceDownCards: [],
+      message: "",
+      ready: false,
+      hasSetFaceUpCards: false,
+      winner: false,
+    },
+    {
+      name: "Warren",
+      inHandCards: [],
+      faceUpCards: [],
+      faceDownCards: [],
+      message: "",
+      ready: false,
+      hasSetFaceUpCards: false,
+      winner: false,
+    },
+    {
+      name: "Warren",
+      inHandCards: [],
+      faceUpCards: [],
+      faceDownCards: [],
+      message: "",
+      ready: false,
+      hasSetFaceUpCards: false,
+      winner: false,
+    },
   ],
 };
 
@@ -44,22 +74,22 @@ export const gameSlice = createSlice({
     },
     playCard: (state, action) => {
       // Take card from player
-      let newHand;
-      if (action.payload.hand === "faceUpCards") {
-        newHand = state.value.players[action.payload.player][
-          action.payload.hand
-        ].map((card) =>
-          !action.payload.cards.map((card) => card.name).includes(card.name)
-            ? card
-            : { name: "transparent" }
-        );
-        newHand = state.value.stack.pop();
+      // let newHand;
+      // if (action.payload.hand === "faceUpCards") {
+      //   newHand = state.value.players[action.payload.player][
+      //     action.payload.hand
+      //   ].map((card) =>
+      //     !action.payload.cards.map((card) => card.name).includes(card.name)
+      //       ? card
+      //       : { name: "transparent" }
+      //   );
+      //   newHand = state.value.stack.pop();
 
-        console.log(newHand);
-        return (state.value.players[action.payload.player][
-          action.payload.hand
-        ] = newHand);
-      }
+      //   console.log(newHand);
+      //   return (state.value.players[action.payload.player][
+      //     action.payload.hand
+      //   ] = newHand);
+      // }
       // REFACTOR
       state.value.players[action.payload.player][action.payload.hand] =
         state.value.players[action.payload.player][action.payload.hand].filter(

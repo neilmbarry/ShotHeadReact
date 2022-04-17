@@ -110,9 +110,13 @@ const Player = ({ className, state, playerNumber, computer }) => {
     return;
   }, [active, computer, ready, burned]);
 
+  const faceDownHeight = ready && inHandCards.length > 0 ? "70px" : "170px";
+
+  console.log(faceDownHeight);
+
   return (
     <div className={classesList}>
-      <div className={classes.tableCards}>
+      <div className={classes.tableCards} style={{ height: faceDownHeight }}>
         <CardContainer
           type="faceDown"
           cards={faceDownCards}
@@ -147,7 +151,7 @@ const Player = ({ className, state, playerNumber, computer }) => {
           computer={computer}
         />
 
-        {!ready && (
+        {!ready && inHandCards.length > 0 && (
           <Button
             text="Select Face Up Cards"
             onClick={() => setFaceCardsHandler()}

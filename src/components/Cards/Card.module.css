@@ -10,6 +10,7 @@
   /* border: black 1px solid; */
 
   cursor: pointer;
-  box-shadow: -4px 4px 5px rgba(0, 0, 0, 0.377);
-  transition: all ease 0.1s;
+  box-shadow: -4px 4px 5px rgba(0, 0, 0, 0.377),
+    4px 0px 5px rgba(0, 0, 0, 0.377);
+  /* transition: all ease 0.1s; */
 }

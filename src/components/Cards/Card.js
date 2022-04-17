@@ -32,7 +32,12 @@ const Card = ({
   }, [selected]);
 
   return (
-    <div className={classesList} onClick={activateCard} style={shifted}>
+    <motion.div
+      // whileHover={{ scale: 1.1 }}
+      className={classesList}
+      onClick={activateCard}
+      style={shifted}
+    >
       {name ? (
         <img
           src={back ? cardImages["back.png"] : cardImages[name.name + ".png"]}
@@ -41,7 +46,7 @@ const Card = ({
       ) : (
         <img src={cardImages["back.png"]} alt="here" />
       )}
-    </div>
+    </motion.div>
   );
 };
 

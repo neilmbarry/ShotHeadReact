@@ -1,9 +1,9 @@
 .main {
-  width: 90%;
+  /* width: 60%; */
   border: none;
   background-color: white;
-  /* padding: 1rem auto; */
-  height: 3rem;
+  padding: 0.2rem 3rem;
+  /* height: 3rem; */
   text-transform: uppercase;
   cursor: pointer;
   margin: 1rem 0;

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import classes from "./Stack.module.css";
 import Card from "../../Cards/Card";
 import { useSelector } from "react-redux";
+import Button from "../../UI/Button";
 
 const Stack = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
@@ -23,7 +24,12 @@ const Stack = ({ className }) => {
     <>
       <div className={classesList}>
         {/* <Card className={classes.card + `${classes.rotate}3`} /> */}
-        {stackOfCards}
+        <div className={classes.cardsContainer}>{stackOfCards}</div>
+        <Button
+          text="Pick Up Stack"
+          className={classes.btn}
+          onClick={null}
+        ></Button>
       </div>
       {/* <button onClick={() => addCardToStack("KingDiamonds.png")}>++++</button>
       <button onClick={() => burnStack()}>-----</button> */}
