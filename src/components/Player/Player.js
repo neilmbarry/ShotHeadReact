@@ -16,16 +16,20 @@ import { selectFaceUpCards } from "../../store/game";
 import { setFaceUpCards } from "../../controller/controller";
 import { useSelector } from "react-redux";
 
-const Player = ({ className, state, playerNumber, computer }) => {
+const Player = React.memo(({ className, state, playerNumber, computer }) => {
   const burned = useSelector((state) => state.game.value.burned);
   const activePlayer = useSelector((state) => state.game.value.activePlayer);
   const active = activePlayer === playerNumber;
   // console.log(state);
   const classesList = `${classes.main} ${className} ${classes[active]}`;
 
+  // console.log(playerNumber, " rerendered");
+
   const [ready, setReady] = useState(false);
 
   const [selected, setSelected] = useState([]);
+
+  console.log(selected);
 
   const { inHandCards, faceDownCards, faceUpCards } = state;
 
@@ -80,7 +84,7 @@ const Player = ({ className, state, playerNumber, computer }) => {
     setSelected([]);
     setTimeout(() => {
       drawCardsFromDeck(playerNumber);
-    }, 600);
+    }, 800);
   };
 
   const pickUpStackHandler = () => {
@@ -116,13 +120,13 @@ const Player = ({ className, state, playerNumber, computer }) => {
     return;
   }, [active, computer, ready, burned]);
 
-  const faceDownHeight = ready && inHandCards.length > 0 ? "70px" : "170px";
+  const faceDownHeight = ready && inHandCards.length > 0 ? "60px" : "130px";
 
   // console.log(faceDownHeight);
 
   return (
     <div className={classesList}>
-      <div className={classes.tableCards} style={{ height: faceDownHeight }}>
+      <div className={classes.tableCards} style={{ minHeight: faceDownHeight }}>
         <CardContainer
           type="faceDown"
           cards={faceDownCards}
@@ -173,6 +177,6 @@ const Player = ({ className, state, playerNumber, computer }) => {
       </div>
     </div>
   );
-};
+});
 
 export default Player;

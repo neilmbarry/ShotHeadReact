@@ -32,9 +32,9 @@
   transition: all 0.2s ease;
 } */
 
-.active {
-  transform: scale(1.2);
-}
+/* .active {
+  transform: scale(1.15) !important;
+} */
 
 /* .active:hover {
   transform: translateY(-5px) scale(1.2);

@@ -3,8 +3,9 @@
   width: 100%;
   padding: 2rem;
   max-width: 1000px;
-  min-height: 250px;
+  height: 250px;
   margin: auto;
   align-items: center;
+  /* min-height: 300px; */
   /* flex: 1; */
 }

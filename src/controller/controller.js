@@ -37,7 +37,7 @@ const getDeck = () => {
   return getGameState().deck;
 };
 
-const getActivePlayer = () => {
+export const getActivePlayer = () => {
   return getGameState().activePlayer;
 };
 
@@ -245,9 +245,10 @@ export function playCards(cards, hand, player) {
       switchPlayer();
     }
     // Set Active Player
+    // return burnCurrentStack();
     return setTimeout(() => {
       burnCurrentStack();
-    }, 2000);
+    }, 1000);
   }
   // Check Skip or change direction
   if (cards[0].power === "skip") {

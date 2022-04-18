@@ -3,6 +3,8 @@ import classes from "./Stack.module.css";
 import Card from "../../Cards/Card";
 import { useSelector } from "react-redux";
 import Button from "../../UI/Button";
+import { pickUpStack, getActivePlayer } from "../../../controller/controller";
+import { AnimatePresence } from "framer-motion";
 
 const Stack = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
@@ -16,23 +18,26 @@ const Stack = ({ className }) => {
         className={classes.stackCard + " " + classes[`rotate${[i % 8] + ""}`]}
         name={name}
         key={name.name}
-        // rotate={i % 8}
+        rotate={i % 8}
+        type="stack"
+        onClick={() => null}
       />
     );
   });
   return (
     <>
       <div className={classesList}>
-        {/* <Card className={classes.card + `${classes.rotate}3`} /> */}
-        <div className={classes.cardsContainer}>{stackOfCards}</div>
-        <Button
-          text="Pick Up Stack"
-          className={classes.btn}
-          onClick={null}
-        ></Button>
+        <div className={classes.cardsContainer}>
+          <AnimatePresence>{stackOfCards}</AnimatePresence>
+        </div>
+        {stackState.length > 0 && (
+          <Button
+            text="Pick Up Stack"
+            className={classes.btn}
+            onClick={() => pickUpStack(getActivePlayer())}
+          ></Button>
+        )}
       </div>
-      {/* <button onClick={() => addCardToStack("KingDiamonds.png")}>++++</button>
-      <button onClick={() => burnStack()}>-----</button> */}
     </>
   );
 };
