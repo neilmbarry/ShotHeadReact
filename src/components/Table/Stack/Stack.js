@@ -15,7 +15,7 @@ const Stack = ({ className }) => {
       <Card
         className={classes.stackCard + " " + classes[`rotate${[i % 8] + ""}`]}
         name={name}
-        key={name + i}
+        key={name.name}
         // rotate={i % 8}
       />
     );

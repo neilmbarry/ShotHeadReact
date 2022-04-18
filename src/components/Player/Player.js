@@ -8,6 +8,7 @@ import {
   playCards,
   sortCards,
   playValidMove,
+  drawCardsFromDeck,
 } from "../../controller/controller";
 
 import { myTest } from "../../controller/controller";
@@ -27,6 +28,7 @@ const Player = ({ className, state, playerNumber, computer }) => {
   const [selected, setSelected] = useState([]);
 
   const { inHandCards, faceDownCards, faceUpCards } = state;
+
   const getActiveHand = () => {
     if (inHandCards.length) {
       return "inHandCards";
@@ -74,7 +76,11 @@ const Player = ({ className, state, playerNumber, computer }) => {
 
   const playCardHandler = () => {
     playCards(selected, getActiveHand(), playerNumber);
+    console.log(inHandCards);
     setSelected([]);
+    setTimeout(() => {
+      drawCardsFromDeck(playerNumber);
+    }, 600);
   };
 
   const pickUpStackHandler = () => {
@@ -112,7 +118,7 @@ const Player = ({ className, state, playerNumber, computer }) => {
 
   const faceDownHeight = ready && inHandCards.length > 0 ? "70px" : "170px";
 
-  console.log(faceDownHeight);
+  // console.log(faceDownHeight);
 
   return (
     <div className={classesList}>

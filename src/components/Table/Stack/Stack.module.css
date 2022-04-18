@@ -29,7 +29,10 @@
   bottom: 0; */
   justify-self: end;
 }
-
+.stackCard {
+  position: absolute;
+}
+/* 
 @keyframes fadeIn0 {
   0% {
     opacity: 0;
@@ -111,10 +114,8 @@
   }
 }
 
-.stackCard {
-  position: absolute;
 
-  /* transform: scale(1.3); */
+ 
 }
 .rotate0 {
   animation: fadeIn0 0.5s ease-in-out;
@@ -148,4 +149,4 @@
 .rotate7 {
   animation: fadeIn7 0.5s ease-out;
   transform: scale(1.3) rotate(-50deg);
-}
+}*/

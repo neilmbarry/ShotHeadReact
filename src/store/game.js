@@ -70,7 +70,7 @@ export const gameSlice = createSlice({
       // Take card from deck
       const newCard = state.value.deck.pop();
       // Add card to players hand
-      state.value.players[action.payload].inHandCards.unshift(newCard);
+      state.value.players[action.payload].inHandCards.push(newCard);
     },
     playCard: (state, action) => {
       // Take card from player

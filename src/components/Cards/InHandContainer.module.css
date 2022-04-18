@@ -26,17 +26,17 @@
   margin: -3rem -1rem;
 }
 
-.card:hover {
+/* .card:hover {
   transform: translateY(-5px);
   box-shadow: -5px 5px 7px rgba(0, 0, 0, 0.192);
   transition: all 0.2s ease;
-}
+} */
 
 .active {
   transform: scale(1.2);
 }
 
-.active:hover {
+/* .active:hover {
   transform: translateY(-5px) scale(1.2);
   box-shadow: -5px 5px 7px rgba(0, 0, 0, 0.192);
-}
+} */

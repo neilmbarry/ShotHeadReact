@@ -20,7 +20,7 @@ const CardContainer = ({
       <Card
         name={name}
         back={type === "faceDown"}
-        key={name + i}
+        key={name.name}
         onClick={onClick}
         className={CardClassesList}
       />

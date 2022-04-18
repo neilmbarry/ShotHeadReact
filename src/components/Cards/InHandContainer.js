@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./InHandContainer.module.css";
 import Card from "./Card";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const InHandContainer = ({ className, selected, cards, onClick, computer }) => {
   const classesList = `${classes.main} ${className}`;
@@ -13,7 +13,7 @@ const InHandContainer = ({ className, selected, cards, onClick, computer }) => {
     return (
       <Card
         name={name}
-        key={name + i}
+        key={name.name}
         onClick={onClick}
         back={computer}
         className={CardClassesList}
@@ -21,7 +21,7 @@ const InHandContainer = ({ className, selected, cards, onClick, computer }) => {
       />
     );
   });
-  return <div className={classesList}>{displayCards}</div>;
+  return <motion.div className={classesList}>{displayCards}</motion.div>;
 };
 
 export default InHandContainer;

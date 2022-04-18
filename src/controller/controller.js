@@ -170,6 +170,9 @@ export function playValidMove(hand, player) {
 }
 
 // TODO -- SKIP CURRENTLY DOESN'T ACCOUNT FOR WINNERS
+export function drawCardsFromDeck(player) {
+  return drawCardFromDeck(cardsToDraw(player), player);
+}
 
 export function playCards(cards, hand, player) {
   // Check Active Player
@@ -234,7 +237,7 @@ export function playCards(cards, hand, player) {
   console.log(`${getActivePlayerName()} has played ${cardNames}.`);
 
   // Check If inHandCards < 3 && Deck.length && Pick up Cards
-  drawCardFromDeck(cardsToDraw(player), player);
+  // drawCardFromDeck(cardsToDraw(player), player);
   // Check Burn
   if (checkBurnStack(getStack())) {
     console.error("IT BURNS!!!");
