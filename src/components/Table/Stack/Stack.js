@@ -31,11 +31,11 @@ const Stack = ({ className }) => {
           <AnimatePresence>{stackOfCards}</AnimatePresence>
         </div>
 
-        <Button
+        {/* <Button
           text="Pick Up Stack"
           className={classes.btn}
           onClick={() => pickUpStack(getActivePlayer())}
-        ></Button>
+        ></Button> */}
       </div>
     </>
   );

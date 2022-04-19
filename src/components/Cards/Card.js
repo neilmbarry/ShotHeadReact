@@ -69,9 +69,9 @@ const Card = ({
       },
     },
     exit: {
-      y: -50,
+      y: -30,
       opacity: 0,
-      scale: 0.7,
+      scale: 0.9,
     },
     hover: {
       scale: activeHover,
@@ -81,7 +81,7 @@ const Card = ({
   const deckVariants = {
     hidden: {
       opacity: 0,
-      scale: 1.5,
+      scale: 1.2,
       // rotateZ: 360,
       // rotate: "0deg",
     },
@@ -91,10 +91,10 @@ const Card = ({
       scale: 1,
       rotateZ: 0,
       transition: {
-        type: "tween",
+        type: "spring",
         // ease: [0.2, 0.8, 0.9, 0.98],
         ease: "easeOut",
-        delay: 0.2,
+        delay: 0,
         duration: 0.2,
       },
     },
@@ -120,8 +120,10 @@ const Card = ({
       rotateZ: cardRotate + 15,
       transition: {
         type: "spring",
-        // delay: 0.2,
-        duration: 0.6,
+        // ease: [0.2, 0.8, 0.9, 0.98],
+        // ease: "easeOut",
+        duration: 0.5,
+        delay: 0.2,
       },
     },
     exit: {

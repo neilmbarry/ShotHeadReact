@@ -5,6 +5,7 @@ const initialState = {
   stack: [],
   burned: [],
   activePlayer: 0,
+  gameOver: true,
   loser: false,
   test: false,
   direction: 1,
@@ -76,11 +77,38 @@ export const gameSlice = createSlice({
   name: "game",
   initialState: { value: initialState },
   reducers: {
-    drawCard: (state, action) => {
-      // Take card from deck
-      const newCard = state.value.deck.pop();
-      // Add card to players hand
-      state.value.players[action.payload].inHandCards.unshift(newCard);
+    newGame: (state, action) => {
+      state.value = initialState;
+    },
+    addPlayer: (state, action) => {
+      state.value.players.push(action.payload);
+    },
+    setDeck: (state, action) => {
+      state.value.deck = action.payload;
+    },
+    dealCards: (state, action) => {
+      state.value.players.forEach((player) => {
+        player.faceDownCards = state.value.deck.splice(0, 3);
+        player.faceUpCards = [];
+        player.inHandCards = state.value.deck.splice(0, 6);
+      });
+      state.value.stack = [];
+      state.value.burned = [];
+    },
+    selectFaceUpCards: (state, action) => {
+      state.value.players[action.payload.player].inHandCards =
+        state.value.players[action.payload.player].inHandCards.filter(
+          (card) =>
+            !action.payload.cards.map((card) => card.name).includes(card.name)
+        );
+      state.value.players[action.payload.player].faceUpCards.push(
+        ...action.payload.cards
+      );
+      state.value.players[action.payload.player].hasSetFaceUpCards = true;
+    },
+    setActivePlayer: (state, action) => {
+      //TODO set player with lowest starting hand to begin
+      state.value.activePlayer = 0;
     },
     playCard: (state, action) => {
       // Take card from player
@@ -109,6 +137,21 @@ export const gameSlice = createSlice({
       // Add card to stack
       state.value.stack.push(...action.payload.cards);
     },
+    drawCard: (state, action) => {
+      // Take card from deck
+      const newCard = state.value.deck.pop();
+      // Add card to players hand
+      state.value.players[action.payload].inHandCards.unshift(newCard);
+    },
+    switchActivePlayer: (state, action) => {
+      state.value.activePlayer = action.payload;
+    },
+    sortHandCards: (state, action) => {
+      state.value.players[action.payload].inHandCards.sort(
+        (a, b) => a.worth - b.worth
+      );
+    },
+
     takeStack: (state, action) => {
       // Add stack to players hand
       state.value.players[action.payload].inHandCards.unshift(
@@ -117,57 +160,23 @@ export const gameSlice = createSlice({
       // Reset stack
       state.value.stack = [];
     },
-    setDeck: (state, action) => {
-      state.value.deck = action.payload;
-    },
+
     burnStack: (state) => {
       state.value.burned.push(...state.value.stack);
       state.value.stack = [];
     },
-    dealCards: (state, action) => {
-      state.value.players.forEach((player) => {
-        player.faceDownCards = state.value.deck.splice(0, 3);
-        player.faceUpCards = [];
-        player.inHandCards = state.value.deck.splice(0, 6);
-      });
-      state.value.stack = [];
-      state.value.burned = [];
-    },
-    selectFaceUpCards: (state, action) => {
-      state.value.players[action.payload.player].inHandCards =
-        state.value.players[action.payload.player].inHandCards.filter(
-          (card) =>
-            !action.payload.cards.map((card) => card.name).includes(card.name)
-        );
-      state.value.players[action.payload.player].faceUpCards.push(
-        ...action.payload.cards
-      );
-    },
     changeDirection: (state, action) => {
       state.value.direction *= action.payload;
     },
-    addPlayer: (state, action) => {
-      state.value.players.push(action.payload);
-    },
-    setActivePlayer: (state, action) => {
-      //TODO set player with lowest starting hand to begin
-      state.value.activePlayer = 0;
-    },
-    switchActivePlayer: (state, action) => {
-      state.value.activePlayer = action.payload;
-    },
+
     setWinner: (state, action) => {
       state.value.players[action.payload].winner = true;
-    },
-    sortHandCards: (state, action) => {
-      state.value.players[action.payload].inHandCards.sort(
-        (a, b) => a.worth - b.worth
-      );
     },
   },
 });
 
 export const {
+  newGame,
   drawCard,
   playCard,
   takeStack,

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import store from "../store/store";
 import {
+  newGame,
   drawCard,
   playCard,
   dealCards,
@@ -141,8 +142,8 @@ export function setFaceUpCards(cards, player) {
   );
 }
 
-export function playValidMove(hand, player) {
-  if (hand === "faceDownCards") {
+export function playValidMove(hand, player, act) {
+  if (hand === "faceDownCards" && act) {
     const availableCards = getPlayersHand(hand, player);
     console.log("available face down", availableCards);
     const playedCard = availableCards[0];
@@ -154,6 +155,8 @@ export function playValidMove(hand, player) {
   }
   const availableCards = getPlayersHand(hand, player);
 
+  if (!availableCards) return;
+
   const validCards = availableCards
     .filter((card) => checkLegalMove([card], getStack()))
     .sort((a, b) => a.worth - b.worth);
@@ -164,8 +167,9 @@ export function playValidMove(hand, player) {
   const playingCards = validCards.filter(
     (card) => card.value === validCards[0].value
   );
-
-  playCards(playingCards, hand, player);
+  if (act) {
+    playCards(playingCards, hand, player);
+  }
   return true;
 }
 
@@ -271,6 +275,10 @@ export function pickUpStack(player) {
 
 export function sortCards(player) {
   store.dispatch(sortHandCards(player));
+}
+
+export function initializeNewGame() {
+  store.dispatch(newGame());
 }
 
 export function startGame() {

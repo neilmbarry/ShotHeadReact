@@ -14,21 +14,20 @@ import {
 import { setFaceUpCards } from "../../controller/controller";
 import { useSelector } from "react-redux";
 
-const Player = React.memo(({ className, state, playerNumber, computer }) => {
-  const burned = useSelector((state) => state.game.value.burned);
-  const deck = useSelector((state) => state.game.value.deck);
-  const activePlayer = useSelector((state) => state.game.value.activePlayer);
+const Player = React.memo(({ className, playerNumber, computer }) => {
+  const { burned, deck, activePlayer, players } = useSelector(
+    (state) => state.game.value
+  );
+  const { inHandCards, faceDownCards, faceUpCards, name, hasSetFaceUpCards } =
+    players[playerNumber];
+
   const active = activePlayer === playerNumber;
   // console.log(state);
   const classesList = `${classes.main} ${className} ${classes[active]}`;
 
-  // console.log(playerNumber, " rerendered");
-
-  const [ready, setReady] = useState(false);
+  // const [hasSetFaceUpCards, sethasSetFaceUpCards] = useState(false);
 
   const [selected, setSelected] = useState([]);
-
-  const { inHandCards, faceDownCards, faceUpCards } = state;
 
   const getActiveHand = () => {
     if (inHandCards.length) {
@@ -47,9 +46,13 @@ const Player = React.memo(({ className, state, playerNumber, computer }) => {
     sortCards(playerNumber);
   };
 
+  const hasValidMove = () => {
+    return playValidMove(getActiveHand(), playerNumber);
+  };
+
   const validMoveHandler = () => {
-    if (!playValidMove(getActiveHand(), playerNumber)) {
-      console.error(state.name, " HAS TO PICK UP!");
+    if (!playValidMove(getActiveHand(), playerNumber, true)) {
+      console.error(name, " HAS TO PICK UP!");
       setTimeout(() => {
         pickUpStackHandler();
       }, 1000);
@@ -58,21 +61,21 @@ const Player = React.memo(({ className, state, playerNumber, computer }) => {
 
   const selectCardHandler = (card) => {
     if (selected.includes(card)) {
-      return setSelected(selected.filter((cards) => cards !== card));
+      return setSelected((prev) => prev.filter((cards) => cards !== card));
     }
-    if (!ready) {
+    if (!hasSetFaceUpCards) {
       if (selected.length === 3) {
-        return setSelected([...selected.slice(1, 3), card]);
+        return setSelected((prev) => [...prev.slice(1, 3), card]);
       }
     }
 
-    if (ready) {
+    if (hasSetFaceUpCards) {
       if (selected.length > 0 && selected[0].value !== card.value) {
         return setSelected([card]);
       }
     }
 
-    setSelected([...selected, card]);
+    setSelected((prev) => [...prev, card]);
   };
 
   const playCardHandler = () => {
@@ -92,20 +95,20 @@ const Player = React.memo(({ className, state, playerNumber, computer }) => {
   const setFaceCardsHandler = () => {
     if (selected.length === 3) {
       setFaceUpCards(selected, playerNumber);
-      setReady(true);
+      // sethasSetFaceUpCards(true);
     }
     if (selected.length === 0) {
       const sortedCards = [...inHandCards].sort((a, b) => a.worth - b.worth);
 
       setFaceUpCards(sortedCards.slice(3, 6), playerNumber);
-      setReady(true);
+      // sethasSetFaceUpCards(true);
     }
 
     setSelected([]);
   };
 
   useEffect(() => {
-    if (active && computer && ready) {
+    if (active && computer && hasSetFaceUpCards) {
       setTimeout(() => {
         // console.log("computer playing card");
 
@@ -115,10 +118,12 @@ const Player = React.memo(({ className, state, playerNumber, computer }) => {
 
     // return clearTimeout(timeout);
     return;
-  }, [active, computer, ready, burned]);
+  }, [active, computer, hasSetFaceUpCards, burned]);
 
   const faceDownHeight =
-    ready && (inHandCards.length > 0 || deck.length > 0) ? "60px" : "130px";
+    hasSetFaceUpCards && (inHandCards.length > 0 || deck.length > 0)
+      ? "60px"
+      : "120px";
 
   // console.log(faceDownHeight);
 
@@ -128,16 +133,14 @@ const Player = React.memo(({ className, state, playerNumber, computer }) => {
         <CardContainer
           type="faceDown"
           cards={faceDownCards}
-          playCards={(cards) => null}
           selected={selected}
-          active={!faceUpCards}
+          active={!faceUpCards && !inHandCards}
           onClick={selectCardHandler}
         />
 
         <CardContainer
           type="faceUp"
           cards={faceUpCards}
-          playCards={(cards) => null}
           selected={selected}
           active={!inHandCards}
           onClick={selectCardHandler}
@@ -145,7 +148,7 @@ const Player = React.memo(({ className, state, playerNumber, computer }) => {
       </div>
       <div className={classes.playerControl}>
         <div className={classes.playerName}>
-          <h3>{state.name}</h3>
+          <h3>{name}</h3>
         </div>
         {inHandCards.length !== 0 && (
           <Button text="Sort" onClick={() => sortHandler()} />
@@ -153,25 +156,32 @@ const Player = React.memo(({ className, state, playerNumber, computer }) => {
         <InHandContainer
           type="inHand"
           cards={inHandCards}
-          playCards={playCardHandler}
           onClick={selectCardHandler}
           selected={selected}
           computer={computer}
         />
 
-        {!ready && inHandCards.length > 0 && (
+        {!hasSetFaceUpCards && inHandCards.length > 0 && (
           <Button
             text="Select Face Up Cards"
             onClick={() => setFaceCardsHandler()}
           ></Button>
         )}
 
-        {(faceDownCards.length || inHandCards.length) && ready ? (
+        {(faceDownCards.length || inHandCards.length) &&
+        hasSetFaceUpCards &&
+        hasValidMove() ? (
           <Button
             text={active ? "Play Selected" : "Please wait..."}
             onClick={() => playCardHandler()}
           ></Button>
         ) : null}
+        {!hasValidMove() && (
+          <Button
+            text={active ? "Pick Up Stack" : "Please wait..."}
+            onClick={() => pickUpStackHandler()}
+          ></Button>
+        )}
       </div>
     </div>
   );
