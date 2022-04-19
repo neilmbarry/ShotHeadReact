@@ -53,7 +53,7 @@ const Card = ({
     hidden: {
       y: -50,
       opacity: 0,
-      scale: 0.8,
+      // scale: 0.8,
 
       // rotate: "0deg",
     },
@@ -71,7 +71,7 @@ const Card = ({
     exit: {
       y: -30,
       opacity: 0,
-      scale: 0.9,
+      // scale: 0.9,
     },
     hover: {
       scale: activeHover,
@@ -82,26 +82,14 @@ const Card = ({
     hidden: {
       opacity: 0,
       scale: 1.2,
-      // rotateZ: 360,
-      // rotate: "0deg",
     },
     visible: {
       opacity: 1,
-
       scale: 1,
-      rotateZ: 0,
-      transition: {
-        type: "spring",
-        // ease: [0.2, 0.8, 0.9, 0.98],
-        ease: "easeOut",
-        delay: 0,
-        duration: 0.2,
-      },
     },
     exit: {
       y: 50,
       opacity: 0,
-      scale: 0.9,
     },
     hover: {},
   };
@@ -109,13 +97,12 @@ const Card = ({
   const stackVariants = {
     hidden: {
       opacity: 0,
-      scale: 1.7,
+      scale: 1.2,
       rotateZ: cardRotate - 220,
       // rotate: "0deg",
     },
     visible: {
       opacity: 1,
-
       scale: 1.2,
       rotateZ: cardRotate + 15,
       transition: {
