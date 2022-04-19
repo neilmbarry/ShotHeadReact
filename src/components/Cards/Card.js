@@ -63,8 +63,8 @@ const Card = ({
 
       scale: activeScale,
       transition: {
-        type: "spring",
-        delay: 0.5,
+        // type: "spring",
+        // delay: 0.5,
         // duration: 0.2,
       },
     },
