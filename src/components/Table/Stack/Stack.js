@@ -30,13 +30,12 @@ const Stack = ({ className }) => {
         <div className={classes.cardsContainer}>
           <AnimatePresence>{stackOfCards}</AnimatePresence>
         </div>
-        {stackState.length > 0 && (
-          <Button
-            text="Pick Up Stack"
-            className={classes.btn}
-            onClick={() => pickUpStack(getActivePlayer())}
-          ></Button>
-        )}
+
+        <Button
+          text="Pick Up Stack"
+          className={classes.btn}
+          onClick={() => pickUpStack(getActivePlayer())}
+        ></Button>
       </div>
     </>
   );
