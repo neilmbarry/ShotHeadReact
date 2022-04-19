@@ -1,6 +1,7 @@
 import React from "react";
 import classes from "./CardContainer.module.css";
 import Card from "./Card";
+import { motion, AnimatePresence } from "framer-motion";
 
 const CardContainer = ({
   className,
@@ -12,9 +13,10 @@ const CardContainer = ({
   selected,
 }) => {
   const classesList = `${classes.main} ${className} ${classes[type]}`;
+
   const displayCards = cards.map((name, i) => {
     const CardClassesList = `${classes.card} ${
-      selected.includes(name) && classes.active
+      selected.includes(name.name) && classes.active
     }`;
     return (
       <Card
@@ -23,17 +25,18 @@ const CardContainer = ({
         key={name.name}
         onClick={onClick}
         className={CardClassesList}
+        selected={selected.includes(name)}
       />
     );
   });
 
   return (
-    <div className={classesList}>
-      {displayCards}
+    <motion.div className={classesList}>
+      <AnimatePresence>{displayCards}</AnimatePresence>
       {/* <Card name="QueenHearts.png" />
       <Card name="3Spades.png" />
       <Card name="KingClubs.png" /> */}
-    </div>
+    </motion.div>
   );
 };
 

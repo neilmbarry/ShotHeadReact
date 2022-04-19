@@ -45,7 +45,7 @@ const Card = ({
   const activeScale = selected ? 1.2 : 1.0;
   const activeHover = selected ? 1.2 : 1.1;
   const cardRotate = rotate ? ((rotate + 1) * 25) % 360 : 0;
-  console.log(rotate);
+  // console.log(cardRotate, "<----rotation");
 
   let variants;
 
@@ -91,7 +91,9 @@ const Card = ({
       scale: 1,
       rotateZ: 0,
       transition: {
-        type: "spring",
+        type: "tween",
+        // ease: [0.2, 0.8, 0.9, 0.98],
+        ease: "easeOut",
         delay: 0.2,
         duration: 0.2,
       },
@@ -107,8 +109,8 @@ const Card = ({
   const stackVariants = {
     hidden: {
       opacity: 0,
-      scale: 2,
-      rotateZ: -90,
+      scale: 1.7,
+      rotateZ: cardRotate - 220,
       // rotate: "0deg",
     },
     visible: {
@@ -117,9 +119,9 @@ const Card = ({
       scale: 1.2,
       rotateZ: cardRotate + 15,
       transition: {
-        // type: "spring",
+        type: "spring",
         // delay: 0.2,
-        // duration: 0.2,
+        duration: 0.6,
       },
     },
     exit: {
@@ -130,7 +132,7 @@ const Card = ({
       transition: {
         // type: "spring",
         // delay: 0.2,
-        duration: 0.5,
+        duration: 0.3,
       },
     },
     hover: {},

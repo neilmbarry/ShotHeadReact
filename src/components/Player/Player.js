@@ -11,13 +11,12 @@ import {
   drawCardsFromDeck,
 } from "../../controller/controller";
 
-import { myTest } from "../../controller/controller";
-import { selectFaceUpCards } from "../../store/game";
 import { setFaceUpCards } from "../../controller/controller";
 import { useSelector } from "react-redux";
 
 const Player = React.memo(({ className, state, playerNumber, computer }) => {
   const burned = useSelector((state) => state.game.value.burned);
+  const deck = useSelector((state) => state.game.value.deck);
   const activePlayer = useSelector((state) => state.game.value.activePlayer);
   const active = activePlayer === playerNumber;
   // console.log(state);
@@ -28,8 +27,6 @@ const Player = React.memo(({ className, state, playerNumber, computer }) => {
   const [ready, setReady] = useState(false);
 
   const [selected, setSelected] = useState([]);
-
-  console.log(selected);
 
   const { inHandCards, faceDownCards, faceUpCards } = state;
 
@@ -80,7 +77,7 @@ const Player = React.memo(({ className, state, playerNumber, computer }) => {
 
   const playCardHandler = () => {
     playCards(selected, getActiveHand(), playerNumber);
-    console.log(inHandCards);
+    // console.log(inHandCards);
     setSelected([]);
     setTimeout(() => {
       drawCardsFromDeck(playerNumber);
@@ -120,7 +117,8 @@ const Player = React.memo(({ className, state, playerNumber, computer }) => {
     return;
   }, [active, computer, ready, burned]);
 
-  const faceDownHeight = ready && inHandCards.length > 0 ? "60px" : "130px";
+  const faceDownHeight =
+    ready && (inHandCards.length > 0 || deck.length > 0) ? "60px" : "130px";
 
   // console.log(faceDownHeight);
 

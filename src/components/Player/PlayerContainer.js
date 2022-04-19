@@ -7,8 +7,6 @@ const PlayerContainer = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
   const playersState = useSelector((state) => state.game.value.players);
 
-  console.log(playersState[0]);
-
   const players = playersState.map((player, i) => (
     <Player state={playersState[i]} playerNumber={i} key={i} computer={false} />
   ));
