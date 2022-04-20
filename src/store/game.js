@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  deck: [],
+  deck: [1],
   stack: [],
   burned: [],
   activePlayer: 0,

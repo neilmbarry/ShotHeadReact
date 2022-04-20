@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import classes from "./Card.module.css";
 import cardImages from "../../util/CardImages";
 import { motion, AnimatePresence } from "framer-motion";
+
+console.log(cardImages);
 
 const Card = ({
   className,
@@ -148,13 +150,24 @@ const Card = ({
       // whileHover={{ scale: 1.1 }}
       className={classesList}
       onClick={activateCard}
-      style={shifted}
+      // style={shifted}
+      style={{
+        backgroundImage: `url(${cardImages["back.jpg"]})`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+      }}
       key={name.name}
     >
+      {/* <Suspense fallback={<img src={cardImages["back.jpg"]} alt={name} />}> */}
       <img
+        // onLoad={(e) => {
+        //   console.log(e);
+        //   e.target.className = classes.visible;
+        // }}
         src={back ? cardImages["back.jpg"] : cardImages[name.name + ".jpg"]}
-        alt={name}
+        alt={name.name}
       />
+      {/* </Suspense> */}
     </motion.div>
   );
 };

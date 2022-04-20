@@ -2,6 +2,7 @@
   height: 90px;
   width: 60px;
   background-color: #525b84;
+  background-image: url();
   border-radius: 5px;
   overflow: hidden;
   /* margin: 0 0.2rem; */
@@ -12,6 +13,8 @@
     4px 0px 5px rgba(0, 0, 0, 0.377);
   /* transition: all ease 0.2s; */
 }
+
+/* */
 
 /* .active {
   transform: scale(1.2) !important;

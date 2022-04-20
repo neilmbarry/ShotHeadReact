@@ -11,8 +11,8 @@ const Deck = ({ className }) => {
   const tableDeck = stateDeck.map((card, i) => (
     <Card
       className={classes.card}
-      key={card.name}
-      name={card.name}
+      key={i}
+      name={i}
       shift={i}
       onClick={() => null}
       back={true}

@@ -1,40 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./App.module.css";
 import Table from "./components/Table/Table";
 import PlayerContainer from "./components/Player/PlayerContainer";
+import IMAGES from "./util/CardImages";
+
+console.log(
+  Object.keys(IMAGES).map((image) => IMAGES[image]),
+  "<-----"
+);
 
 const App = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
-  const [gameOver, setGameOver] = React.useState(true);
-  const [winner, setWinner] = useState("");
-  const [turn, setTurn] = useState("");
-  const [player1FaceDownCards, setPlayer1FaceDownCards] = useState([]);
-  const [player2FaceDownCards, setPlayer2FaceDownCards] = useState([]);
-  const [player1FaceUpCards, setPlayer1FaceUpCards] = useState([]);
-  const [player2FaceUpCards, setPlayer2FaceUpCards] = useState([]);
-  const [player1InHandCards, setPlayer1InHandCards] = useState([]);
-  const [player2InHandCards, setPlayer2InHandCards] = useState([]);
-  const [deck, setDeck] = useState([]);
-  const [stack, setStack] = useState([]);
-  const [burned, setBurned] = useState([]);
-  const generateDeck = null;
-  const shuffleDeck = null;
-  const dealCards = null;
-  const checkLegalMove = null;
-  const getTopStackCard = null;
-  const addCardsToStack = null;
-  const checkBurnStack = null;
-  const burnStack = null;
-  const switchActivePlayer = null;
-  const startActivePlayer = null;
-  const checkWinner = null;
+  const [imgsLoaded, setImgsLoaded] = useState(false);
 
-  const tableState = { deck, stack, burned };
+  // useEffect(() => {
+  //   const loadImage = (image) => {
+  //     return new Promise((resolve, reject) => {
+  //       const loadImg = new Image();
+  //       loadImg.src = "http://localhost:3000" + image;
+  //       console.log(loadImg.src);
+  //       // wait 2 seconds to simulate loading time
+  //       loadImg.onload = () =>
+  //         setTimeout(() => {
+  //           resolve(image.url);
+  //         }, 2000);
+
+  //       loadImg.onerror = (err) => reject(err);
+  //     });
+  //   };
+
+  //   Promise.all(Object.keys(IMAGES).map((image) => loadImage(IMAGES[image])))
+  //     .then(() => setImgsLoaded(true))
+  //     .catch((err) => console.log("Failed to load images", err));
+  // }, []);
 
   return (
     <div className={classesList}>
       {/* <PlayerContainer /> */}
-      <Table state={tableState} />
+      <Table />
       <PlayerContainer />
     </div>
   );

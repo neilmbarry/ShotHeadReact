@@ -153,6 +153,9 @@ export function playValidMove(hand, player, act) {
     }
     return true;
   }
+  if (hand === "faceDownCards") {
+    return true;
+  }
   const availableCards = getPlayersHand(hand, player);
 
   if (!availableCards) return;
