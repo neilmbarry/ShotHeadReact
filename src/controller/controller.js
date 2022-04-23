@@ -16,6 +16,8 @@ import {
   changeDirection,
   setWinner,
   sortHandCards,
+  removePlayer,
+  readyPlayer,
 } from "../store/game";
 
 import {
@@ -48,6 +50,14 @@ const getPlayersHand = (hand, player) => {
 
 const getDirection = () => {
   return getGameState().direction;
+};
+
+const getPlayers = () => {
+  return getGameState().players;
+};
+
+const getReadyPlayers = () => {
+  return getPlayers().filter((player) => player.ready);
 };
 
 const numberOfPlayers = () => {
@@ -108,6 +118,26 @@ const checkCardsInHand = (cards, hand, player) => {
   return cards.every((card) => getPlayersHand(hand, player).includes(card));
 };
 
+const checkActivePlayersHaveSetFaceCards = () => {
+  return getReadyPlayers().every((player) => player.hasSetFaceUpCards);
+};
+
+const playerWithLowestStarter = () => {
+  const arrayOfArrayOfCards = getReadyPlayers().map(
+    (player) => player.inHandCards
+  );
+  // [[{},{},{}],[{},{},{}],[{},{},{}]]
+  const reduced = arrayOfArrayOfCards
+    .map((hand, i) => [
+      hand.reduce((acc, card) => {
+        return acc + card.worth;
+      }, 0),
+      i,
+    ])
+    .sort((a, b) => a[0] - b[0]);
+  return reduced[0][1];
+};
+
 const switchPlayer = (skip = 0) => {
   //What a mess, needs to be refactored
   // trouble with removing a winner from play and direction
@@ -140,6 +170,10 @@ export function setFaceUpCards(cards, player) {
       player,
     })
   );
+  if (checkActivePlayersHaveSetFaceCards()) {
+    console.log("All players are ready");
+    store.dispatch(setActivePlayer(playerWithLowestStarter()));
+  }
 }
 
 export function playValidMove(hand, player, act) {
@@ -287,11 +321,21 @@ export function initializeNewGame() {
 export function startGame() {
   store.dispatch(setDeck(generateAndShuffleDeck()));
   store.dispatch(dealCards());
-  store.dispatch(setActivePlayer());
+  // store.dispatch(setActivePlayer());
 }
 
-const addNewPlayer = (player) => {
-  store.dispatch(addPlayer(player));
+export const addNewPlayer = (name) => {
+  // console.warn(name);
+  store.dispatch(addPlayer(name));
+};
+
+export const readyUp = (playerNumber) => {
+  store.dispatch(readyPlayer(playerNumber));
+};
+
+export const leaveGame = (playerNumber) => {
+  console.warn("Player " + (playerNumber + 1) + " is leaving...");
+  store.dispatch(removePlayer(playerNumber));
 };
 
 const generateAndShuffleDeck = () => {

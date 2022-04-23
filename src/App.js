@@ -4,11 +4,6 @@ import Table from "./components/Table/Table";
 import PlayerContainer from "./components/Player/PlayerContainer";
 import IMAGES from "./util/CardImages";
 
-console.log(
-  Object.keys(IMAGES).map((image) => IMAGES[image]),
-  "<-----"
-);
-
 const App = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
   const [imgsLoaded, setImgsLoaded] = useState(false);

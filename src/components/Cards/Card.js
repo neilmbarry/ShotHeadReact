@@ -3,8 +3,6 @@ import classes from "./Card.module.css";
 import cardImages from "../../util/CardImages";
 import { motion, AnimatePresence } from "framer-motion";
 
-console.log(cardImages);
-
 const Card = ({
   className,
   name,

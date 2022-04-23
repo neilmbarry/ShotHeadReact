@@ -3,13 +3,13 @@ export const suits = ["Hearts", "Clubs", "Diamonds", "Spades"];
 export const cardValuePairs = [
   ["Ace", 14, null],
   ["2", 100, "reset"], // POWER CARD
-  ["3", 3, null],
+  ["3", 1, null],
   ["4", 4, null],
   ["5", 100, "skip"], // POWER CARD
-  ["6", 6, null],
-  ["7", 7, null],
+  ["6", 8, null],
+  ["7", 9, null],
   ["8", 100, "lower"], // POWER CARD
-  ["9", 9, null],
+  ["9", 10, null],
   ["10", 100, "burn"], // POWER CARD
   ["Jack", 11, "reverse"],
   ["Queen", 12, null],

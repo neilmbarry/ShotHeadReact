@@ -2,6 +2,7 @@ import React from "react";
 import classes from "./PlayerContainer.module.css";
 import Player from "./Player";
 import { useSelector } from "react-redux";
+import { motion, AnimatePresence } from "framer-motion";
 
 const PlayerContainer = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
