@@ -3,8 +3,8 @@ export const suits = ["Hearts", "Clubs", "Diamonds", "Spades"];
 export const cardValuePairs = [
   ["Ace", 14, null],
   ["2", 100, "reset"], // POWER CARD
-  ["3", 1, null],
-  ["4", 4, null],
+  ["3", 0, null],
+  ["4", 6, null],
   ["5", 100, "skip"], // POWER CARD
   ["6", 8, null],
   ["7", 9, null],
@@ -75,13 +75,13 @@ export function checkLegalMove(cards, stack) {
       case "reset":
         return true;
       case "skip":
-        if (topCard.worth > 5) {
+        if (topCard.worth > 6) {
           return true;
         } else {
           return false;
         }
       case "lower":
-        if (topCard.worth < 8 || topCard.worth > 15) {
+        if (topCard.worth < 10 || topCard.worth > 15) {
           return true;
         } else {
           return false;

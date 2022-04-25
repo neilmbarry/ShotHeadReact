@@ -8,6 +8,7 @@ import {
   startGame,
   initializeNewGame,
   addNewPlayer,
+  startNewGame,
 } from "../../../controller/controller";
 
 const Burned = ({ className }) => {
@@ -22,13 +23,14 @@ const Burned = ({ className }) => {
 
   return (
     <div className={classesList}>
-      <Button onClick={() => initializeNewGame()} text="New Game"></Button>
+      <Button onClick={() => initializeNewGame()} text="Reset"></Button>
       <input type="text" ref={nameRef} />
       <Button
         onClick={() => addNewPlayerHandler()}
         text="Add New Player"
       ></Button>
-      <Button onClick={() => startGame()} text="Start Game"></Button>
+      <Button onClick={() => startNewGame()} text="New Game"></Button>
+      <Button onClick={() => startGame()} text="Deal Cards"></Button>
       {/* <motion.button whileHover={{ scale: 1.8 }} whileTap={{ scale: 0.8 }}>
         Click
       </motion.button> */}

@@ -10,7 +10,7 @@ const Button = ({ className, text, onClick }) => {
       animate={{
         opacity: 1,
         transition: {
-          delay: 0.8,
+          delay: 0.4,
           duration: 0.5,
         },
       }}

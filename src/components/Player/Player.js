@@ -27,13 +27,14 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
     faceUpCards,
     name,
     hasSetFaceUpCards,
-    ready,
+    playing,
+    hasToPickUp,
   } = players[playerNumber];
 
   const active = activePlayer === playerNumber;
   // console.log(state);
   const classesList = `${classes.main} ${className} ${
-    hasSetFaceUpCards && classes[active]
+    hasSetFaceUpCards && !active && classes.false
   }`;
 
   // const [hasSetFaceUpCards, sethasSetFaceUpCards] = useState(false);
@@ -150,17 +151,19 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
 
   const playSelectedButton =
     (faceDownCards.length || inHandCards.length) &&
+    !hasToPickUp &&
     hasSetFaceUpCards &&
+    active &&
     hasValidMove() ? (
       <Button
-        text={active ? "Play Selected" : "Please wait..."}
+        text={selected.length > 0 ? "Play Selected" : "Select a card..."}
         onClick={() => playCardHandler()}
       ></Button>
     ) : null;
 
-  const pickUpStackButton = !hasValidMove() && (
+  const pickUpStackButton = (!hasValidMove() || hasToPickUp) && active && (
     <Button
-      text={active ? "Pick Up Stack" : "Please wait..."}
+      text={"Pick Up Stack"}
       onClick={() => pickUpStackHandler()}
     ></Button>
   );
@@ -193,7 +196,11 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
         />
       </div>
       <div className={classes.playerControl}>
-        <div className={`${classes.playerName} ${ready && classes.ready}`}>
+        <div
+          className={`${classes.playerName} ${
+            playing ? classes.ready : classes.notReady
+          }`}
+        >
           <h3>{name}</h3>
         </div>
         {sortButton}
@@ -206,11 +213,14 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
         />
 
         {gameOver && getReadyButton}
-        {!gameOver && ready && selectFaceUpButton}
-        {!gameOver && ready && playSelectedButton}
-        {!gameOver && ready && pickUpStackButton}
-        {!gameOver && !ready && <h3>Spectating...</h3>}
-        {!gameOver && leaveGameButton}
+        {!gameOver && playing && selectFaceUpButton}
+        {!active && playing && !gameOver && hasSetFaceUpCards && (
+          <h3>Please wait...</h3>
+        )}
+        {!gameOver && playing && playSelectedButton}
+        {!gameOver && playing && pickUpStackButton}
+        {!gameOver && !playing && <h3>Spectating...</h3>}
+        {/* {!gameOver && leaveGameButton} */}
       </div>
     </motion.div>
   );

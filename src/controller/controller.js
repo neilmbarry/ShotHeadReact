@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import store from "../store/store";
 import {
+  reset,
   newGame,
   drawCard,
   playCard,
@@ -18,6 +19,7 @@ import {
   sortHandCards,
   removePlayer,
   readyPlayer,
+  hasToPickUp,
 } from "../store/game";
 
 import {
@@ -57,11 +59,16 @@ const getPlayers = () => {
 };
 
 const getReadyPlayers = () => {
-  return getPlayers().filter((player) => player.ready);
+  return getPlayers().filter((player) => player.playing);
 };
 
 const numberOfPlayers = () => {
   return getGameState().players.length;
+  // return getGameState().players.filter((player) => !player.winner).length;
+};
+
+const numberOfActivePlayers = () => {
+  return getGameState().players.filter((player) => !player.playing).length;
 };
 
 const checkActivePlayer = (player) => {
@@ -96,8 +103,8 @@ const getActivePlayerName = () => {
   return getGameState().players[getActivePlayer()].name;
 };
 
-const activePlayerIsWinner = () => {
-  return getGameState().players[getActivePlayer()].winner;
+const getActivePlayerInfo = () => {
+  return getGameState().players[getActivePlayer()];
 };
 
 const checkAndSetWinner = (player) => {
@@ -123,9 +130,7 @@ const checkActivePlayersHaveSetFaceCards = () => {
 };
 
 const playerWithLowestStarter = () => {
-  const arrayOfArrayOfCards = getReadyPlayers().map(
-    (player) => player.inHandCards
-  );
+  const arrayOfArrayOfCards = getPlayers().map((player) => player.inHandCards);
   // [[{},{},{}],[{},{},{}],[{},{},{}]]
   const reduced = arrayOfArrayOfCards
     .map((hand, i) => [
@@ -134,33 +139,50 @@ const playerWithLowestStarter = () => {
       }, 0),
       i,
     ])
-    .sort((a, b) => a[0] - b[0]);
-  return reduced[0][1];
+    .sort((a, b) => a[0] - b[0])
+    .find((el, i) => el[0] !== 0)[1];
+
+  return reduced;
 };
 
 const switchPlayer = (skip = 0) => {
   //What a mess, needs to be refactored
+  let loopStop = 0;
   // trouble with removing a winner from play and direction
   const direction = getDirection();
-  let moves = getActivePlayer() + direction * (1 + skip);
-  if (moves < 0) moves += numberOfPlayers();
-  store.dispatch(switchActivePlayer(moves % numberOfPlayers()));
-
-  let loopStop = 0;
-
-  while (activePlayerIsWinner() && loopStop < 100) {
-    console.log("infinite loop");
-    console.log((getActivePlayer() + direction * 1) % numberOfPlayers());
-    console.log("activePlayer", getActivePlayer());
-    console.log("direction", direction * 1);
-    console.log("noOfplayers", numberOfPlayers());
-
-    loopStop++;
-    let moves = getActivePlayer() + direction * 1;
-    if (moves < 0) moves += numberOfPlayers();
-    store.dispatch(switchActivePlayer(moves % numberOfPlayers()));
-    store.dispatch(switchActivePlayer(moves % numberOfPlayers()));
+  let moves = direction * (1 + skip);
+  while (moves !== 0 && loopStop < 10) {
+    let move = getActivePlayer() + direction;
+    if (move < 0) move += numberOfPlayers();
+    store.dispatch(switchActivePlayer(move % numberOfPlayers()));
+    // if (!getActivePlayerInfo().ready || getActivePlayerInfo().winner) {
+    if (!getActivePlayerInfo().playing) {
+      // console.log("Skipping over inactive player");
+      loopStop++;
+    } else {
+      moves -= direction;
+      loopStop++;
+    }
   }
+  // if (moves < 0) moves += numberOfPlayers();
+  // store.dispatch(switchActivePlayer(moves % numberOfPlayers()));
+
+  // while (activePlayerIsWinner() && loopStop < 10) {
+  //   console.log("Current player is not playing");
+  //   console.log((getActivePlayer() + direction * 1) % numberOfPlayers());
+  //   console.log("activePlayer", getActivePlayer());
+  //   console.log("direction", direction * 1);
+  //   console.log("noOfplayers", numberOfPlayers());
+
+  //   loopStop++;
+  //   let moves = getActivePlayer() + direction * 1;
+  //   if (moves < 0) moves += numberOfPlayers();
+  //   store.dispatch(switchActivePlayer(moves % numberOfPlayers()));
+  // }
+};
+
+export const startNewGame = () => {
+  store.dispatch(newGame());
 };
 
 export function setFaceUpCards(cards, player) {
@@ -210,7 +232,6 @@ export function playValidMove(hand, player, act) {
   return true;
 }
 
-// TODO -- SKIP CURRENTLY DOESN'T ACCOUNT FOR WINNERS
 export function drawCardsFromDeck(player) {
   return drawCardFromDeck(cardsToDraw(player), player);
 }
@@ -254,11 +275,15 @@ export function playCards(cards, hand, player) {
       console.log(`${getActivePlayerName()} has played ${cardNames}.`);
       console.error("Betrayed by the blind card!");
       console.error("PICK THAT PILE UP!");
+      store.dispatch(hasToPickUp(player));
       return false;
     }
   } else {
     // Check Move Is Legal
+
     if (!checkLegalMove(cards, getStack())) {
+      console.log(cards, getStack());
+
       return console.error("ILLEGAL MOVE!");
     }
     // Move Card From Player to Stack
@@ -293,7 +318,7 @@ export function playCards(cards, hand, player) {
   }
   // Check Skip or change direction
   if (cards[0].power === "skip") {
-    if (numberOfPlayers() === 2) {
+    if (numberOfActivePlayers() === 2) {
       return switchPlayer(1);
     }
     return switchPlayer(cards.length);
@@ -315,7 +340,7 @@ export function sortCards(player) {
 }
 
 export function initializeNewGame() {
-  store.dispatch(newGame());
+  store.dispatch(reset());
 }
 
 export function startGame() {

@@ -7,78 +7,35 @@ const initialState = {
   activePlayer: null,
   gameOver: true,
   loser: false,
-  test: false,
   direction: 1,
-  players: [
-    // {
-    //   name: "Neil",
-    //   inHandCards: [],
-    //   faceUpCards: [],
-    //   faceDownCards: [],
-    //   message: "",
-    //   ready: false,
-    //   hasSetFaceUpCards: false,
-    //   winner: true,
-    // },
-    // {
-    //   name: "Warren",
-    //   inHandCards: [],
-    //   faceUpCards: [],
-    //   faceDownCards: [],
-    //   message: "",
-    //   ready: false,
-    //   hasSetFaceUpCards: false,
-    //   winner: false,
-    // },
-    // {
-    //   name: "Warren",
-    //   inHandCards: [],
-    //   faceUpCards: [],
-    //   faceDownCards: [],
-    //   message: "",
-    //   ready: false,
-    //   hasSetFaceUpCards: false,
-    //   winner: false,
-    // },
-    // {
-    //   name: "Warren",
-    //   inHandCards: [],
-    //   faceUpCards: [],
-    //   faceDownCards: [],
-    //   message: "",
-    //   ready: false,
-    //   hasSetFaceUpCards: false,
-    //   winner: false,
-    // },
-    // {
-    //   name: "Warren",
-    //   inHandCards: [],
-    //   faceUpCards: [],
-    //   faceDownCards: [],
-    //   message: "",
-    //   ready: false,
-    //   hasSetFaceUpCards: false,
-    //   winner: false,
-    // },
-    // {
-    //   name: "Warren",
-    //   inHandCards: [],
-    //   faceUpCards: [],
-    //   faceDownCards: [],
-    //   message: "",
-    //   ready: false,
-    //   hasSetFaceUpCards: false,
-    //   winner: false,
-    // },
-  ],
+  announcement: "",
+  players: [],
 };
 
 export const gameSlice = createSlice({
   name: "game",
   initialState: { value: initialState },
   reducers: {
-    newGame: (state, action) => {
+    reset: (state, action) => {
       state.value = initialState;
+    },
+    newGame: (state, action) => {
+      state.value.deck = [1];
+      state.value.stack = [];
+      state.value.burned = [];
+      state.value.activePlayer = null;
+      state.value.gameOver = true;
+      state.value.direction = 1;
+      state.value.announcement = "";
+      state.value.players.forEach((player) => {
+        player.inHandCards = [];
+        player.faceUpCards = [];
+        player.faceDownCards = [];
+        player.message = "";
+        player.playing = false;
+        player.hasSetFaceUpCards = false;
+        player.hasToPickUp = false;
+      });
     },
     addPlayer: (state, action) => {
       state.value.players.push({
@@ -87,9 +44,9 @@ export const gameSlice = createSlice({
         faceUpCards: [],
         faceDownCards: [],
         message: "",
-        ready: false,
+        playing: false,
         hasSetFaceUpCards: false,
-        winner: true,
+        hasToPickUp: false,
       });
     },
     removePlayer: (state, action) => {
@@ -98,8 +55,8 @@ export const gameSlice = createSlice({
       );
     },
     readyPlayer: (state, action) => {
-      state.value.players[action.payload].ready = true;
-      state.value.players[action.payload].winner = false;
+      state.value.players[action.payload].playing = true;
+      // state.value.players[action.payload].winner = false;
     },
     setDeck: (state, action) => {
       state.value.deck = action.payload;
@@ -107,7 +64,7 @@ export const gameSlice = createSlice({
     dealCards: (state, action) => {
       state.value.gameOver = false;
       state.value.players.forEach((player) => {
-        if (!player.winner) {
+        if (player.playing) {
           player.faceDownCards = state.value.deck.splice(0, 3);
           player.faceUpCards = [];
           player.inHandCards = state.value.deck.splice(0, 6);
@@ -179,8 +136,31 @@ export const gameSlice = createSlice({
       state.value.players[action.payload].inHandCards.unshift(
         ...state.value.stack
       );
+      if (state.value.players[action.payload].faceUpCards.length === 1) {
+        console.log("taking 1 faceupcard");
+        state.value.players[action.payload].inHandCards.unshift(
+          state.value.players[action.payload].faceUpCards.pop()
+        );
+      } else if (
+        state.value.players[action.payload].faceUpCards.every(
+          (card) =>
+            card.value ===
+            state.value.players[action.payload].faceUpCards[0].value
+        )
+      ) {
+        console.log("taking all faceupcards");
+        state.value.players[action.payload].inHandCards.unshift(
+          ...state.value.players[action.payload].faceUpCards
+        );
+        state.value.players[action.payload].faceUpCards = [];
+      }
       // Reset stack
+      state.value.players[action.payload].hasToPickUp = false;
       state.value.stack = [];
+    },
+
+    hasToPickUp: (state, action) => {
+      state.value.players[action.payload].hasToPickUp = true;
     },
 
     burnStack: (state) => {
@@ -192,7 +172,7 @@ export const gameSlice = createSlice({
     },
 
     setWinner: (state, action) => {
-      state.value.players[action.payload].winner = true;
+      state.value.players[action.payload].playing = false;
     },
     setLoser: (state, action) => {
       state.value.loser = true;
@@ -202,6 +182,7 @@ export const gameSlice = createSlice({
 });
 
 export const {
+  reset,
   newGame,
   drawCard,
   playCard,
@@ -218,6 +199,7 @@ export const {
   sortHandCards,
   removePlayer,
   readyPlayer,
+  hasToPickUp,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;
