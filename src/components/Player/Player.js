@@ -12,6 +12,7 @@ import {
   readyUp,
 } from "../../controller/controller";
 import { motion } from "framer-motion";
+import { useSocket } from "../../contexts/SocketProvider";
 
 import { setFaceUpCards, leaveGame } from "../../controller/controller";
 import { useSelector } from "react-redux";
@@ -119,18 +120,28 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
     setSelected([]);
   };
 
+  const socket = useSocket();
+
   useEffect(() => {
-    if (active && computer && hasSetFaceUpCards) {
-      setTimeout(() => {
-        // console.log("computer playing card");
+    if (!socket) return;
+    // console.log(socket);
+    socket.on("readyPlayer", (player) => {
+      readyUp(player);
+    });
+  }, [socket]);
 
-        validMoveHandler();
-      }, 2500);
-    }
+  // useEffect(() => {
+  //   if (active && computer && hasSetFaceUpCards) {
+  //     setTimeout(() => {
+  //       // console.log("computer playing card");
 
-    // return clearTimeout(timeout);
-    return;
-  }, [active, computer, hasSetFaceUpCards, burned]);
+  //       validMoveHandler();
+  //     }, 2500);
+  //   }
+
+  //   // return clearTimeout(timeout);
+  //   return;
+  // }, [active, computer, hasSetFaceUpCards, burned]);
 
   const faceDownHeight =
     hasSetFaceUpCards && (inHandCards.length > 0 || deck.length > 0)
@@ -173,7 +184,13 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
   );
 
   const getReadyButton = (
-    <Button text="I'm Ready" onClick={() => readyUp(playerNumber)}></Button>
+    <Button
+      text="I'm Ready"
+      onClick={() => {
+        socket.emit("readyPlayer", playerNumber);
+        readyUp(playerNumber);
+      }}
+    ></Button>
   );
 
   return (

@@ -5,6 +5,7 @@ const initialState = {
   stack: [],
   burned: [],
   activePlayer: null,
+  currentPlayer: null,
   gameOver: true,
   loser: false,
   direction: 1,
@@ -38,6 +39,7 @@ export const gameSlice = createSlice({
       });
     },
     addPlayer: (state, action) => {
+      state.value.currentPlayer = state.value.players.length;
       state.value.players.push({
         name: action.payload,
         inHandCards: [],

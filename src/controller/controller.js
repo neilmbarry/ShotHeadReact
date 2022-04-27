@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
 import store from "../store/store";
 import {
   reset,
@@ -31,6 +29,10 @@ import {
   checkBurnStack,
   allCardsHaveEqualValue,
 } from "../model/model";
+
+import io from "socket.io-client";
+
+// export const ioClient = io.connect("http://localhost:4000");
 
 const getGameState = () => store.getState().game.value;
 
@@ -319,9 +321,13 @@ export function playCards(cards, hand, player) {
   // Check Skip or change direction
   if (cards[0].power === "skip") {
     if (numberOfActivePlayers() === 2) {
-      return switchPlayer(1);
+      switchPlayer(1);
+      checkAndSetWinner(player);
+      return;
     }
-    return switchPlayer(cards.length);
+    switchPlayer(cards.length);
+    checkAndSetWinner(player);
+    return;
   }
   // Check Winner
   checkAndSetWinner(player);
