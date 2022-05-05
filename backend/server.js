@@ -1,49 +1,3 @@
-// const express = require("express");
-// const socketio = require("socket.io");
-// const http = require("http");
-// const path = require("path");
-// const cors = require("cors");
-
-// const app = express();
-// const server = http.createServer(app);
-// const io = socketio(server);
-
-// // Set static folder
-// // app.use(express.static(path.join(__dirname, "../public/index.html")));
-
-// const whitelist = ["http://localhost:3001"];
-// const corsOptions = {
-//   origin: function (origin, callback) {
-//     if (!origin || whitelist.indexOf(origin) !== -1) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error("Not allowed by CORS"));
-//     }
-//   },
-//   credentials: true,
-// };
-// app.use(cors(corsOptions));
-
-// // app.use(cors());
-
-// // io.on("connection", (socket) => {
-// //   console.log(socket);
-// //   socket.on("message", (message) => {
-// //     console.log(message);
-// //   });
-// // });
-
-// // Run when a client connects
-// io.on("connection", (socket) => {
-//   console.log("New WS Connection...");
-// });
-
-// const PORT = 4000 || process.env.PORT;
-
-// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-////////////////////////////////////////////////////////////////
-
 const app = require("express")();
 
 const server = require("http").createServer(app);
@@ -66,7 +20,7 @@ io.on("connection", (socket) => {
   console.log("[SERVER] A user has joined");
   socket.broadcast.emit(
     "message",
-    `[SERVER] A user has joined: ${socket.handshake.query.t}`
+    `[SERVER] A user NEW has joined: ${socket.handshake.query.t}`
   );
 
   socket.on("disconnect", () => {
@@ -74,17 +28,18 @@ io.on("connection", (socket) => {
     io.emit("message", "[SERVER] A user has left the chat");
   });
 
-  socket.on("message", (message) => {
-    // when receiving message, emits message to everyone
-    io.emit("message", message);
-    console.log(message);
-  });
+  // socket.on("message", (message) => {
+  //   // when receiving message, emits message to everyone
+  //   io.emit("message", message);
+  //   console.log(message);
+  // });
 
   socket.on("groupChat", (message) => {
     socket.broadcast.emit("groupChat", message);
   });
 
   socket.on("addPlayer", (player) => {
+    console.log("adding player");
     io.emit("addPlayer", player);
   });
 
@@ -95,6 +50,41 @@ io.on("connection", (socket) => {
   socket.on("title", (message) => {
     // when receiving title, emits title to everyone
     io.emit("title", message);
+  });
+
+  socket.on("dealCards", (deck) => {
+    io.emit("dealCards", deck);
+  });
+
+  socket.on("setFaceUpCards", ({ cards, player }) => {
+    io.emit("setFaceUpCards", { cards, player });
+  });
+
+  socket.on("pickUpStack", (player) => {
+    io.emit("pickUpStack", player);
+  });
+
+  socket.on("playCards", (data) => {
+    io.emit("playCards", data);
+  });
+  socket.on("sortCards", (player) => {
+    io.emit("sortCards", player);
+  });
+  socket.on("drawCardsFromDeck", (player) => {
+    io.emit("drawCardsFromDeck", player);
+  });
+  socket.on("reset", () => {
+    io.emit("reset");
+  });
+  socket.on("newGame", () => {
+    io.emit("newGame");
+  });
+  socket.on("getGameState", () => {
+    socket.broadcast.emit("shareGameState");
+  });
+  socket.on("setGameState", (state) => {
+    socket.broadcast.emit("setGameState", state);
+    // io.emit("setGameState", state);
   });
 });
 

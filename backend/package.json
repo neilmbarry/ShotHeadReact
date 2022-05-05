@@ -4,8 +4,8 @@
   "description": "ShitHead Server",
   "main": "server.js",
   "scripts": {
-    "start": "node server",
-    "dev": "nodemon server"
+    "prod": "node server",
+    "start": "nodemon server"
   },
   "author": "Neil Barry",
   "license": "ISC",

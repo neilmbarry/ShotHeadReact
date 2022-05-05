@@ -20,6 +20,10 @@ export const gameSlice = createSlice({
     reset: (state, action) => {
       state.value = initialState;
     },
+    setGameState: (state, action) => {
+      console.warn("GAME.JS IS SETTING STATE", action.payload);
+      state.value = action.payload;
+    },
     newGame: (state, action) => {
       state.value.deck = [1];
       state.value.stack = [];
@@ -85,6 +89,7 @@ export const gameSlice = createSlice({
       state.value.players[action.payload.player].faceUpCards.push(
         ...action.payload.cards
       );
+      console.log("game.selectFaceUpCards called");
       state.value.players[action.payload.player].hasSetFaceUpCards = true;
     },
     setActivePlayer: (state, action) => {
@@ -202,6 +207,7 @@ export const {
   removePlayer,
   readyPlayer,
   hasToPickUp,
+  setGameState,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

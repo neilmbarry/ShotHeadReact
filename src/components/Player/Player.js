@@ -1,24 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import classes from "./Player.module.css";
 import Button from "../UI/Button";
 import CardContainer from "../Cards/CardContainer";
 import InHandContainer from "../Cards/InHandContainer";
-import {
-  pickUpStack,
-  playCards,
-  sortCards,
-  playValidMove,
-  drawCardsFromDeck,
-  readyUp,
-} from "../../controller/controller";
+import { sortCards, playValidMove, readyUp } from "../../controller/controller";
 import { motion } from "framer-motion";
 import { useSocket } from "../../contexts/SocketProvider";
 
-import { setFaceUpCards, leaveGame } from "../../controller/controller";
+// import { leaveGame } from "../../controller/controller";
 import { useSelector } from "react-redux";
 
 const Player = React.memo(({ className, playerNumber, computer }) => {
-  const { burned, deck, activePlayer, players, gameOver } = useSelector(
+  const { deck, activePlayer, players, gameOver } = useSelector(
     (state) => state.game.value
   );
   // console.log(players[playerNumber]);
@@ -42,6 +35,8 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
 
   const [selected, setSelected] = useState([]);
 
+  const socket = useSocket();
+
   const getActiveHand = () => {
     if (inHandCards.length) {
       return "inHandCards";
@@ -63,14 +58,14 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
     return playValidMove(getActiveHand(), playerNumber);
   };
 
-  const validMoveHandler = () => {
-    if (!playValidMove(getActiveHand(), playerNumber, true)) {
-      console.error(name, " HAS TO PICK UP!");
-      setTimeout(() => {
-        pickUpStackHandler();
-      }, 1000);
-    }
-  };
+  // const validMoveHandler = () => {
+  //   if (!playValidMove(getActiveHand(), playerNumber, true)) {
+  //     console.error(name, " HAS TO PICK UP!");
+  //     setTimeout(() => {
+  //       pickUpStackHandler();
+  //     }, 1000);
+  //   }
+  // };
 
   const selectCardHandler = (card) => {
     if (selected.includes(card)) {
@@ -92,56 +87,49 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
   };
 
   const playCardHandler = () => {
-    playCards(selected, getActiveHand(), playerNumber);
+    socket.emit("playCards", {
+      selected,
+      hand: getActiveHand(),
+      playerNumber,
+    });
+    // playCards(selected, getActiveHand(), playerNumber);
     // console.log(inHandCards);
     setSelected([]);
     setTimeout(() => {
-      drawCardsFromDeck(playerNumber);
+      socket.emit("drawCardsFromDeck", playerNumber);
+      // drawCardsFromDeck(playerNumber);
     }, 800);
   };
 
   const pickUpStackHandler = () => {
-    pickUpStack(playerNumber);
+    socket.emit("pickUpStack", playerNumber);
+
     setSelected([]);
   };
 
   const setFaceCardsHandler = () => {
     if (selected.length === 3) {
-      setFaceUpCards(selected, playerNumber);
-      // sethasSetFaceUpCards(true);
+      // setFaceUpCards(selected, playerNumber);
+
+      socket.emit("setFaceUpCards", {
+        cards: selected,
+        player: playerNumber,
+      });
     }
     if (selected.length === 0) {
-      const sortedCards = [...inHandCards].sort((a, b) => a.worth - b.worth);
-
-      setFaceUpCards(sortedCards.slice(3, 6), playerNumber);
-      // sethasSetFaceUpCards(true);
+      console.log("selecting...");
+      const sortedCards = [...inHandCards]
+        .sort((a, b) => a.worth - b.worth)
+        .slice(3, 6);
+      socket.emit("setFaceUpCards", {
+        cards: sortedCards,
+        player: playerNumber,
+      });
+      // setFaceUpCards(sortedCards, playerNumber);
     }
 
     setSelected([]);
   };
-
-  const socket = useSocket();
-
-  useEffect(() => {
-    if (!socket) return;
-    // console.log(socket);
-    socket.on("readyPlayer", (player) => {
-      readyUp(player);
-    });
-  }, [socket]);
-
-  // useEffect(() => {
-  //   if (active && computer && hasSetFaceUpCards) {
-  //     setTimeout(() => {
-  //       // console.log("computer playing card");
-
-  //       validMoveHandler();
-  //     }, 2500);
-  //   }
-
-  //   // return clearTimeout(timeout);
-  //   return;
-  // }, [active, computer, hasSetFaceUpCards, burned]);
 
   const faceDownHeight =
     hasSetFaceUpCards && (inHandCards.length > 0 || deck.length > 0)
@@ -179,9 +167,9 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
     ></Button>
   );
 
-  const leaveGameButton = (
-    <Button text="Leave Game" onClick={() => leaveGame(playerNumber)}></Button>
-  );
+  // const leaveGameButton = (
+  //   <Button text="Leave Game" onClick={() => leaveGame(playerNumber)}></Button>
+  // );
 
   const getReadyButton = (
     <Button

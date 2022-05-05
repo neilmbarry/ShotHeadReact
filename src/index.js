@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import { Provider } from "react-redux";
 import store from "./store/store";
+import { SocketProvider } from "./contexts/SocketProvider";
 
 // store.subscribe(() => {
 //   console.warn("STATE UPDATED");
@@ -12,7 +13,9 @@ import store from "./store/store";
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <SocketProvider>
+        <App />
+      </SocketProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

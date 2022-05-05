@@ -18,6 +18,7 @@ import {
   removePlayer,
   readyPlayer,
   hasToPickUp,
+  setGameState,
 } from "../store/game";
 
 import {
@@ -30,11 +31,11 @@ import {
   allCardsHaveEqualValue,
 } from "../model/model";
 
-import io from "socket.io-client";
+export const getGameState = () => store.getState().game.value;
 
-// export const ioClient = io.connect("http://localhost:4000");
-
-const getGameState = () => store.getState().game.value;
+export const setAppState = (state) => {
+  store.dispatch(setGameState(state));
+};
 
 const getStack = () => {
   return getGameState().stack;
@@ -124,7 +125,15 @@ const checkAndSetWinner = (player) => {
 };
 
 const checkCardsInHand = (cards, hand, player) => {
-  return cards.every((card) => getPlayersHand(hand, player).includes(card));
+  console.log("CHECKING CARDS");
+  console.log(cards);
+  console.log(hand);
+  console.log(getPlayersHand(hand, player));
+  console.log(getPlayersHand(hand, player).includes(cards[0]));
+  const cardNames = cards.map((card) => card.name);
+  const handCardNames = getPlayersHand(hand, player).map((card) => card.name);
+  return cardNames.every((card) => handCardNames.includes(card));
+  // return cards.every((card) => getPlayersHand(hand, player).includes(card));
 };
 
 const checkActivePlayersHaveSetFaceCards = () => {
@@ -166,21 +175,6 @@ const switchPlayer = (skip = 0) => {
       loopStop++;
     }
   }
-  // if (moves < 0) moves += numberOfPlayers();
-  // store.dispatch(switchActivePlayer(moves % numberOfPlayers()));
-
-  // while (activePlayerIsWinner() && loopStop < 10) {
-  //   console.log("Current player is not playing");
-  //   console.log((getActivePlayer() + direction * 1) % numberOfPlayers());
-  //   console.log("activePlayer", getActivePlayer());
-  //   console.log("direction", direction * 1);
-  //   console.log("noOfplayers", numberOfPlayers());
-
-  //   loopStop++;
-  //   let moves = getActivePlayer() + direction * 1;
-  //   if (moves < 0) moves += numberOfPlayers();
-  //   store.dispatch(switchActivePlayer(moves % numberOfPlayers()));
-  // }
 };
 
 export const startNewGame = () => {
@@ -349,8 +343,12 @@ export function initializeNewGame() {
   store.dispatch(reset());
 }
 
-export function startGame() {
-  store.dispatch(setDeck(generateAndShuffleDeck()));
+export function generateNewDeck() {
+  return generateAndShuffleDeck();
+}
+
+export function startGame(deck) {
+  store.dispatch(setDeck(deck));
   store.dispatch(dealCards());
   // store.dispatch(setActivePlayer());
 }
