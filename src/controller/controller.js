@@ -19,6 +19,7 @@ import {
   readyPlayer,
   hasToPickUp,
   setGameState,
+  setCurrentPlayer,
 } from "../store/game";
 
 import {
@@ -39,6 +40,10 @@ export const setAppState = (state) => {
 
 const getStack = () => {
   return getGameState().stack;
+};
+
+export const setPlayer = (name) => {
+  store.dispatch(setCurrentPlayer(name));
 };
 
 const getDeck = () => {
@@ -71,7 +76,7 @@ const numberOfPlayers = () => {
 };
 
 const numberOfActivePlayers = () => {
-  return getGameState().players.filter((player) => !player.playing).length;
+  return getGameState().players.filter((player) => player.playing).length;
 };
 
 const checkActivePlayer = (player) => {
@@ -125,11 +130,11 @@ const checkAndSetWinner = (player) => {
 };
 
 const checkCardsInHand = (cards, hand, player) => {
-  console.log("CHECKING CARDS");
-  console.log(cards);
-  console.log(hand);
-  console.log(getPlayersHand(hand, player));
-  console.log(getPlayersHand(hand, player).includes(cards[0]));
+  // console.log("CHECKING CARDS");
+  // console.log(cards);
+  // console.log(hand);
+  // console.log(getPlayersHand(hand, player));
+  // console.log(getPlayersHand(hand, player).includes(cards[0]));
   const cardNames = cards.map((card) => card.name);
   const handCardNames = getPlayersHand(hand, player).map((card) => card.name);
   return cardNames.every((card) => handCardNames.includes(card));
@@ -157,6 +162,9 @@ const playerWithLowestStarter = () => {
 };
 
 const switchPlayer = (skip = 0) => {
+  // if (numberOfActivePlayers === 2 && skip) {
+  //   return;
+  // }
   //What a mess, needs to be refactored
   let loopStop = 0;
   // trouble with removing a winner from play and direction
@@ -182,6 +190,7 @@ export const startNewGame = () => {
 };
 
 export function setFaceUpCards(cards, player) {
+  console.log(numberOfActivePlayers());
   store.dispatch(
     selectFaceUpCards({
       cards,
@@ -315,7 +324,6 @@ export function playCards(cards, hand, player) {
   // Check Skip or change direction
   if (cards[0].power === "skip") {
     if (numberOfActivePlayers() === 2) {
-      switchPlayer(1);
       checkAndSetWinner(player);
       return;
     }
@@ -327,6 +335,7 @@ export function playCards(cards, hand, player) {
   checkAndSetWinner(player);
   // Set Active Player
   switchPlayer();
+  console.warn("NO SKIP, SWITCHING PLAYERS");
   return true;
 }
 

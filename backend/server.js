@@ -67,9 +67,7 @@ io.on("connection", (socket) => {
   socket.on("playCards", (data) => {
     io.emit("playCards", data);
   });
-  socket.on("sortCards", (player) => {
-    io.emit("sortCards", player);
-  });
+
   socket.on("drawCardsFromDeck", (player) => {
     io.emit("drawCardsFromDeck", player);
   });

@@ -11,7 +11,7 @@ import { useSocket } from "../../contexts/SocketProvider";
 import { useSelector } from "react-redux";
 
 const Player = React.memo(({ className, playerNumber, computer }) => {
-  const { deck, activePlayer, players, gameOver } = useSelector(
+  const { deck, activePlayer, players, gameOver, currentPlayer } = useSelector(
     (state) => state.game.value
   );
   // console.log(players[playerNumber]);
@@ -215,6 +215,7 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
           onClick={selectCardHandler}
           selected={selected}
           computer={computer}
+          back={currentPlayer !== name}
         />
 
         {gameOver && getReadyButton}

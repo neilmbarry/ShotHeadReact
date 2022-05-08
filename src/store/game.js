@@ -42,8 +42,12 @@ export const gameSlice = createSlice({
         player.hasToPickUp = false;
       });
     },
+    setCurrentPlayer: (state, action) => {
+      // return;
+      state.value.currentPlayer = action.payload;
+    },
     addPlayer: (state, action) => {
-      state.value.currentPlayer = state.value.players.length;
+      // state.value.currentPlayer = state.value.players.length;
       state.value.players.push({
         name: action.payload,
         inHandCards: [],
@@ -208,6 +212,7 @@ export const {
   readyPlayer,
   hasToPickUp,
   setGameState,
+  setCurrentPlayer,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

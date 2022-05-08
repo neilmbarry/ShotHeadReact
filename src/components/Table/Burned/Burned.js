@@ -6,7 +6,7 @@ import { useSocket } from "../../../contexts/SocketProvider";
 
 import Button from "../../UI/Button";
 
-import { generateNewDeck } from "../../../controller/controller";
+import { generateNewDeck, setPlayer } from "../../../controller/controller";
 
 const Burned = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
@@ -18,7 +18,9 @@ const Burned = ({ className }) => {
     const name = nameRef.current.value;
     console.log(name);
     console.log(socket);
+    setPlayer(name);
     socket.emit("addPlayer", { name: name });
+    nameRef.current.value = "";
   };
 
   const dealCardsHandler = () => {

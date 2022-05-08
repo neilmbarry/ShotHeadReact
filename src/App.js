@@ -18,6 +18,7 @@ import {
   setFaceUpCards,
   setAppState,
   getGameState,
+  setPlayer,
 } from "./controller/controller";
 
 const App = ({ className }) => {
@@ -40,6 +41,7 @@ const App = ({ className }) => {
       console.log("setting game state");
       console.log(state);
       setAppState(state);
+      setPlayer();
     });
 
     socket.on("message", (message) => {
@@ -67,8 +69,6 @@ const App = ({ className }) => {
       pickUpStack(player);
     });
     socket.on("playCards", (data) => {
-      console.log(data);
-      // playCards(selected, getActiveHand(), playerNumber)
       playCards(data.selected, data.hand, data.playerNumber);
     });
     socket.on("sortCards", (player) => {
