@@ -11,7 +11,7 @@ export function SocketProvider({ id, children }) {
   const [socket, setSocket] = useState();
   useEffect(() => {
     console.log("CONNECTING...");
-    const newSocket = io("http://localhost:4000");
+    const newSocket = io("https://shit-head-heroku.herokuapp.com/");
     // console.log(newSocket, "<---newSocket");
     setSocket(newSocket);
     return () => {
