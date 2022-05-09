@@ -7,12 +7,19 @@ export function useSocket() {
   return useContext(SocketContext);
 }
 
+let server;
+
+if (process.env.NODE_ENV === "development") {
+  server = "http://localhost:4000/";
+} else {
+  server = "https://shot-head-react.vercel.app";
+}
+
 export function SocketProvider({ id, children }) {
   const [socket, setSocket] = useState();
   useEffect(() => {
     console.log("CONNECTING...");
-    const newSocket = io("https://shit-head-heroku.herokuapp.com/");
-    // console.log(newSocket, "<---newSocket");
+    const newSocket = io(server);
     setSocket(newSocket);
     return () => {
       console.log("DISCONNECTING");

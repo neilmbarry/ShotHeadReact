@@ -1,0 +1,39 @@
+.main {
+  min-height: 100vh;
+  background: radial-gradient(at 25%, #016db2, #001d33);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* flex-direction: column;
+    justify-content: space-between;
+    /* max-width: 1200px; */
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 10rem;
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* padding: 4rem; */
+}
+
+.titleContainer {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.685);
+  /* padding: 4rem; */
+  /* margin: 10rem; */
+  font-size: 150%;
+}
+
+.titleContainer h2 {
+  font-size: 300%;
+}
+
+.titleContainer h1 {
+  font-size: 700%;
+}

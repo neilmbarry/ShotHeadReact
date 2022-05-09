@@ -1,5 +1,6 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import classes from "./Burned.module.css";
+import { Link } from "react-router-dom";
 // import { motion } from "framer-motion";
 
 import { useSocket } from "../../../contexts/SocketProvider";
@@ -11,6 +12,7 @@ import { generateNewDeck, setPlayer } from "../../../controller/controller";
 const Burned = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
   const nameRef = useRef();
+  const [showMenu, setShowMenu] = useState(false);
 
   const socket = useSocket();
 
@@ -35,20 +37,32 @@ const Burned = ({ className }) => {
     socket.emit("newGame");
   };
 
+  const menuHandler = () => {
+    setShowMenu((prev) => !prev);
+  };
+
   return (
     <div className={classesList}>
-      <Button onClick={() => resetHandler()} text="Reset All"></Button>
+      {!showMenu && <Button text="Menu" onClick={() => menuHandler()}></Button>}
+      {!showMenu && (
+        <Link to="/">
+          <Button text="Home" onClick={() => null}></Button>
+        </Link>
+      )}
+      {showMenu && <Button text="Close" onClick={() => menuHandler()}></Button>}
+      {showMenu && (
+        <div className={classes.menu}>
+          <Button onClick={() => resetHandler()} text="Reset All"></Button>
 
-      <input type="text" ref={nameRef} />
-      <Button
-        onClick={() => addNewPlayerHandler()}
-        text="Add New Player"
-      ></Button>
-      <Button onClick={() => newGameHandler()} text="New Game"></Button>
-      <Button onClick={() => dealCardsHandler()} text="Deal Cards"></Button>
-      {/* <motion.button whileHover={{ scale: 1.8 }} whileTap={{ scale: 0.8 }}>
-        Click
-      </motion.button> */}
+          <input type="text" ref={nameRef} />
+          <Button
+            onClick={() => addNewPlayerHandler()}
+            text="Add New Player"
+          ></Button>
+          <Button onClick={() => newGameHandler()} text="New Game"></Button>
+          <Button onClick={() => dealCardsHandler()} text="Deal Cards"></Button>
+        </div>
+      )}
     </div>
   );
 };

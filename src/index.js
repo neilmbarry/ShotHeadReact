@@ -6,10 +6,6 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 import { SocketProvider } from "./contexts/SocketProvider";
 
-// store.subscribe(() => {
-//   console.warn("STATE UPDATED");
-// });
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

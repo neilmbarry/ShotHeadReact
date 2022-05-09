@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import classes from "./App.module.css";
 import Table from "./components/Table/Table";
 import PlayerContainer from "./components/Player/PlayerContainer";
 
 import { useSocket } from "./contexts/SocketProvider";
+
+import Home from "./components/Home/Home";
 
 import {
   pickUpStack,
@@ -90,10 +93,20 @@ const App = ({ className }) => {
   }, [socket]);
 
   return (
-    <div className={classesList}>
-      <Table />
-      <PlayerContainer />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home className={classes.home} />} />
+        <Route
+          path="/game"
+          element={
+            <div className={classesList}>
+              <Table />
+              <PlayerContainer />
+            </div>
+          }
+        />
+      </Routes>
+    </Router>
   );
 };
 

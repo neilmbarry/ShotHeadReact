@@ -1,0 +1,42 @@
+.main {
+  /* width: 60%; */
+  border: none;
+  background: black;
+  padding: 4rem 3rem;
+  /* height: 3rem; */
+  text-transform: uppercase;
+  cursor: pointer;
+  margin: 1rem 0;
+  color: white;
+  font-size: 2rem;
+  font-weight: 400;
+  width: 100%;
+  border: 3px solid rgb(184, 184, 184);
+  border-radius: 10px;
+  transition: all ease 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main p {
+  font-size: 110%;
+}
+
+.main h5 {
+  font-size: 150%;
+  margin-right: 2rem;
+}
+
+.main:hover {
+  background: white;
+  color: black;
+}
+
+.secondary {
+  /* background-color: rgb(83, 15, 83); */
+  background: linear-gradient(to bottom, rgb(121, 22, 121), rgb(65, 11, 65));
+  width: 90%;
+  padding: 3rem 2rem;
+  margin: 1rem auto;
+}

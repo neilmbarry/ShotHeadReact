@@ -132,7 +132,8 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
   };
 
   const faceDownHeight =
-    hasSetFaceUpCards && (inHandCards.length > 0 || deck.length > 0)
+    (hasSetFaceUpCards && (inHandCards.length > 0 || deck.length > 0)) ||
+    faceDownCards.length === 0
       ? "60px"
       : "120px";
 
