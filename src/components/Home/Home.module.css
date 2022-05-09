@@ -5,6 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
   /* flex-direction: column;
     justify-content: space-between;
     /* max-width: 1200px; */
@@ -36,4 +37,16 @@
 
 .titleContainer h1 {
   font-size: 700%;
+}
+@media only screen and (max-width: 600px) {
+  .main {
+    flex-direction: column;
+  }
+  .titleContainer h1 {
+    font-size: 600%;
+    line-height: 10rem;
+  }
+  .buttonContainer {
+    margin: 1rem 3rem;
+  }
 }

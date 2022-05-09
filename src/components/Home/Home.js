@@ -29,7 +29,7 @@ const Home = ({ className }) => {
           <FontAwesomeIcon icon={faComputer} />
         </HomeButton>
         <Link to="/game">
-          <HomeButton text="MULTIPLAYER">
+          <HomeButton text="PLAY AGAINST FRIENDS">
             <FontAwesomeIcon icon={faUsers} />
           </HomeButton>
         </Link>

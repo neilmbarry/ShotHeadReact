@@ -40,3 +40,10 @@
   padding: 3rem 2rem;
   margin: 1rem auto;
 }
+
+@media only screen and (max-width: 600px) {
+  .main,
+  .secondary {
+    padding: 2rem;
+  }
+}
