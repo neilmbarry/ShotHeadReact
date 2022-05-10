@@ -12,7 +12,7 @@ let server;
 if (process.env.NODE_ENV === "development") {
   server = "http://localhost:4000/";
 } else {
-  server = "https://git.heroku.com/shit-head-heroku.git";
+  server = "https://shit-head-heroku.herokuapp.com/";
 }
 
 export function SocketProvider({ id, children }) {
