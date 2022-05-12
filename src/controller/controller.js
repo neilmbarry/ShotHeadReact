@@ -46,6 +46,20 @@ export const setPlayer = (name) => {
   store.dispatch(setCurrentPlayer(name));
 };
 
+export const getActiveHand = (player) => {
+  // console.log(player);
+  if (getGameState().players[player].inHandCards.length) {
+    return "inHandCards";
+  }
+  if (getGameState().players[player].faceUpCards.length) {
+    return "faceUpCards";
+  }
+  if (getGameState().players[player].faceDownCards.length) {
+    return "faceDownCards";
+  }
+  return false;
+};
+
 const getDeck = () => {
   return getGameState().deck;
 };
@@ -130,15 +144,9 @@ const checkAndSetWinner = (player) => {
 };
 
 const checkCardsInHand = (cards, hand, player) => {
-  // console.log("CHECKING CARDS");
-  // console.log(cards);
-  // console.log(hand);
-  // console.log(getPlayersHand(hand, player));
-  // console.log(getPlayersHand(hand, player).includes(cards[0]));
   const cardNames = cards.map((card) => card.name);
   const handCardNames = getPlayersHand(hand, player).map((card) => card.name);
   return cardNames.every((card) => handCardNames.includes(card));
-  // return cards.every((card) => getPlayersHand(hand, player).includes(card));
 };
 
 const checkActivePlayersHaveSetFaceCards = () => {
@@ -147,7 +155,6 @@ const checkActivePlayersHaveSetFaceCards = () => {
 
 const playerWithLowestStarter = () => {
   const arrayOfArrayOfCards = getPlayers().map((player) => player.inHandCards);
-  // [[{},{},{}],[{},{},{}],[{},{},{}]]
   const reduced = arrayOfArrayOfCards
     .map((hand, i) => [
       hand.reduce((acc, card) => {
@@ -190,7 +197,6 @@ export const startNewGame = () => {
 };
 
 export function setFaceUpCards(cards, player) {
-  console.log(numberOfActivePlayers());
   store.dispatch(
     selectFaceUpCards({
       cards,
@@ -203,20 +209,32 @@ export function setFaceUpCards(cards, player) {
   }
 }
 
-export function playValidMove(hand, player, act) {
-  if (hand === "faceDownCards" && act) {
-    const availableCards = getPlayersHand(hand, player);
-    console.log("available face down", availableCards);
-    const playedCard = availableCards[0];
-    if (!playCards([playedCard], hand, player)) {
-      console.log("cant play this card");
-      return false;
-    }
-    return true;
-  }
+export function hasValidMove(hand, player) {
   if (hand === "faceDownCards") {
     return true;
   }
+  const availableCards = getPlayersHand(hand, player);
+
+  if (!availableCards) return false;
+
+  const validCards = availableCards.find((card) =>
+    checkLegalMove([card], getStack())
+  );
+
+  if (!validCards) {
+    return false;
+  }
+  return true;
+}
+
+export function validMove(hand, player) {
+  if (hand === "faceDownCards") {
+    const availableCards = getPlayersHand(hand, player);
+    const playedCard = availableCards[0];
+    return [playedCard];
+    return playCards([playedCard], hand, player);
+  }
+
   const availableCards = getPlayersHand(hand, player);
 
   if (!availableCards) return;
@@ -225,16 +243,15 @@ export function playValidMove(hand, player, act) {
     .filter((card) => checkLegalMove([card], getStack()))
     .sort((a, b) => a.worth - b.worth);
 
-  if (!validCards.length) {
-    return false;
-  }
+  // if (!validCards.length) {
+  //   return pickUpStack(player);
+  // }
   const playingCards = validCards.filter(
     (card) => card.value === validCards[0].value
   );
-  if (act) {
-    playCards(playingCards, hand, player);
-  }
-  return true;
+
+  return playingCards;
+  playCards(playingCards, hand, player);
 }
 
 export function drawCardsFromDeck(player) {
@@ -246,7 +263,7 @@ export function playCards(cards, hand, player) {
   if (!checkActivePlayer(player)) {
     return;
   }
-  if (!cards.length) {
+  if (!cards) {
     return console.error("Please select you desired cards.");
   }
   // Check Cards are in Hand
@@ -257,20 +274,11 @@ export function playCards(cards, hand, player) {
   if (!allCardsHaveEqualValue(cards)) {
     return console.error("Cards must be the same value.");
   }
-  // Check for Jacks
-  if (cards[0].power === "reverse") {
-    store.dispatch(changeDirection((-1) ** cards.length));
-  }
+
   // Check If Playing Blind
   if (hand === "faceDownCards") {
     const stackCopy = getStack();
-    store.dispatch(
-      playCard({
-        cards,
-        hand,
-        player,
-      })
-    );
+
     if (!checkLegalMove(cards, stackCopy)) {
       // If the blind card fails
       const cardNames = cards
@@ -280,8 +288,26 @@ export function playCards(cards, hand, player) {
       console.log(`${getActivePlayerName()} has played ${cardNames}.`);
       console.error("Betrayed by the blind card!");
       console.error("PICK THAT PILE UP!");
+      store.dispatch(
+        playCard({
+          cards,
+          hand,
+          player,
+        })
+      );
       store.dispatch(hasToPickUp(player));
       return false;
+    }
+    store.dispatch(
+      playCard({
+        cards,
+        hand,
+        player,
+      })
+    );
+    // Check for Jacks
+    if (cards[0].power === "reverse") {
+      store.dispatch(changeDirection((-1) ** cards.length));
     }
   } else {
     // Check Move Is Legal
@@ -299,6 +325,10 @@ export function playCards(cards, hand, player) {
         player,
       })
     );
+    // Check for Jacks
+    if (cards[0].power === "reverse") {
+      store.dispatch(changeDirection((-1) ** cards.length));
+    }
   }
 
   const cardNames = cards
@@ -335,7 +365,6 @@ export function playCards(cards, hand, player) {
   checkAndSetWinner(player);
   // Set Active Player
   switchPlayer();
-  console.warn("NO SKIP, SWITCHING PLAYERS");
   return true;
 }
 

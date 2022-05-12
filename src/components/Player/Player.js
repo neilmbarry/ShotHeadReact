@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./Player.module.css";
 import Button from "../UI/Button";
 import CardContainer from "../Cards/CardContainer";
 import InHandContainer from "../Cards/InHandContainer";
-import { sortCards, playValidMove, readyUp } from "../../controller/controller";
+import {
+  sortCards,
+  validMove,
+  readyUp,
+  hasValidMove,
+  getActiveHand,
+} from "../../controller/controller";
 import { motion } from "framer-motion";
 import { useSocket } from "../../contexts/SocketProvider";
 
@@ -11,9 +17,8 @@ import { useSocket } from "../../contexts/SocketProvider";
 import { useSelector } from "react-redux";
 
 const Player = React.memo(({ className, playerNumber, computer }) => {
-  const { deck, activePlayer, players, gameOver, currentPlayer } = useSelector(
-    (state) => state.game.value
-  );
+  const { deck, activePlayer, players, gameOver, currentPlayer, stack } =
+    useSelector((state) => state.game.value);
   // console.log(players[playerNumber]);
   const {
     inHandCards,
@@ -37,29 +42,29 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
 
   const socket = useSocket();
 
-  const getActiveHand = () => {
-    if (inHandCards.length) {
-      return "inHandCards";
-    }
-    if (faceUpCards.length) {
-      return "faceUpCards";
-    }
-    if (faceDownCards.length) {
-      return "faceDownCards";
-    }
-    return false;
-  };
+  // const getActiveHand = () => {
+  //   if (inHandCards.length) {
+  //     return "inHandCards";
+  //   }
+  //   if (faceUpCards.length) {
+  //     return "faceUpCards";
+  //   }
+  //   if (faceDownCards.length) {
+  //     return "faceDownCards";
+  //   }
+  //   return false;
+  // };
 
   const sortHandler = () => {
     sortCards(playerNumber);
   };
 
-  const hasValidMove = () => {
-    return playValidMove(getActiveHand(), playerNumber);
+  const checkValidMove = () => {
+    return hasValidMove(getActiveHand(playerNumber), playerNumber);
   };
 
   // const validMoveHandler = () => {
-  //   if (!playValidMove(getActiveHand(), playerNumber, true)) {
+  //   if (!validMove(getActiveHand(), playerNumber, true)) {
   //     console.error(name, " HAS TO PICK UP!");
   //     setTimeout(() => {
   //       pickUpStackHandler();
@@ -86,18 +91,17 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
     setSelected((prev) => [...prev, card]);
   };
 
-  const playCardHandler = () => {
+  const playCardHandler = (cards = selected) => {
+    console.log(cards);
     socket.emit("playCards", {
-      selected,
-      hand: getActiveHand(),
+      selected: cards,
+      hand: getActiveHand(playerNumber),
       playerNumber,
     });
-    // playCards(selected, getActiveHand(), playerNumber);
-    // console.log(inHandCards);
+
     setSelected([]);
     setTimeout(() => {
       socket.emit("drawCardsFromDeck", playerNumber);
-      // drawCardsFromDeck(playerNumber);
     }, 800);
   };
 
@@ -154,14 +158,14 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
     !hasToPickUp &&
     hasSetFaceUpCards &&
     active &&
-    hasValidMove() ? (
+    checkValidMove() ? (
       <Button
         text={selected.length > 0 ? "Play Selected" : "Select a card..."}
         onClick={() => playCardHandler()}
       ></Button>
     ) : null;
 
-  const pickUpStackButton = (!hasValidMove() || hasToPickUp) && active && (
+  const pickUpStackButton = (!checkValidMove() || hasToPickUp) && active && (
     <Button
       text={"Pick Up Stack"}
       onClick={() => pickUpStackHandler()}
@@ -181,6 +185,31 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
       }}
     ></Button>
   );
+
+  // useEffect(() => {
+  //   if (!active) {
+  //     return console.warn(currentPlayer, " is NOT ACTIVE");
+  //   }
+  //   console.warn(currentPlayer, " is ACTIVE");
+  //   if (currentPlayer !== "computer") {
+  //     return console.warn(currentPlayer, " is NOT A COMPUTER");
+  //   }
+  //   console.warn(currentPlayer, " is A COMPUTER");
+  //   if (!hasSetFaceUpCards) return;
+  //   if (!playing) return;
+  //   if (hasToPickUp)
+  //     return setTimeout(() => {
+  //       pickUpStackHandler();
+  //     }, 1000);
+  //   const timeOut = setTimeout(() => {
+  //     if (hasValidMove(getActiveHand(), playerNumber)) {
+  //       playCardHandler(validMove(getActiveHand(), playerNumber));
+  //     } else {
+  //       pickUpStackHandler();
+  //     }
+  //   }, 1500);
+  //   return () => clearTimeout(timeOut);
+  // }, [currentPlayer, stack, active]);
 
   return (
     <motion.div className={classesList}>
