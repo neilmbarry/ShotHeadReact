@@ -109,17 +109,14 @@ const App = ({ className }) => {
     if (currentPlayer.name !== "Computer") {
       return;
     }
-    let pickUpTimeOut;
 
     if (!currentPlayer.hasSetFaceUpCards) return;
     if (!currentPlayer.playing) return;
-    if (currentPlayer.hasToPickUp) {
-      return (pickUpTimeOut = setTimeout(() => {
-        socket.emit("pickUpStack", activePlayer);
-      }, 1500));
-    }
 
     const timeOut = setTimeout(() => {
+      if (currentPlayer.hasToPickUp) {
+        return socket.emit("pickUpStack", activePlayer);
+      }
       if (hasValidMove(getActiveHand(activePlayer), activePlayer)) {
         console.log(
           "computer playing card",
@@ -139,7 +136,7 @@ const App = ({ className }) => {
         // pickUpStackHandler();
       }
     }, 1000);
-    return () => clearTimeout(timeOut, pickUpTimeOut);
+    return () => clearTimeout(timeOut);
   }, [players, activePlayer, socket]);
 
   return (
