@@ -37,6 +37,8 @@ const App = ({ className }) => {
     (state) => state.game.value
   );
 
+  console.log("RERENDERED");
+
   useEffect(() => {
     if (!socket) return;
 
@@ -112,7 +114,7 @@ const App = ({ className }) => {
 
     if (!currentPlayer.hasSetFaceUpCards) return;
     if (!currentPlayer.playing) return;
-
+    console.warn(activePlayer, "is starting timout");
     const timeOut = setTimeout(() => {
       if (currentPlayer.hasToPickUp) {
         return socket.emit("pickUpStack", activePlayer);
@@ -129,15 +131,18 @@ const App = ({ className }) => {
         });
         setTimeout(() => {
           socket.emit("drawCardsFromDeck", activePlayer);
-        }, 800);
+        }, 1000);
       } else {
         console.log("emitting PICKUPSTACK");
         socket.emit("pickUpStack", activePlayer);
         // pickUpStackHandler();
       }
-    }, 1000);
-    return () => clearTimeout(timeOut);
-  }, [players, activePlayer, socket]);
+    }, 2000);
+    return () => {
+      console.warn(activePlayer, "CLEARING TIMEOUT");
+      clearTimeout(timeOut);
+    };
+  }, [players, activePlayer, socket, stack]);
 
   return (
     <Router>

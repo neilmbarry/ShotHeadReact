@@ -23,6 +23,7 @@ const CardContainer = ({
         name={name}
         back={type === "faceDown"}
         key={name.name}
+        type="face"
         onClick={onClick}
         className={CardClassesList}
         selected={selected.includes(name)}

@@ -350,6 +350,9 @@ export function playCards(cards, hand, player) {
     return setTimeout(() => {
       burnCurrentStack();
     }, 1000);
+    // return setTimeout(() => {
+    return burnCurrentStack();
+    // }, 1000);
   }
   // Check Skip or change direction
   if (cards[0].power === "skip") {

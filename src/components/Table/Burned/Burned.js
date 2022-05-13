@@ -17,7 +17,7 @@ const Burned = ({ className }) => {
   const socket = useSocket();
 
   const addNewPlayerHandler = () => {
-    const name = nameRef.current.value;
+    const name = nameRef.current.value || "Computer";
     console.log(name);
     console.log(socket);
     setPlayer(name);
@@ -59,6 +59,7 @@ const Burned = ({ className }) => {
             onClick={() => addNewPlayerHandler()}
             text="Add New Player"
           ></Button>
+
           <Button onClick={() => newGameHandler()} text="New Game"></Button>
           <Button onClick={() => dealCardsHandler()} text="Deal Cards"></Button>
         </div>
