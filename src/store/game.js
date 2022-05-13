@@ -54,7 +54,7 @@ export const gameSlice = createSlice({
         faceUpCards: [],
         faceDownCards: [],
         message: "",
-        playing: false,
+        playing: true,
         hasSetFaceUpCards: false,
         hasToPickUp: false,
       });

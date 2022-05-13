@@ -353,7 +353,7 @@ export function playCards(cards, hand, player) {
   }
   // Check Skip or change direction
   if (cards[0].power === "skip") {
-    if (numberOfActivePlayers() === 2) {
+    if (numberOfActivePlayers() <= 2) {
       checkAndSetWinner(player);
       return;
     }

@@ -81,7 +81,7 @@ const App = ({ className }) => {
       pickUpStack(player);
     });
     socket.on("playCards", (data) => {
-      console.log("aaaaaaaa");
+      console.log("Received playCards data: ", data);
       playCards(data.selected, data.hand, data.playerNumber);
     });
     socket.on("sortCards", (player) => {
