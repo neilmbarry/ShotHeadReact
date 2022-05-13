@@ -109,13 +109,14 @@ const App = ({ className }) => {
     if (currentPlayer.name !== "Computer") {
       return;
     }
+    let pickUpTimeOut;
 
     if (!currentPlayer.hasSetFaceUpCards) return;
     if (!currentPlayer.playing) return;
     if (currentPlayer.hasToPickUp) {
-      return setTimeout(() => {
+      return (pickUpTimeOut = setTimeout(() => {
         socket.emit("pickUpStack", activePlayer);
-      }, 1500);
+      }, 1500));
     }
 
     const timeOut = setTimeout(() => {
@@ -133,11 +134,12 @@ const App = ({ className }) => {
           socket.emit("drawCardsFromDeck", activePlayer);
         }, 800);
       } else {
+        console.log("emitting PICKUPSTACK");
         socket.emit("pickUpStack", activePlayer);
         // pickUpStackHandler();
       }
     }, 1000);
-    return () => clearTimeout(timeOut);
+    return () => clearTimeout(timeOut, pickUpTimeOut);
   }, [players, activePlayer, socket]);
 
   return (
