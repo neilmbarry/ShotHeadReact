@@ -3,8 +3,14 @@
   background: radial-gradient(#43725a, #1e4735);
   color: white;
   display: flex;
+  position: relative;
   flex-direction: column;
   justify-content: space-between;
   /* max-width: 1200px; */
   margin: auto;
+}
+
+.button {
+  padding: 2rem;
+  margin: 1rem;
 }

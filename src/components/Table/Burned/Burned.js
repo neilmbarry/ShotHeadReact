@@ -12,7 +12,7 @@ import { generateNewDeck, setPlayer } from "../../../controller/controller";
 const Burned = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
   const nameRef = useRef();
-  const [showMenu, setShowMenu] = useState(false);
+  const [showMenu, setShowMenu] = useState(true);
 
   const socket = useSocket();
 
@@ -44,11 +44,11 @@ const Burned = ({ className }) => {
   return (
     <div className={classesList}>
       {!showMenu && <Button text="Menu" onClick={() => menuHandler()}></Button>}
-      {!showMenu && (
+      {/* {!showMenu && (
         <Link to="/">
-          <Button text="Home" onClick={() => null}></Button>
+          <Button text="Home" onClick={() => resetHandler()}></Button>
         </Link>
-      )}
+      )} */}
       {showMenu && <Button text="Close" onClick={() => menuHandler()}></Button>}
       {showMenu && (
         <div className={classes.menu}>

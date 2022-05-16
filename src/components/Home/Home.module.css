@@ -11,6 +11,21 @@
     /* max-width: 1200px; */
 }
 
+.button {
+  width: 100%;
+  padding: 4rem 3rem;
+  margin: 1rem 0;
+}
+
+.choice {
+  display: flex;
+}
+
+.active {
+  background-color: black;
+  color: white;
+}
+
 .buttonContainer {
   display: flex;
   flex-direction: column;

@@ -149,7 +149,7 @@ const Card = ({
         // ease: [0.2, 0.8, 0.9, 0.98],
         // ease: "easeOut",
         duration: 0.5,
-        delay: 0.5,
+        delay: 0.2,
       },
     },
     exit: {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import classes from "./Player.module.css";
 import Button from "../UI/Button";
 import CardContainer from "../Cards/CardContainer";
@@ -29,6 +29,8 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
     playing,
     hasToPickUp,
   } = players[playerNumber];
+
+  const opponent = currentPlayer !== name;
 
   const active = activePlayer === playerNumber;
   // console.log(state);
@@ -111,7 +113,7 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
     setSelected([]);
   };
 
-  const setFaceCardsHandler = () => {
+  const setFaceCardsHandler = useCallback(() => {
     if (selected.length === 3) {
       // setFaceUpCards(selected, playerNumber);
 
@@ -133,7 +135,7 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
     }
 
     setSelected([]);
-  };
+  });
 
   const faceDownHeight =
     (hasSetFaceUpCards && (inHandCards.length > 0 || deck.length > 0)) ||
@@ -143,21 +145,28 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
 
   // console.log(faceDownHeight);
 
-  const sortButton = inHandCards.length !== 0 && (
+  const sortButton = inHandCards.length !== 0 && !opponent && (
     <Button text="Sort" onClick={() => sortHandler()} />
   );
-  const selectFaceUpButton = !hasSetFaceUpCards && inHandCards.length > 0 && (
-    <Button
-      text="Select Face Up Cards"
-      onClick={() => setFaceCardsHandler()}
-    ></Button>
-  );
+  const selectFaceUpButton = !gameOver &&
+    playing &&
+    !hasSetFaceUpCards &&
+    inHandCards.length > 0 &&
+    !opponent && (
+      <Button
+        text="Select Face Up Cards"
+        onClick={() => setFaceCardsHandler()}
+      ></Button>
+    );
 
   const playSelectedButton =
+    !gameOver &&
+    playing &&
     (faceDownCards.length || inHandCards.length) &&
     !hasToPickUp &&
     hasSetFaceUpCards &&
     active &&
+    !opponent &&
     checkValidMove() ? (
       <Button
         text={selected.length > 0 ? "Play Selected" : "Select a card..."}
@@ -165,18 +174,22 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
       ></Button>
     ) : null;
 
-  const pickUpStackButton = (!checkValidMove() || hasToPickUp) && active && (
-    <Button
-      text={"Pick Up Stack"}
-      onClick={() => pickUpStackHandler()}
-    ></Button>
-  );
+  const pickUpStackButton = !gameOver &&
+    playing &&
+    (!checkValidMove() || hasToPickUp) &&
+    active &&
+    !opponent && (
+      <Button
+        text={"Pick Up Stack"}
+        onClick={() => pickUpStackHandler()}
+      ></Button>
+    );
 
   // const leaveGameButton = (
   //   <Button text="Leave Game" onClick={() => leaveGame(playerNumber)}></Button>
   // );
 
-  const getReadyButton = (
+  const getReadyButton = gameOver && (
     <Button
       text="I'm Ready"
       onClick={() => {
@@ -186,30 +199,48 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
     ></Button>
   );
 
-  // useEffect(() => {
-  //   if (!active) {
-  //     return console.warn(currentPlayer, " is NOT ACTIVE");
-  //   }
-  //   console.warn(currentPlayer, " is ACTIVE");
-  //   if (currentPlayer !== "computer") {
-  //     return console.warn(currentPlayer, " is NOT A COMPUTER");
-  //   }
-  //   console.warn(currentPlayer, " is A COMPUTER");
-  //   if (!hasSetFaceUpCards) return;
-  //   if (!playing) return;
-  //   if (hasToPickUp)
-  //     return setTimeout(() => {
-  //       pickUpStackHandler();
-  //     }, 1000);
-  //   const timeOut = setTimeout(() => {
-  //     if (hasValidMove(getActiveHand(), playerNumber)) {
-  //       playCardHandler(validMove(getActiveHand(), playerNumber));
-  //     } else {
-  //       pickUpStackHandler();
-  //     }
-  //   }, 1500);
-  //   return () => clearTimeout(timeOut);
-  // }, [currentPlayer, stack, active]);
+  const pleaseWait = !active &&
+    playing &&
+    !gameOver &&
+    hasSetFaceUpCards &&
+    !opponent && <h3>Please wait...</h3>;
+
+  const spectating = !gameOver && !playing && <h3>Spectating...</h3>;
+
+  useEffect(() => {
+    let myTimeout;
+    if (inHandCards.length === 0) return;
+    if (
+      players[playerNumber].name === "Computer" &&
+      !players[playerNumber].hasSetFaceUpCards
+    ) {
+      myTimeout = setTimeout(() => {
+        setFaceCardsHandler();
+      }, 3000);
+    }
+    //   if (!active) {
+    //     return console.warn(currentPlayer, " is NOT ACTIVE");
+    //   }
+    //   console.warn(currentPlayer, " is ACTIVE");
+    //   if (currentPlayer !== "computer") {
+    //     return console.warn(currentPlayer, " is NOT A COMPUTER");
+    //   }
+    //   console.warn(currentPlayer, " is A COMPUTER");
+    //   if (!hasSetFaceUpCards) return;
+    //   if (!playing) return;
+    //   if (hasToPickUp)
+    //     return setTimeout(() => {
+    //       pickUpStackHandler();
+    //     }, 1000);
+    //   const timeOut = setTimeout(() => {
+    //     if (hasValidMove(getActiveHand(), playerNumber)) {
+    //       playCardHandler(validMove(getActiveHand(), playerNumber));
+    //     } else {
+    //       pickUpStackHandler();
+    //     }
+    //   }, 1500);
+    return () => clearTimeout(myTimeout);
+  }, [playerNumber, players, setFaceCardsHandler, inHandCards.length]);
 
   return (
     <motion.div className={classesList}>
@@ -239,24 +270,22 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
           <h3>{name}</h3>
         </div>
         {sortButton}
-        <InHandContainer
-          type="inHand"
-          cards={inHandCards}
-          onClick={selectCardHandler}
-          selected={selected}
-          computer={computer}
-          back={currentPlayer !== name}
-        />
-
-        {gameOver && getReadyButton}
-        {!gameOver && playing && selectFaceUpButton}
-        {!active && playing && !gameOver && hasSetFaceUpCards && (
-          <h3>Please wait...</h3>
+        {inHandCards.length > 0 && (
+          <InHandContainer
+            type="inHand"
+            cards={inHandCards}
+            onClick={selectCardHandler}
+            selected={selected}
+            computer={computer}
+            back={currentPlayer !== name}
+          />
         )}
-        {!gameOver && playing && playSelectedButton}
-        {!gameOver && playing && pickUpStackButton}
-        {!gameOver && !playing && <h3>Spectating...</h3>}
-        {/* {!gameOver && leaveGameButton} */}
+        {getReadyButton}
+        {selectFaceUpButton}
+        {pleaseWait}
+        {playSelectedButton}
+        {pickUpStackButton}
+        {spectating}
       </div>
     </motion.div>
   );

@@ -3,11 +3,18 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import classes from "./App.module.css";
 import Table from "./components/Table/Table";
 import PlayerContainer from "./components/Player/PlayerContainer";
+import { Link } from "react-router-dom";
+
 import { useSelector } from "react-redux";
 
 import { useSocket } from "./contexts/SocketProvider";
 
 import Home from "./components/Home/Home";
+import HomeButton from "./components/UI/HomeButton";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlay, faClose } from "@fortawesome/free-solid-svg-icons";
+
+// import { generateNewDeck, setPlayer } from "../../../controller/controller";
 
 import {
   pickUpStack,
@@ -27,17 +34,43 @@ import {
   getActiveHand,
   validMove,
 } from "./controller/controller";
+import Modal from "./components/UI/Modal";
 
 const App = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
 
   const socket = useSocket();
 
-  const { activePlayer, players, stack } = useSelector(
+  const { activePlayer, players, stack, loser } = useSelector(
     (state) => state.game.value
   );
 
   console.log("RERENDERED");
+
+  const gameOverModal = loser && (
+    <Modal>
+      <h2>{loser} is The ShitHead</h2>
+      <HomeButton
+        text="Play Again"
+        className={classes.button}
+        onClick={() => {
+          console.log("here");
+          socket.emit("newGame");
+        }}
+      >
+        <FontAwesomeIcon icon={faPlay} />
+      </HomeButton>
+      <Link to="/">
+        <HomeButton
+          text="Quit"
+          className={classes.button}
+          onClick={() => initializeNewGame()}
+        >
+          <FontAwesomeIcon icon={faClose} />
+        </HomeButton>
+      </Link>
+    </Modal>
+  );
 
   useEffect(() => {
     if (!socket) return;
@@ -96,6 +129,7 @@ const App = ({ className }) => {
       initializeNewGame();
     });
     socket.on("newGame", () => {
+      console.log("starting new game");
       startNewGame();
     });
     socket.on("readyPlayer", (player) => {
@@ -105,6 +139,7 @@ const App = ({ className }) => {
   }, [socket]);
 
   useEffect(() => {
+    if (loser) return;
     if (players.length === 0) return;
     const currentPlayer = players[activePlayer];
     if (!currentPlayer) return;
@@ -114,7 +149,7 @@ const App = ({ className }) => {
 
     if (!currentPlayer.hasSetFaceUpCards) return;
     if (!currentPlayer.playing) return;
-    console.warn(activePlayer, "is starting timout");
+
     const timeOut = setTimeout(() => {
       if (currentPlayer.hasToPickUp) {
         return socket.emit("pickUpStack", activePlayer);
@@ -133,13 +168,13 @@ const App = ({ className }) => {
           socket.emit("drawCardsFromDeck", activePlayer);
         }, 1000);
       } else {
-        console.log("emitting PICKUPSTACK");
+        // console.log("emitting PICKUPSTACK");
         socket.emit("pickUpStack", activePlayer);
         // pickUpStackHandler();
       }
     }, 2000);
     return () => {
-      console.warn(activePlayer, "CLEARING TIMEOUT");
+      // console.warn(activePlayer, "CLEARING TIMEOUT");
       clearTimeout(timeOut);
     };
   }, [players, activePlayer, socket, stack]);
@@ -151,10 +186,13 @@ const App = ({ className }) => {
         <Route
           path="/game"
           element={
-            <div className={classesList}>
-              <Table />
-              <PlayerContainer />
-            </div>
+            <>
+              {gameOverModal}
+              <div className={classesList}>
+                <Table />
+                <PlayerContainer />
+              </div>
+            </>
           }
         />
       </Routes>

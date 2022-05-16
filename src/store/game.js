@@ -32,12 +32,13 @@ export const gameSlice = createSlice({
       state.value.gameOver = true;
       state.value.direction = 1;
       state.value.announcement = "";
+      state.value.loser = null;
       state.value.players.forEach((player) => {
         player.inHandCards = [];
         player.faceUpCards = [];
         player.faceDownCards = [];
         player.message = "";
-        player.playing = false;
+        player.playing = true;
         player.hasSetFaceUpCards = false;
         player.hasToPickUp = false;
       });
@@ -101,24 +102,6 @@ export const gameSlice = createSlice({
       state.value.activePlayer = action.payload;
     },
     playCard: (state, action) => {
-      // Take card from player
-      // let newHand;
-      // if (action.payload.hand === "faceUpCards") {
-      //   newHand = state.value.players[action.payload.player][
-      //     action.payload.hand
-      //   ].map((card) =>
-      //     !action.payload.cards.map((card) => card.name).includes(card.name)
-      //       ? card
-      //       : { name: "transparent" }
-      //   );
-      //   newHand = state.value.stack.pop();
-
-      //   console.log(newHand);
-      //   return (state.value.players[action.payload.player][
-      //     action.payload.hand
-      //   ] = newHand);
-      // }
-      // REFACTOR
       state.value.players[action.payload.player][action.payload.hand] =
         state.value.players[action.payload.player][action.payload.hand].filter(
           (card) =>
@@ -186,7 +169,7 @@ export const gameSlice = createSlice({
       state.value.players[action.payload].playing = false;
     },
     setLoser: (state, action) => {
-      state.value.loser = true;
+      state.value.loser = action.payload;
       state.value.gameOver = true;
     },
   },
@@ -213,6 +196,7 @@ export const {
   hasToPickUp,
   setGameState,
   setCurrentPlayer,
+  setLoser,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

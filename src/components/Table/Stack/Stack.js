@@ -5,11 +5,23 @@ import { useSelector } from "react-redux";
 import Button from "../../UI/Button";
 import { pickUpStack, getActivePlayer } from "../../../controller/controller";
 import { AnimatePresence } from "framer-motion";
+import HomeButton from "../../UI/HomeButton";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlay } from "@fortawesome/free-solid-svg-icons";
+import { useSocket } from "../../../contexts/SocketProvider";
+import { generateNewDeck } from "../../../controller/controller";
 
 const Stack = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
-  const stackState = useSelector((state) => state.game.value.stack);
+  const gameState = useSelector((state) => state.game.value);
+  const stackState = gameState.stack;
+  const loser = gameState.loser;
+  const gameOver = gameState.gameOver;
   // console.log(stackState);
+  const socket = useSocket();
+  const dealCardsHandler = () => {
+    socket.emit("dealCards", generateNewDeck());
+  };
 
   const stackOfCards = stackState.map((name, i) => {
     // console.log(name);
@@ -28,6 +40,15 @@ const Stack = ({ className }) => {
     <>
       <div className={classesList}>
         <div className={classes.cardsContainer}>
+          {gameOver && !loser && (
+            <HomeButton
+              text="Start Game...   "
+              className={classes.play}
+              onClick={() => dealCardsHandler()}
+            >
+              <FontAwesomeIcon icon={faPlay}></FontAwesomeIcon>
+            </HomeButton>
+          )}
           <AnimatePresence>{stackOfCards}</AnimatePresence>
         </div>
 

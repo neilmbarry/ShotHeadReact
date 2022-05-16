@@ -1,16 +1,16 @@
 .main {
   /* width: 60%; */
-  border: none;
+
   background: black;
-  padding: 4rem 3rem;
+
   /* height: 3rem; */
   text-transform: uppercase;
   cursor: pointer;
-  margin: 1rem 0;
+
   color: white;
   font-size: 2rem;
   font-weight: 400;
-  width: 100%;
+  /* width: 100%; */
   border: 3px solid rgb(184, 184, 184);
   border-radius: 10px;
   transition: all ease 0.3s;
@@ -39,6 +39,10 @@
   width: 90%;
   padding: 3rem 2rem;
   margin: 1rem auto;
+}
+
+.quit {
+  background-color: rgb(165, 0, 0);
 }
 
 @media only screen and (max-width: 600px) {

@@ -20,6 +20,7 @@ import {
   hasToPickUp,
   setGameState,
   setCurrentPlayer,
+  setLoser,
 } from "../store/game";
 
 import {
@@ -32,7 +33,32 @@ import {
   allCardsHaveEqualValue,
 } from "../model/model";
 
-export const getGameState = () => store.getState().game.value;
+// export const getGameState = () => store.getState().game.value;
+export const getGameState = () => {
+  const state = store.getState().game.value;
+  const {
+    deck,
+    stack,
+    burned,
+    activePlayer,
+    gameOver,
+    loser,
+    direction,
+    announcement,
+    players,
+  } = state;
+  return {
+    deck,
+    stack,
+    burned,
+    activePlayer,
+    gameOver,
+    loser,
+    direction,
+    announcement,
+    players,
+  };
+};
 
 export const setAppState = (state) => {
   store.dispatch(setGameState(state));
@@ -89,8 +115,12 @@ const numberOfPlayers = () => {
   // return getGameState().players.filter((player) => !player.winner).length;
 };
 
+const getActivePlayers = () => {
+  return getGameState().players.filter((player) => player.playing);
+};
+
 const numberOfActivePlayers = () => {
-  return getGameState().players.filter((player) => player.playing).length;
+  return getActivePlayers().length;
 };
 
 const checkActivePlayer = (player) => {
@@ -141,6 +171,15 @@ const checkAndSetWinner = (player) => {
     return true;
   }
   return false;
+};
+
+const checkAndSetGameOver = () => {
+  if (numberOfActivePlayers() === 1) {
+    const loser = getActivePlayers()[0].name;
+    setTimeout(() => {
+      store.dispatch(setLoser(loser));
+    }, 1000);
+  }
 };
 
 const checkCardsInHand = (cards, hand, player) => {
@@ -261,7 +300,7 @@ export function drawCardsFromDeck(player) {
 export function playCards(cards, hand, player) {
   // Check Active Player
   if (!checkActivePlayer(player)) {
-    return;
+    return console.log("It is not your turn");
   }
   if (!cards) {
     return console.error("Please select you desired cards.");
@@ -343,6 +382,7 @@ export function playCards(cards, hand, player) {
   if (checkBurnStack(getStack())) {
     console.error("IT BURNS!!!");
     if (checkAndSetWinner(player)) {
+      checkAndSetGameOver();
       switchPlayer();
     }
     // Set Active Player
@@ -358,14 +398,17 @@ export function playCards(cards, hand, player) {
   if (cards[0].power === "skip") {
     if (numberOfActivePlayers() <= 2) {
       checkAndSetWinner(player);
+      checkAndSetGameOver();
       return;
     }
     switchPlayer(cards.length);
     checkAndSetWinner(player);
+    checkAndSetGameOver();
     return;
   }
   // Check Winner
   checkAndSetWinner(player);
+  checkAndSetGameOver();
   // Set Active Player
   switchPlayer();
   return true;

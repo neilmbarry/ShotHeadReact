@@ -59,6 +59,7 @@ export const allCardsHaveEqualValue = (cards) => {
 
 export function checkLegalMove(cards, stack) {
   const topCard = cards[0];
+  if (!topCard) return false;
   const topStackCard = getTopStackCard(stack);
   if (!topStackCard) {
     return true;

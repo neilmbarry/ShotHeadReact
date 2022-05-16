@@ -6,6 +6,16 @@
   height: 250px;
   margin: auto;
   align-items: center;
+
   /* min-height: 300px; */
   /* flex: 1; */
+}
+
+.quit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 2rem;
+  /* width: 80px; */
+  padding: 1rem 2rem;
 }
