@@ -33,6 +33,7 @@ import {
   hasValidMove,
   getActiveHand,
   validMove,
+  checkActivePlayersHaveSetFaceCards,
 } from "./controller/controller";
 import Modal from "./components/UI/Modal";
 
@@ -41,7 +42,7 @@ const App = ({ className }) => {
 
   const socket = useSocket();
 
-  const { activePlayer, players, stack, loser } = useSelector(
+  const { activePlayer, players, stack, loser, gameOver, deck } = useSelector(
     (state) => state.game.value
   );
 
@@ -72,22 +73,46 @@ const App = ({ className }) => {
     </Modal>
   );
 
+  const setComputerFaceUp = () => {
+    const computer = players.find((player, i) => {
+      return player.name === "Computer" && !player.hasSetFaceUpCards;
+    });
+
+    if (!computer) return;
+
+    const index = players.indexOf(computer);
+
+    const sortedCards = [...computer.inHandCards]
+      .sort((a, b) => a.worth - b.worth)
+      .slice(3, 6);
+    setFaceUpCards(sortedCards, index);
+    // socket.emit("setFaceUpCards", {
+    //   cards: sortedCards,
+    //   player: i,
+    // });
+  };
+
   useEffect(() => {
     if (!socket) return;
 
-    socket.emit("getGameState");
+    // socket.join(room) ?
 
-    socket.on("shareGameState", () => {
+    // Change to socket.to(room).emit(getState)
+    // socket.emit("getGameState");
+
+    socket.on("shareGameState", (newPlayer) => {
       console.log("Sharing game state");
 
-      socket.emit("setGameState", getGameState());
+      // socket.to(room).emit("setGameState", getGameState());
+
+      socket.emit("setGameState", { state: getGameState(), newPlayer });
     });
 
     socket.on("setGameState", (state) => {
       console.log("setting game state");
       console.log(state);
       setAppState(state);
-      setPlayer();
+      // setPlayer();
     });
 
     socket.on("message", (message) => {
@@ -100,8 +125,8 @@ const App = ({ className }) => {
     });
     socket.on("addPlayer", (player) => {
       console.log("here");
-      console.log("New Player has joined: ", player.name);
-      addNewPlayer(player.name);
+      console.log("New Player has joined: ", player);
+      addNewPlayer(player);
     });
     socket.on("dealCards", (deck) => {
       console.log("Dealing Cards");
@@ -141,6 +166,14 @@ const App = ({ className }) => {
   useEffect(() => {
     if (loser) return;
     if (players.length === 0) return;
+    if (gameOver) return;
+    let myTimeout;
+    if (!checkActivePlayersHaveSetFaceCards()) {
+      myTimeout = setTimeout(() => {
+        setComputerFaceUp();
+      }, 1500);
+    }
+
     const currentPlayer = players[activePlayer];
     if (!currentPlayer) return;
     if (currentPlayer.name !== "Computer") {
@@ -159,25 +192,28 @@ const App = ({ className }) => {
           "computer playing card",
           validMove(getActiveHand(activePlayer), activePlayer)
         );
+        // CHANGE TO SOCKET.TO(ROOM).EMIT
         socket.emit("playCards", {
           selected: validMove(getActiveHand(activePlayer), activePlayer),
           hand: getActiveHand(activePlayer),
           playerNumber: activePlayer,
         });
         setTimeout(() => {
+          // CHANGE TO SOCKET.TO(ROOM).EMIT
           socket.emit("drawCardsFromDeck", activePlayer);
         }, 1000);
       } else {
         // console.log("emitting PICKUPSTACK");
+        // CHANGE TO SOCKET.TO(ROOM).EMIT
         socket.emit("pickUpStack", activePlayer);
         // pickUpStackHandler();
       }
     }, 2000);
     return () => {
       // console.warn(activePlayer, "CLEARING TIMEOUT");
-      clearTimeout(timeOut);
+      clearTimeout(timeOut, myTimeout);
     };
-  }, [players, activePlayer, socket, stack]);
+  }, [players, activePlayer, socket, stack, loser, gameOver]);
 
   return (
     <Router>

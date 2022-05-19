@@ -21,6 +21,8 @@ import {
   setGameState,
   setCurrentPlayer,
   setLoser,
+  setGameOver,
+  setRoom,
 } from "../store/game";
 
 import {
@@ -35,29 +37,10 @@ import {
 
 // export const getGameState = () => store.getState().game.value;
 export const getGameState = () => {
-  const state = store.getState().game.value;
-  const {
-    deck,
-    stack,
-    burned,
-    activePlayer,
-    gameOver,
-    loser,
-    direction,
-    announcement,
-    players,
-  } = state;
-  return {
-    deck,
-    stack,
-    burned,
-    activePlayer,
-    gameOver,
-    loser,
-    direction,
-    announcement,
-    players,
-  };
+  const state = { ...store.getState().game.value };
+  delete state.currentPlayer;
+
+  return state;
 };
 
 export const setAppState = (state) => {
@@ -70,6 +53,10 @@ const getStack = () => {
 
 export const setPlayer = (name) => {
   store.dispatch(setCurrentPlayer(name));
+};
+
+export const setCurrentRoom = (room) => {
+  store.dispatch(setRoom(room));
 };
 
 export const getActiveHand = (player) => {
@@ -106,7 +93,7 @@ const getPlayers = () => {
   return getGameState().players;
 };
 
-const getReadyPlayers = () => {
+const getPlayingPlayers = () => {
   return getPlayers().filter((player) => player.playing);
 };
 
@@ -122,6 +109,10 @@ const getActivePlayers = () => {
 const numberOfActivePlayers = () => {
   return getActivePlayers().length;
 };
+
+// const allActivePlayersHaveSetFaceCards = ()=>{
+
+// }
 
 const checkActivePlayer = (player) => {
   return getActivePlayer() === player;
@@ -176,6 +167,7 @@ const checkAndSetWinner = (player) => {
 const checkAndSetGameOver = () => {
   if (numberOfActivePlayers() === 1) {
     const loser = getActivePlayers()[0].name;
+    store.dispatch(setGameOver());
     setTimeout(() => {
       store.dispatch(setLoser(loser));
     }, 1000);
@@ -188,8 +180,8 @@ const checkCardsInHand = (cards, hand, player) => {
   return cardNames.every((card) => handCardNames.includes(card));
 };
 
-const checkActivePlayersHaveSetFaceCards = () => {
-  return getReadyPlayers().every((player) => player.hasSetFaceUpCards);
+export const checkActivePlayersHaveSetFaceCards = () => {
+  return getPlayingPlayers().every((player) => player.hasSetFaceUpCards);
 };
 
 const playerWithLowestStarter = () => {
@@ -271,7 +263,6 @@ export function validMove(hand, player) {
     const availableCards = getPlayersHand(hand, player);
     const playedCard = availableCards[0];
     return [playedCard];
-    return playCards([playedCard], hand, player);
   }
 
   const availableCards = getPlayersHand(hand, player);
@@ -290,7 +281,6 @@ export function validMove(hand, player) {
   );
 
   return playingCards;
-  playCards(playingCards, hand, player);
 }
 
 export function drawCardsFromDeck(player) {

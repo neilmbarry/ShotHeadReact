@@ -207,40 +207,20 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
 
   const spectating = !gameOver && !playing && <h3>Spectating...</h3>;
 
-  useEffect(() => {
-    let myTimeout;
-    if (inHandCards.length === 0) return;
-    if (
-      players[playerNumber].name === "Computer" &&
-      !players[playerNumber].hasSetFaceUpCards
-    ) {
-      myTimeout = setTimeout(() => {
-        setFaceCardsHandler();
-      }, 3000);
-    }
-    //   if (!active) {
-    //     return console.warn(currentPlayer, " is NOT ACTIVE");
-    //   }
-    //   console.warn(currentPlayer, " is ACTIVE");
-    //   if (currentPlayer !== "computer") {
-    //     return console.warn(currentPlayer, " is NOT A COMPUTER");
-    //   }
-    //   console.warn(currentPlayer, " is A COMPUTER");
-    //   if (!hasSetFaceUpCards) return;
-    //   if (!playing) return;
-    //   if (hasToPickUp)
-    //     return setTimeout(() => {
-    //       pickUpStackHandler();
-    //     }, 1000);
-    //   const timeOut = setTimeout(() => {
-    //     if (hasValidMove(getActiveHand(), playerNumber)) {
-    //       playCardHandler(validMove(getActiveHand(), playerNumber));
-    //     } else {
-    //       pickUpStackHandler();
-    //     }
-    //   }, 1500);
-    return () => clearTimeout(myTimeout);
-  }, [playerNumber, players, setFaceCardsHandler, inHandCards.length]);
+  // useEffect(() => {
+  //   let myTimeout;
+  //   if (inHandCards.length === 0) return;
+  //   if (
+  //     players[playerNumber].name === "Computer" &&
+  //     !players[playerNumber].hasSetFaceUpCards
+  //   ) {
+  //     myTimeout = setTimeout(() => {
+  //       setFaceCardsHandler();
+  //     }, 3000);
+  //   }
+
+  //   return () => clearTimeout(myTimeout);
+  // }, [playerNumber, players, setFaceCardsHandler, inHandCards.length]);
 
   return (
     <motion.div className={classesList}>

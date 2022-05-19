@@ -16,20 +16,30 @@ import {
   faArrowRight,
   faGraduationCap,
 } from "@fortawesome/free-solid-svg-icons";
-import { setPlayer, generateNewDeck } from "../../controller/controller";
+import { setPlayer, setCurrentRoom } from "../../controller/controller";
 
 const Home = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
   const [computerModalOpen, setComputerModalOpen] = useState(false);
   const [friendModalOpen, setFriendModalOpen] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [roomSelected, setRoomSelected] = useState(null);
   const socket = useSocket();
   const username = useRef();
 
   const startGameHandler = () => {
     console.log(selected);
     const name = username.current?.value || "Player";
-    socket.emit("addPlayer", { name });
+    // 1. join room
+    // 2. receive state
+    // 3. add player
+
+    //
+    socket.emit("joinRoom", roomSelected);
+    setCurrentRoom(roomSelected);
+    socket.emit("getGameState", { room: roomSelected, newPlayer: name });
+    // socket.emit("addPlayer", { name, room: roomSelected });
+
     setPlayer(name);
     for (let i = 1; i < +selected; i++) {
       socket.emit("addPlayer", { name: "Computer" });
@@ -73,10 +83,28 @@ const Home = ({ className }) => {
       <div className={classes.choice}>
         <input type="text" ref={username} />
       </div>
-      <Link to="/game">
+      <h5>Select a room</h5>
+      <div className={classes.choice}>
         <Button
-          text="Start Game"
-          onClick={(players) => startGameHandler(players)}
+          text="College"
+          onClick={() => setRoomSelected("College")}
+          className={roomSelected === "College" && classes.active}
+        ></Button>
+        <Button
+          text="Ossington"
+          onClick={() => setRoomSelected("Ossington")}
+          className={roomSelected === "Ossington" && classes.active}
+        ></Button>
+        <Button
+          text="Spadina"
+          onClick={() => setRoomSelected("Spadina")}
+          className={roomSelected === "Spadina" && classes.active}
+        ></Button>
+      </div>
+      <Link to={`/game?room=${roomSelected}`}>
+        <Button
+          text="Join Game"
+          onClick={() => startGameHandler(roomSelected)}
           className={selected && classes.active}
         ></Button>
       </Link>

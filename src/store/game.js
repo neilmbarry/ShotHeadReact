@@ -11,6 +11,7 @@ const initialState = {
   direction: 1,
   announcement: "",
   players: [],
+  room: null,
 };
 
 export const gameSlice = createSlice({
@@ -22,7 +23,7 @@ export const gameSlice = createSlice({
     },
     setGameState: (state, action) => {
       console.warn("GAME.JS IS SETTING STATE", action.payload);
-      state.value = action.payload;
+      state.value = { ...state.value, ...action.payload };
     },
     newGame: (state, action) => {
       state.value.deck = [1];
@@ -170,7 +171,12 @@ export const gameSlice = createSlice({
     },
     setLoser: (state, action) => {
       state.value.loser = action.payload;
+    },
+    setGameOver: (state) => {
       state.value.gameOver = true;
+    },
+    setRoom: (state, action) => {
+      state.value.room = action.payload;
     },
   },
 });
@@ -197,6 +203,8 @@ export const {
   setGameState,
   setCurrentPlayer,
   setLoser,
+  setGameOver,
+  setRoom,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;
