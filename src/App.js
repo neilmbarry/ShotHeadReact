@@ -34,6 +34,7 @@ import {
   getActiveHand,
   validMove,
   checkActivePlayersHaveSetFaceCards,
+  setUserId,
 } from "./controller/controller";
 import Modal from "./components/UI/Modal";
 
@@ -74,7 +75,7 @@ const App = ({ className }) => {
   );
 
   const setComputerFaceUp = () => {
-    const computer = players.find((player, i) => {
+    const computer = players.find((player) => {
       return player.name === "Computer" && !player.hasSetFaceUpCards;
     });
 
@@ -99,6 +100,13 @@ const App = ({ className }) => {
 
     // Change to socket.to(room).emit(getState)
     // socket.emit("getGameState");
+
+    socket.on("userID", (userID) => {
+      console.log(userID);
+      setUserId(userID);
+      // console.log("USERID IS: ", [...userID].join(""));
+      // console.log({ ...userID });
+    });
 
     socket.on("shareGameState", (newPlayer) => {
       console.log("Sharing game state");
@@ -171,7 +179,7 @@ const App = ({ className }) => {
     if (!checkActivePlayersHaveSetFaceCards()) {
       myTimeout = setTimeout(() => {
         setComputerFaceUp();
-      }, 1500);
+      }, 500);
     }
 
     const currentPlayer = players[activePlayer];

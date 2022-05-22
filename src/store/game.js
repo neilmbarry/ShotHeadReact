@@ -10,6 +10,7 @@ const initialState = {
   loser: false,
   direction: 1,
   announcement: "",
+  userId: null,
   players: [],
   room: null,
 };
@@ -178,6 +179,9 @@ export const gameSlice = createSlice({
     setRoom: (state, action) => {
       state.value.room = action.payload;
     },
+    setCurrentUserId: (state, action) => {
+      state.value.userId = action.payload;
+    },
   },
 });
 
@@ -205,6 +209,7 @@ export const {
   setLoser,
   setGameOver,
   setRoom,
+  setCurrentUserId,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

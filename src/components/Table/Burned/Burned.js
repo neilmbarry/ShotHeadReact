@@ -43,12 +43,8 @@ const Burned = ({ className }) => {
 
   return (
     <div className={classesList}>
-      {!showMenu && <Button text="Menu" onClick={() => menuHandler()}></Button>}
-      {/* {!showMenu && (
-        <Link to="/">
-          <Button text="Home" onClick={() => resetHandler()}></Button>
-        </Link>
-      )} */}
+      {/* {!showMenu && <Button text="Menu" onClick={() => menuHandler()}></Button>}
+     
       {showMenu && <Button text="Close" onClick={() => menuHandler()}></Button>}
       {showMenu && (
         <div className={classes.menu}>
@@ -63,7 +59,7 @@ const Burned = ({ className }) => {
           <Button onClick={() => newGameHandler()} text="New Game"></Button>
           <Button onClick={() => dealCardsHandler()} text="Deal Cards"></Button>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

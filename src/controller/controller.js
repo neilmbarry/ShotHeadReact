@@ -23,6 +23,7 @@ import {
   setLoser,
   setGameOver,
   setRoom,
+  setCurrentUserId,
 } from "../store/game";
 
 import {
@@ -443,4 +444,8 @@ export const leaveGame = (playerNumber) => {
 
 const generateAndShuffleDeck = () => {
   return shuffleDeck(generateDeck(suits, cardValuePairs));
+};
+
+export const setUserId = (id) => {
+  store.dispatch(setCurrentUserId(id));
 };

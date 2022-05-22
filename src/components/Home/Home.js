@@ -8,15 +8,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useSocket } from "../../contexts/SocketProvider";
 import {
-  faHeart as faHeartFull,
-  faStarHalfStroke,
-  faStar,
   faComputer,
   faUsers,
-  faArrowRight,
   faGraduationCap,
 } from "@fortawesome/free-solid-svg-icons";
 import { setPlayer, setCurrentRoom } from "../../controller/controller";
+import { useSelector } from "react-redux";
 
 const Home = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
@@ -26,6 +23,8 @@ const Home = ({ className }) => {
   const [roomSelected, setRoomSelected] = useState(null);
   const socket = useSocket();
   const username = useRef();
+  const userId = useSelector((state) => state.game.value.userId);
+  console.log(userId);
 
   const startGameHandler = () => {
     console.log(selected);
@@ -35,19 +34,29 @@ const Home = ({ className }) => {
     // 3. add player
 
     //
-    socket.emit("joinRoom", roomSelected);
-    setCurrentRoom(roomSelected);
-    socket.emit("getGameState", { room: roomSelected, newPlayer: name });
+    socket.emit("joinRoom", roomSelected || userId);
+    setCurrentRoom(roomSelected || userId);
+    if (roomSelected) {
+      socket.emit("getGameState", {
+        room: roomSelected,
+        newPlayer: name,
+      });
+    }
     // socket.emit("addPlayer", { name, room: roomSelected });
 
     setPlayer(name);
+    socket.emit("addPlayer", { name, room: userId });
     for (let i = 1; i < +selected; i++) {
-      socket.emit("addPlayer", { name: "Computer" });
+      socket.emit("addPlayer", { name: "Computer", room: userId });
     }
     // socket.emit("dealCards", generateNewDeck());
   };
   const computerModal = computerModalOpen && (
-    <Modal onClose={() => setComputerModalOpen(false)}>
+    <Modal
+      onClose={() => {
+        setComputerModalOpen(false);
+      }}
+    >
       <h2>Play Against Computer</h2>
       <h5>Number of Players</h5>
       <div className={classes.choice}>
@@ -77,7 +86,12 @@ const Home = ({ className }) => {
     </Modal>
   );
   const friendModal = friendModalOpen && (
-    <Modal onClose={() => setFriendModalOpen(false)}>
+    <Modal
+      onClose={() => {
+        setFriendModalOpen(false);
+        setRoomSelected(null);
+      }}
+    >
       <h2>Play With Friends</h2>
       <h5>What's your name?</h5>
       <div className={classes.choice}>
