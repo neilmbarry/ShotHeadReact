@@ -43,7 +43,7 @@ const App = ({ className }) => {
 
   const socket = useSocket();
 
-  const { activePlayer, players, stack, loser, gameOver, deck } = useSelector(
+  const { activePlayer, players, stack, loser, gameOver, room } = useSelector(
     (state) => state.game.value
   );
 
@@ -96,11 +96,6 @@ const App = ({ className }) => {
   useEffect(() => {
     if (!socket) return;
 
-    // socket.join(room) ?
-
-    // Change to socket.to(room).emit(getState)
-    // socket.emit("getGameState");
-
     socket.on("userID", (userID) => {
       console.log(userID);
       setUserId(userID);
@@ -132,7 +127,6 @@ const App = ({ className }) => {
       // return;
     });
     socket.on("addPlayer", (player) => {
-      console.log("here");
       console.log("New Player has joined: ", player);
       addNewPlayer(player);
     });
@@ -193,7 +187,7 @@ const App = ({ className }) => {
 
     const timeOut = setTimeout(() => {
       if (currentPlayer.hasToPickUp) {
-        return socket.emit("pickUpStack", activePlayer);
+        return socket.emit("pickUpStack", { playerNumber: activePlayer, room });
       }
       if (hasValidMove(getActiveHand(activePlayer), activePlayer)) {
         console.log(
@@ -205,15 +199,19 @@ const App = ({ className }) => {
           selected: validMove(getActiveHand(activePlayer), activePlayer),
           hand: getActiveHand(activePlayer),
           playerNumber: activePlayer,
+          room,
         });
         setTimeout(() => {
           // CHANGE TO SOCKET.TO(ROOM).EMIT
-          socket.emit("drawCardsFromDeck", activePlayer);
+          socket.emit("drawCardsFromDeck", {
+            playerNumber: activePlayer,
+            room,
+          });
         }, 1000);
       } else {
         // console.log("emitting PICKUPSTACK");
         // CHANGE TO SOCKET.TO(ROOM).EMIT
-        socket.emit("pickUpStack", activePlayer);
+        socket.emit("pickUpStack", { playerNumber: activePlayer, room });
         // pickUpStackHandler();
       }
     }, 2000);

@@ -14,13 +14,14 @@ import { generateNewDeck } from "../../../controller/controller";
 const Stack = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
   const gameState = useSelector((state) => state.game.value);
+  const room = gameState.room;
   const stackState = gameState.stack;
   const loser = gameState.loser;
   const gameOver = gameState.gameOver;
   // console.log(stackState);
   const socket = useSocket();
   const dealCardsHandler = () => {
-    socket.emit("dealCards", generateNewDeck());
+    socket.emit("dealCards", { deck: generateNewDeck(), room });
   };
 
   const stackOfCards = stackState.map((name, i) => {

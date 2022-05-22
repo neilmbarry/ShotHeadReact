@@ -17,7 +17,7 @@ import { useSocket } from "../../contexts/SocketProvider";
 import { useSelector } from "react-redux";
 
 const Player = React.memo(({ className, playerNumber, computer }) => {
-  const { deck, activePlayer, players, gameOver, currentPlayer, stack } =
+  const { deck, activePlayer, players, gameOver, currentPlayer, room } =
     useSelector((state) => state.game.value);
   // console.log(players[playerNumber]);
   const {
@@ -99,16 +99,17 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
       selected: cards,
       hand: getActiveHand(playerNumber),
       playerNumber,
+      room,
     });
 
     setSelected([]);
     setTimeout(() => {
-      socket.emit("drawCardsFromDeck", playerNumber);
+      socket.emit("drawCardsFromDeck", { playerNumber, room });
     }, 800);
   };
 
   const pickUpStackHandler = () => {
-    socket.emit("pickUpStack", playerNumber);
+    socket.emit("pickUpStack", { playerNumber, room });
 
     setSelected([]);
   };
@@ -120,6 +121,7 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
       socket.emit("setFaceUpCards", {
         cards: selected,
         player: playerNumber,
+        room,
       });
     }
     if (selected.length === 0) {
@@ -130,6 +132,7 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
       socket.emit("setFaceUpCards", {
         cards: sortedCards,
         player: playerNumber,
+        room,
       });
       // setFaceUpCards(sortedCards, playerNumber);
     }
@@ -193,7 +196,7 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
     <Button
       text="I'm Ready"
       onClick={() => {
-        socket.emit("readyPlayer", playerNumber);
+        socket.emit("readyPlayer", { playerNumber, room });
         readyUp(playerNumber);
       }}
     ></Button>
