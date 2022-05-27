@@ -10,7 +10,7 @@ const initialState = {
   loser: false,
   direction: 1,
   announcement: "",
-  userId: null,
+
   players: [],
   room: null,
 };
@@ -20,7 +20,21 @@ export const gameSlice = createSlice({
   initialState: { value: initialState },
   reducers: {
     reset: (state, action) => {
-      state.value = initialState;
+      state.value = {
+        ...state.value,
+        deck: [1],
+        stack: [],
+        burned: [],
+        activePlayer: null,
+        currentPlayer: null,
+        gameOver: true,
+        loser: false,
+        direction: 1,
+        announcement: "",
+
+        players: [],
+        room: null,
+      };
     },
     setGameState: (state, action) => {
       console.warn("GAME.JS IS SETTING STATE", action.payload);
@@ -52,14 +66,16 @@ export const gameSlice = createSlice({
     addPlayer: (state, action) => {
       // state.value.currentPlayer = state.value.players.length;
       state.value.players.push({
-        name: action.payload,
+        name: action.payload.name,
         inHandCards: [],
         faceUpCards: [],
         faceDownCards: [],
         message: "",
-        playing: true,
+        playing: false,
         hasSetFaceUpCards: false,
         hasToPickUp: false,
+        id: action.payload.id,
+        room: action.payload.room,
       });
     },
     removePlayer: (state, action) => {

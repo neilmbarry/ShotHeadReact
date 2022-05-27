@@ -19,7 +19,7 @@ const Home = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
   const [computerModalOpen, setComputerModalOpen] = useState(false);
   const [friendModalOpen, setFriendModalOpen] = useState(false);
-  const [selected, setSelected] = useState(null);
+  const [opponentsSelected, setOpponentsSelected] = useState(null);
   const [roomSelected, setRoomSelected] = useState(null);
   const socket = useSocket();
   const username = useRef();
@@ -27,7 +27,7 @@ const Home = ({ className }) => {
   console.log(userId);
 
   const startGameHandler = () => {
-    console.log(selected);
+    console.log(opponentsSelected);
     const name = username.current?.value || "Player";
     // 1. join room
     // 2. receive state
@@ -36,18 +36,18 @@ const Home = ({ className }) => {
     //
     socket.emit("joinRoom", roomSelected || userId);
     setCurrentRoom(roomSelected || userId);
+    setPlayer(name);
     if (roomSelected) {
-      socket.emit("getGameState", {
+      return socket.emit("getGameState", {
         room: roomSelected,
-        newPlayer: name,
+        name,
       });
     }
     // socket.emit("addPlayer", { name, room: roomSelected });
 
-    setPlayer(name);
     socket.emit("addPlayer", { name, room: userId });
-    for (let i = 1; i < +selected; i++) {
-      socket.emit("addPlayer", { name: "Computer", room: userId });
+    for (let i = 1; i < +opponentsSelected; i++) {
+      socket.emit("addPlayer", { name: `Computer ${i}`, room: userId, id: i });
     }
     // socket.emit("dealCards", generateNewDeck());
   };
@@ -62,25 +62,25 @@ const Home = ({ className }) => {
       <div className={classes.choice}>
         <Button
           text="2"
-          onClick={() => setSelected(2)}
-          className={selected === 2 && classes.active}
+          onClick={() => setOpponentsSelected(2)}
+          className={opponentsSelected === 2 && classes.active}
         ></Button>
         <Button
           text="3"
-          onClick={() => setSelected(3)}
-          className={selected === 3 && classes.active}
+          onClick={() => setOpponentsSelected(3)}
+          className={opponentsSelected === 3 && classes.active}
         ></Button>
         <Button
           text="4"
-          onClick={() => setSelected(4)}
-          className={selected === 4 && classes.active}
+          onClick={() => setOpponentsSelected(4)}
+          className={opponentsSelected === 4 && classes.active}
         ></Button>
       </div>
       <Link to="/game">
         <Button
           text="Start Game"
           onClick={(players) => startGameHandler(players)}
-          className={selected && classes.active}
+          className={opponentsSelected && classes.active}
         ></Button>
       </Link>
     </Modal>
@@ -119,7 +119,7 @@ const Home = ({ className }) => {
         <Button
           text="Join Game"
           onClick={() => startGameHandler(roomSelected)}
-          className={selected && classes.active}
+          className={opponentsSelected && classes.active}
         ></Button>
       </Link>
     </Modal>

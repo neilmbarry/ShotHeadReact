@@ -241,6 +241,14 @@ export function setFaceUpCards(cards, player) {
   }
 }
 
+export const allPlayersReady = () => {
+  console.log("cheking all players");
+  if (getPlayers().every((player) => player.playing)) {
+    return true;
+  }
+  return false;
+};
+
 export function hasValidMove(hand, player) {
   if (hand === "faceDownCards") {
     return true;
@@ -430,6 +438,7 @@ export function startGame(deck) {
 
 export const addNewPlayer = (name) => {
   // console.warn(name);
+  console.log("adding Player XXXXXXXX", name);
   store.dispatch(addPlayer(name));
 };
 

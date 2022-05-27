@@ -34,6 +34,7 @@ import {
   getActiveHand,
   validMove,
   checkActivePlayersHaveSetFaceCards,
+  allPlayersReady,
   setUserId,
 } from "./controller/controller";
 import Modal from "./components/UI/Modal";
@@ -74,9 +75,25 @@ const App = ({ className }) => {
     </Modal>
   );
 
+  const setComputerReady = () => {
+    const computers = players.filter((player) => {
+      return player.name.split(" ")[0] === "Computer";
+    });
+
+    if (!computers) return;
+
+    computers.forEach((computer) => {
+      const index = players.indexOf(computer);
+      socket.emit("readyPlayer", { playerNumber: index, room });
+    });
+    // readyUp(index);
+  };
+
   const setComputerFaceUp = () => {
     const computer = players.find((player) => {
-      return player.name === "Computer" && !player.hasSetFaceUpCards;
+      return (
+        player.name.split(" ")[0] === "Computer" && !player.hasSetFaceUpCards
+      );
     });
 
     if (!computer) return;
@@ -127,7 +144,7 @@ const App = ({ className }) => {
       // return;
     });
     socket.on("addPlayer", (player) => {
-      console.log("New Player has joined: ", player);
+      console.log("New Player has joined: ", player.name);
       addNewPlayer(player);
     });
     socket.on("dealCards", (deck) => {
@@ -168,6 +185,10 @@ const App = ({ className }) => {
   useEffect(() => {
     if (loser) return;
     if (players.length === 0) return;
+    if (gameOver && !allPlayersReady()) {
+      console.log("SETTING COMPUTER READY");
+      setComputerReady();
+    }
     if (gameOver) return;
     let myTimeout;
     if (!checkActivePlayersHaveSetFaceCards()) {
@@ -178,7 +199,7 @@ const App = ({ className }) => {
 
     const currentPlayer = players[activePlayer];
     if (!currentPlayer) return;
-    if (currentPlayer.name !== "Computer") {
+    if (currentPlayer.name.split(" ")[0] !== "Computer") {
       return;
     }
 

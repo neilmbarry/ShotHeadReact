@@ -3,7 +3,7 @@ export const suits = ["Hearts", "Clubs", "Diamonds", "Spades"];
 export const cardValuePairs = [
   ["Ace", 14, null],
   ["2", 100, "reset"], // POWER CARD
-  ["3", 0, null],
+  ["3", 0.1, null],
   ["4", 6, null],
   ["5", 100, "skip"], // POWER CARD
   ["6", 8, null],

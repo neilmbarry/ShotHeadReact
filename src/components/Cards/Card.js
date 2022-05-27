@@ -27,17 +27,6 @@ const Card = ({
     onClick(name);
   };
 
-  // const stackLocation = document
-  //   .querySelector(".Stack_main__1xxX0")
-  //   .getBoundingClientRect();
-
-  // const cardLocation = document
-  //   .querySelector(`.${name ? name.name : "back"}`)
-  //   .getBoundingClientRect();
-
-  // console.log("stackLocation", stackLocation);
-  // console.log("cardLocation", cardLocation);
-
   useEffect(() => {
     setIsActive(selected);
   }, [selected]);
@@ -98,7 +87,7 @@ const Card = ({
       scale: activeScale,
       transition: {
         // type: "spring",
-        delay: 0.5,
+        // delay: 0.5,
         // duration: 0.3,
       },
     },
