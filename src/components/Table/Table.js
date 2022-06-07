@@ -22,9 +22,8 @@ const Table = ({ className }) => {
           className={classes.quit}
           alt="quit"
           onClick={() => resetLocal()}
-        >
-          <FontAwesomeIcon icon={faArrowLeft} />
-        </HomeButton>
+          iconStart={<FontAwesomeIcon icon={faArrowLeft} />}
+        ></HomeButton>
       </Link>
       <Burned />
       <Stack />

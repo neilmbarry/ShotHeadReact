@@ -28,6 +28,16 @@
   margin-right: 2rem;
 }
 
+.iconStart {
+  font-size: 150%;
+  margin-right: 2rem;
+}
+
+.iconEnd {
+  font-size: 150%;
+  margin-left: 2rem;
+}
+
 .main:hover {
   background: white;
   color: black;
@@ -36,9 +46,9 @@
 .secondary {
   /* background-color: rgb(83, 15, 83); */
   background: linear-gradient(to bottom, rgb(121, 22, 121), rgb(65, 11, 65));
-  width: 90%;
+  width: 90% !important;
   padding: 3rem 2rem;
-  margin: 1rem auto;
+  margin: 1rem auto !important;
 }
 
 .quit {

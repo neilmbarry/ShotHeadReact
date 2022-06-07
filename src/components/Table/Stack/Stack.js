@@ -43,12 +43,11 @@ const Stack = ({ className }) => {
         <div className={classes.cardsContainer}>
           {gameOver && !loser && (
             <HomeButton
-              text="Start Game...   "
+              text="Start Game"
               className={classes.play}
               onClick={() => dealCardsHandler()}
-            >
-              <FontAwesomeIcon icon={faPlay}></FontAwesomeIcon>
-            </HomeButton>
+              iconEnd={<FontAwesomeIcon icon={faPlay}></FontAwesomeIcon>}
+            ></HomeButton>
           )}
           <AnimatePresence>{stackOfCards}</AnimatePresence>
         </div>

@@ -53,25 +53,25 @@ const App = ({ className }) => {
   const gameOverModal = loser && (
     <Modal>
       <h2>{loser} is The ShitHead</h2>
-      <HomeButton
-        text="Play Again"
-        className={classes.button}
-        onClick={() => {
-          console.log("here");
-          socket.emit("newGame");
-        }}
-      >
-        <FontAwesomeIcon icon={faPlay} />
-      </HomeButton>
-      <Link to="/">
+      <div style={{ display: "flex" }}>
         <HomeButton
-          text="Quit"
+          text="Play Again"
           className={classes.button}
-          onClick={() => initializeNewGame()}
-        >
-          <FontAwesomeIcon icon={faClose} />
-        </HomeButton>
-      </Link>
+          onClick={() => {
+            console.log("here");
+            socket.emit("newGame");
+          }}
+          iconEnd={<FontAwesomeIcon icon={faPlay} />}
+        ></HomeButton>
+        <Link to="/">
+          <HomeButton
+            text="Quit"
+            className={classes.button}
+            onClick={() => initializeNewGame()}
+            iconEnd={<FontAwesomeIcon icon={faClose} />}
+          ></HomeButton>
+        </Link>
+      </div>
     </Modal>
   );
 

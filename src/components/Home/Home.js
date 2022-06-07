@@ -138,25 +138,22 @@ const Home = ({ className }) => {
           text="PLAY AGAINST COMPUTER"
           onClick={() => setComputerModalOpen(true)}
           className={classes.button}
-        >
-          <FontAwesomeIcon icon={faComputer} />
-        </HomeButton>
+          iconStart={<FontAwesomeIcon icon={faComputer} />}
+        ></HomeButton>
 
         <HomeButton
           text="PLAY AGAINST FRIENDS"
           className={classes.button}
           onClick={() => setFriendModalOpen(true)}
-        >
-          <FontAwesomeIcon icon={faUsers} />
-        </HomeButton>
+          iconStart={<FontAwesomeIcon icon={faUsers} />}
+        ></HomeButton>
 
         <HomeButton
           text="Learn how to play"
           className={classes.button}
           alt="secondary"
-        >
-          <FontAwesomeIcon icon={faGraduationCap} />
-        </HomeButton>
+          iconStart={<FontAwesomeIcon icon={faGraduationCap} />}
+        ></HomeButton>
       </div>
     </div>
   );
