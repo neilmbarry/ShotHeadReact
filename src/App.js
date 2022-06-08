@@ -77,10 +77,10 @@ const App = ({ className }) => {
 
   const setComputerReady = () => {
     const computers = players.filter((player) => {
-      return player.name.split(" ")[0] === "Computer";
+      return player.name.slice(0, 8) === "Computer";
     });
 
-    if (!computers) return;
+    if (computers.length === 0) return console.log("No Computers");
 
     computers.forEach((computer) => {
       const index = players.indexOf(computer);
