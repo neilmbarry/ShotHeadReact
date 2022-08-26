@@ -14,6 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { setPlayer, setCurrentRoom } from "../../controller/controller";
 import { useSelector } from "react-redux";
+import cardPhoto from "../../img/cards.png";
 
 const Home = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
@@ -126,9 +127,11 @@ const Home = ({ className }) => {
   );
   return (
     <div className={classesList}>
+      <div className={classes.overlay}></div>
       {computerModal}
       {friendModal}
       <div className={classes.titleContainer}>
+        <img src={cardPhoto} alt="" />
         <h2>Welcome to</h2>
         <h1>SH!T-HEAD!</h1>
         <h2>Multiplayer</h2>
@@ -148,12 +151,12 @@ const Home = ({ className }) => {
           iconStart={<FontAwesomeIcon icon={faUsers} />}
         ></HomeButton>
 
-        <HomeButton
+        {/* <HomeButton
           text="Learn how to play"
           className={classes.button}
           alt="secondary"
           iconStart={<FontAwesomeIcon icon={faGraduationCap} />}
-        ></HomeButton>
+        ></HomeButton> */}
       </div>
     </div>
   );

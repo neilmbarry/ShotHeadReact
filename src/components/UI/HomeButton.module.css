@@ -17,6 +17,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 99;
 }
 
 .main p {
@@ -46,9 +47,9 @@
 .secondary {
   /* background-color: rgb(83, 15, 83); */
   background: linear-gradient(to bottom, rgb(121, 22, 121), rgb(65, 11, 65));
-  width: 90% !important;
-  padding: 3rem 2rem;
-  margin: 1rem auto !important;
+  /* width: 90% !important; */
+  /* padding: 3rem 2rem; */
+  /* margin: 1rem auto !important; */
 }
 
 .quit {
@@ -58,6 +59,7 @@
 @media only screen and (max-width: 600px) {
   .main,
   .secondary {
-    padding: 2rem;
+    /* padding: 1rem; */
+    font-size: 1.4rem;
   }
 }

@@ -1,20 +1,20 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import classes from "./App.module.css";
-import Table from "./components/Table/Table";
-import PlayerContainer from "./components/Player/PlayerContainer";
-import { Link } from "react-router-dom";
-
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { useSocket } from "./contexts/SocketProvider";
 
+import classes from "./App.module.css";
+
+import Table from "./components/Table/Table";
+import PlayerContainer from "./components/Player/PlayerContainer";
+import Modal from "./components/UI/Modal";
 import Home from "./components/Home/Home";
 import HomeButton from "./components/UI/HomeButton";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faClose } from "@fortawesome/free-solid-svg-icons";
-
-// import { generateNewDeck, setPlayer } from "../../../controller/controller";
 
 import {
   pickUpStack,
@@ -37,10 +37,9 @@ import {
   allPlayersReady,
   setUserId,
 } from "./controller/controller";
-import Modal from "./components/UI/Modal";
 
-const App = ({ className }) => {
-  const classesList = `${classes.main} ${className}`;
+const App = () => {
+  const classesList = `${classes.main}`;
 
   const socket = useSocket();
 
@@ -104,10 +103,6 @@ const App = ({ className }) => {
       .sort((a, b) => a.worth - b.worth)
       .slice(3, 6);
     setFaceUpCards(sortedCards, index);
-    // socket.emit("setFaceUpCards", {
-    //   cards: sortedCards,
-    //   player: i,
-    // });
   };
 
   useEffect(() => {
@@ -116,8 +111,6 @@ const App = ({ className }) => {
     socket.on("userID", (userID) => {
       console.log(userID);
       setUserId(userID);
-      // console.log("USERID IS: ", [...userID].join(""));
-      // console.log({ ...userID });
     });
 
     socket.on("shareGameState", (newPlayer) => {
@@ -252,6 +245,7 @@ const App = ({ className }) => {
             <>
               {gameOverModal}
               <div className={classesList}>
+                <div className={classes.overlay}></div>
                 <Table />
                 <PlayerContainer />
               </div>
