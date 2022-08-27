@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { initializeNewGame } from "../../controller/controller";
+import Button from "../UI/Button";
 
 const Table = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
@@ -17,13 +18,9 @@ const Table = ({ className }) => {
   return (
     <div className={classesList}>
       <Link to="/">
-        <HomeButton
-          text="Quit"
-          className={classes.quit}
-          alt="quit"
-          onClick={() => resetLocal()}
-          iconStart={<FontAwesomeIcon icon={faArrowLeft} />}
-        ></HomeButton>
+        <Button className={classes.quit} onClick={() => resetLocal()}>
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </Button>
       </Link>
       <Burned />
       <Stack />

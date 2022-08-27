@@ -151,12 +151,18 @@ const Home = ({ className }) => {
           iconStart={<FontAwesomeIcon icon={faUsers} />}
         ></HomeButton>
 
-        {/* <HomeButton
-          text="Learn how to play"
+        <HomeButton
+          text="Learn to play"
           className={classes.button}
           alt="secondary"
           iconStart={<FontAwesomeIcon icon={faGraduationCap} />}
-        ></HomeButton> */}
+        ></HomeButton>
+      </div>
+      <div className={classes.footer}>
+        <h4>Designed and developed by Neil Barry</h4>
+        <FontAwesomeIcon icon={faGraduationCap} />
+        <FontAwesomeIcon icon={faGraduationCap} />
+        <FontAwesomeIcon icon={faGraduationCap} />
       </div>
     </div>
   );

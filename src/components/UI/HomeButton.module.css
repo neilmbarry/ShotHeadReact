@@ -47,9 +47,9 @@
 .secondary {
   /* background-color: rgb(83, 15, 83); */
   background: linear-gradient(to bottom, rgb(121, 22, 121), rgb(65, 11, 65));
-  /* width: 90% !important; */
+  width: 80% !important;
   /* padding: 3rem 2rem; */
-  /* margin: 1rem auto !important; */
+  margin: 0rem auto !important;
 }
 
 .quit {

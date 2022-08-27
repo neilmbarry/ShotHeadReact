@@ -17,5 +17,6 @@
   left: 0;
   margin: 2rem;
   /* width: 80px; */
-  padding: 1rem 2rem;
+  padding: 1rem;
+  background-color: red !important;
 }

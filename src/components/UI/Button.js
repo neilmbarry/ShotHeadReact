@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./Button.module.css";
 import { motion } from "framer-motion";
 
-const Button = ({ className, text, onClick }) => {
+const Button = ({ className, text, onClick, children }) => {
   const classesList = `${classes.main} ${className} `;
   return (
     <motion.button
@@ -18,6 +18,7 @@ const Button = ({ className, text, onClick }) => {
       className={classesList}
     >
       {text}
+      {children}
     </motion.button>
   );
 };
