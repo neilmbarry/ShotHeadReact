@@ -247,7 +247,7 @@ const App = () => {
               <div className={classesList}>
                 <div className={classes.overlay}></div>
                 <Table />
-                <PlayerContainer />
+                {/* <PlayerContainer /> */}
               </div>
             </>
           }

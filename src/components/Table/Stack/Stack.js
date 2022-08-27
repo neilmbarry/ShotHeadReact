@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { useSocket } from "../../../contexts/SocketProvider";
 import { generateNewDeck } from "../../../controller/controller";
+import Deck from "../Deck/Deck";
 
 const Stack = ({ className }) => {
   const classesList = `${classes.main} ${className}`;
@@ -25,7 +26,6 @@ const Stack = ({ className }) => {
   };
 
   const stackOfCards = stackState.map((name, i) => {
-    // console.log(name);
     return (
       <Card
         className={classes.stackCard + " " + classes[`rotate${[i % 8] + ""}`]}
@@ -37,26 +37,21 @@ const Stack = ({ className }) => {
       />
     );
   });
+  const startGameButton = gameOver && !loser && (
+    <HomeButton
+      text="Start Game"
+      className={classes.play}
+      onClick={() => dealCardsHandler()}
+      iconEnd={<FontAwesomeIcon icon={faPlay}></FontAwesomeIcon>}
+    ></HomeButton>
+  );
   return (
     <>
       <div className={classesList}>
         <div className={classes.cardsContainer}>
-          {gameOver && !loser && (
-            <HomeButton
-              text="Start Game"
-              className={classes.play}
-              onClick={() => dealCardsHandler()}
-              iconEnd={<FontAwesomeIcon icon={faPlay}></FontAwesomeIcon>}
-            ></HomeButton>
-          )}
+          {startGameButton}
           <AnimatePresence>{stackOfCards}</AnimatePresence>
         </div>
-
-        {/* <Button
-          text="Pick Up Stack"
-          className={classes.btn}
-          onClick={() => pickUpStack(getActivePlayer())}
-        ></Button> */}
       </div>
     </>
   );

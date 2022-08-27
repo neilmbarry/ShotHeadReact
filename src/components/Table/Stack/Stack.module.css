@@ -1,11 +1,11 @@
 .main {
-  flex: 2;
+  /* flex: 1; */
   /* border: 2px dashed red; */
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   justify-content: space-around;
   align-items: center;
-
+  width: 200%;
   position: relative;
 }
 
@@ -29,3 +29,8 @@
 .play {
   padding: 2rem;
 }
+
+/* grid-template-areas:
+    'null position3 null'
+    'position2 table position4'
+    'null position1 null '; */

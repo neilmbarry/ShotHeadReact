@@ -131,7 +131,7 @@ const Home = ({ className }) => {
       {computerModal}
       {friendModal}
       <div className={classes.titleContainer}>
-        <img src={cardPhoto} alt="" />
+        {/* <img src={cardPhoto} alt="" /> */}
         <h2>Welcome to</h2>
         <h1>SH!T-HEAD!</h1>
         <h2>Multiplayer</h2>

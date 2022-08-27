@@ -13,7 +13,7 @@
   /* width: 100%; */
   border: 3px solid rgb(184, 184, 184);
   border-radius: 10px;
-  transition: all ease 0.3s;
+  /* transition: all ease 0.3s; */
   display: flex;
   align-items: center;
   justify-content: center;

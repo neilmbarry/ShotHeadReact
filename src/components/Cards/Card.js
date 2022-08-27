@@ -42,28 +42,19 @@ const Card = ({
     hidden: {
       y: -50,
       opacity: 0,
-      // scale: 0.8,
-
-      // rotate: "0deg",
     },
     visible: {
       y: 0,
       opacity: 1,
 
       scale: activeScale,
-      transition: {
-        // type: "spring",
-        // delay: 0.5,
-        // duration: 0.3,
-      },
+      transition: {},
     },
     exit: {
       y: -30,
       opacity: 0,
-      // scale: 0.9,
+
       transition: {
-        // type: "spring",
-        // delay: 0.5,
         duration: 0.3,
       },
     },
@@ -76,28 +67,19 @@ const Card = ({
     hidden: {
       y: -50,
       opacity: 0,
-      // scale: 0.8,
-
-      // rotate: "0deg",
     },
     visible: {
       y: 0,
       opacity: 1,
 
       scale: activeScale,
-      transition: {
-        // type: "spring",
-        // delay: 0.5,
-        // duration: 0.3,
-      },
+      transition: {},
     },
     exit: {
       y: -30,
       opacity: 0,
-      // scale: 0.9,
+
       transition: {
-        // type: "spring",
-        // delay: 0.5,
         duration: 0.3,
       },
     },
@@ -127,7 +109,6 @@ const Card = ({
       opacity: 0,
       scale: 1.2,
       rotateZ: cardRotate - 220,
-      // rotate: "0deg",
     },
     visible: {
       opacity: 1,
@@ -135,20 +116,16 @@ const Card = ({
       rotateZ: cardRotate + 15,
       transition: {
         type: "spring",
-        // ease: [0.2, 0.8, 0.9, 0.98],
-        // ease: "easeOut",
+
         duration: 0.5,
         delay: 0.2,
       },
     },
     exit: {
-      // y: 50,
       opacity: 0,
       scale: 0.5,
       rotateZ: 520,
       transition: {
-        // type: "spring",
-        // delay: 0.4,
         duration: 0.3,
       },
     },
@@ -177,10 +154,8 @@ const Card = ({
       exit={variants.exit}
       whileHover={variants.hover}
       layout
-      // whileHover={{ scale: 1.1 }}
       className={classesList}
       onClick={activateCard}
-      // style={shifted}
       style={{
         backgroundImage: `url(${cardImages["back.jpg"]})`,
         backgroundSize: "cover",
