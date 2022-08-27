@@ -32,10 +32,11 @@
 .position2 {
   grid-area: position2;
   /* border: 5px dashed orange; */
-  transform: rotate(90deg);
+  transform: rotate(90deg) translateY(50px);
   justify-self: center;
   align-self: center;
   width: 100%;
+  /* transform: rotate(270deg) translateY(50px); */
   /* width: 130%; */
   /* height: 100px; */
   /* justify-self: self-end; */
@@ -53,7 +54,7 @@
 .position4 {
   grid-area: position4;
   /* border: 5px dashed yellowgreen; */
-  transform: rotate(270deg);
+  transform: rotate(270deg) translateY(50px);
   justify-self: center;
   align-self: center;
   width: 100%;

@@ -149,7 +149,7 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
   // console.log(faceDownHeight);
 
   const sortButton = inHandCards.length !== 0 && !opponent && (
-    <Button text="Sort" onClick={() => sortHandler()} />
+    <Button text="S" onClick={() => sortHandler()} />
   );
   const selectFaceUpButton = !gameOver &&
     playing &&
@@ -235,9 +235,14 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
             playing ? classes.ready : classes.notReady
           }`}
         >
-          <h3>{name}</h3>
+          {sortButton}
+          <h4>{name}</h4>
+          {getReadyButton}
+          {selectFaceUpButton}
+          {playSelectedButton}
+          {pickUpStackButton}
         </div>
-        {sortButton}
+        {/* {sortButton} */}
         {inHandCards.length > 0 && (
           <InHandContainer
             type="inHand"
@@ -248,11 +253,9 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
             back={currentPlayer !== name}
           />
         )}
-        {getReadyButton}
-        {selectFaceUpButton}
+
         {pleaseWait}
-        {playSelectedButton}
-        {pickUpStackButton}
+
         {spectating}
       </div>
     </motion.div>

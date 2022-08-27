@@ -43,8 +43,12 @@
   width: 100%;
   background-color: rgb(17, 83, 67);
   text-align: center;
-  padding: 0.5rem;
-  border-bottom: 3px transparent solid;
+  /* padding: 0.5rem; */
+  justify-content: space-between;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px transparent solid;
   /* transition: all ease 0.3s; */
 }
 

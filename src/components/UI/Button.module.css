@@ -2,9 +2,9 @@
   /* width: 60%; */
   border: none;
   background-color: white;
-  padding: 0.2rem 3rem;
+  padding: 0.2rem 1.5rem;
   /* height: 3rem; */
   text-transform: uppercase;
   cursor: pointer;
-  margin: 1rem 0;
+  /* margin: 1rem 0; */
 }
