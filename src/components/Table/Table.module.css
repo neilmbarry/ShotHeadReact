@@ -5,7 +5,7 @@
   margin: auto;
   /* justify-content: center; */
   /* max-width: 1000px; */
-  height: 80vh;
+  height: 400px;
   margin: auto;
   border: 5px purple dashed;
   /* margin: auto; */
@@ -23,7 +23,7 @@
 
 .position1 {
   grid-area: pos1;
-  border: 5px dashed red;
+  /* border: 5px dashed red; */
   /* justify-self: center;
   align-self: center; */
 
@@ -31,7 +31,7 @@
 }
 .position2 {
   grid-area: pos2;
-  border: 5px dashed orange;
+  /* border: 5px dashed orange; */
   /* transform: rotate(90deg) translateY(-100px); */
   /* justify-self: center;
   align-self: center;
@@ -51,7 +51,7 @@
 
 .position3 {
   grid-area: pos3;
-  border: 5px dashed yellow;
+  /* border: 5px dashed yellow; */
   /* transform: rotate(180deg);
   justify-self: center;
   align-self: center;
@@ -59,7 +59,7 @@
 }
 .position4 {
   grid-area: pos4;
-  border: 5px dashed yellowgreen;
+  /* border: 5px dashed yellowgreen; */
   /* transform: rotate(270deg) translateY(-100px);
   min-height: 200px;
   justify-self: center;
@@ -69,11 +69,11 @@
 
 .deck {
   grid-area: deck;
-  border: 5px dashed lightblue;
+  /* border: 5px dashed lightblue; */
 }
 .stack {
   grid-area: stack;
-  border: 5px dashed blue;
+  /* border: 5px dashed blue; */
 }
 
 .middle {
