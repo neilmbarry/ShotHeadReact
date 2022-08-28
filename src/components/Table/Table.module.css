@@ -43,6 +43,11 @@
   /* width: 20px; */
   /* width: 400px; */
 }
+
+.position3 h4 {
+  transform: rotate(180deg);
+}
+
 .position3 {
   grid-area: position3;
   /* border: 5px dashed yellow; */

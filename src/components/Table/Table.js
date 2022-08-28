@@ -19,6 +19,7 @@ const Table = ({ className }) => {
     initializeNewGame();
   };
   const players = useSelector((state) => state.game.value.players);
+  const playersLength = players.length;
 
   const playersUI = players.map((player, i) => {
     console.log(classes["position" + (i + 1)]);
