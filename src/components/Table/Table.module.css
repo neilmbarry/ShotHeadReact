@@ -5,37 +5,38 @@
   margin: auto;
   /* justify-content: center; */
   /* max-width: 1000px; */
-  height: 100vh;
+  height: 80vh;
+  margin: auto;
   border: 5px purple dashed;
   /* margin: auto; */
   /* align-items: center; */
   grid-template-areas:
-    "position3 position3 position3 position3"
-    "position2 stack deck position4"
-    "position2 stack deck position4"
-    "position1  position1 position1 position1 ";
+    "menu pos2 pos3 pos3 pos3 pos3 pos4 end"
+    "menu pos2 message middle middle action pos4 end"
+    "menu pos2 pos1 pos1 pos1 pos1 pos4 end";
 
-  grid-template-columns: 2fr 1fr 1fr 2fr;
-  grid-template-rows: 3fr 1fr 1fr 3fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   /* min-height: 300px; */
   /* flex: 1; */
 }
 
 .position1 {
-  grid-area: position1;
-  /* border: 5px dashed red; */
-  justify-self: center;
-  align-self: center;
+  grid-area: pos1;
+  border: 5px dashed red;
+  /* justify-self: center;
+  align-self: center; */
 
   /* width: 800px; */
 }
 .position2 {
-  grid-area: position2;
-  /* border: 5px dashed orange; */
-  transform: rotate(90deg) translateY(50px);
-  justify-self: center;
+  grid-area: pos2;
+  border: 5px dashed orange;
+  /* transform: rotate(90deg) translateY(-100px); */
+  /* justify-self: center;
   align-self: center;
   width: 100%;
+  min-height: 200px; */
   /* transform: rotate(270deg) translateY(50px); */
   /* width: 130%; */
   /* height: 100px; */
@@ -45,33 +46,41 @@
 }
 
 .position3 h4 {
-  transform: rotate(180deg);
+  /* transform: rotate(180deg); */
 }
 
 .position3 {
-  grid-area: position3;
-  /* border: 5px dashed yellow; */
-  transform: rotate(180deg);
+  grid-area: pos3;
+  border: 5px dashed yellow;
+  /* transform: rotate(180deg);
   justify-self: center;
   align-self: center;
-  height: 100%;
+  height: 100%; */
 }
 .position4 {
-  grid-area: position4;
-  /* border: 5px dashed yellowgreen; */
-  transform: rotate(270deg) translateY(50px);
+  grid-area: pos4;
+  border: 5px dashed yellowgreen;
+  /* transform: rotate(270deg) translateY(-100px);
+  min-height: 200px;
   justify-self: center;
   align-self: center;
-  width: 100%;
+  width: 100%; */
 }
 
 .deck {
   grid-area: deck;
-  /* border: 5px dashed lightblue; */
+  border: 5px dashed lightblue;
 }
 .stack {
   grid-area: stack;
-  /* border: 5px dashed blue; */
+  border: 5px dashed blue;
+}
+
+.middle {
+  grid-area: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .quit {
