@@ -42,8 +42,10 @@ const Table = ({ className }) => {
   return (
     <div className={classesList}>
       {quitButton}
-      <Stack className={classes.stack} />
-      <Deck className={classes.deck} />
+      <div className={classes.middle}>
+        <Stack className={classes.stack} />
+        <Deck className={classes.deck} />
+      </div>
       {playersUI}
       {/* <PlayerContainer>{playersUI}</PlayerContainer> */}
     </div>

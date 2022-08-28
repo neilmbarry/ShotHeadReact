@@ -4,7 +4,7 @@
   /* max-width: 300px; */
   justify-content: center;
   /* background-color: transparent; */
-  padding: 1rem;
+  padding: 0.5rem;
   margin: auto;
 }
 
@@ -20,7 +20,7 @@
   position: absolute;
   /* top: 1rem; */
   /* left: 0; */
-  transform: translate(0, 15px);
+  transform: translate(0, 6px);
   /* margin: auto; */
 }
 .faceDown {
