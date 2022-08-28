@@ -5,18 +5,23 @@
   margin: auto;
   /* justify-content: center; */
   /* max-width: 1000px; */
-  height: 400px;
+  height: 100%;
   margin: auto;
   border: 5px purple dashed;
   /* margin: auto; */
   /* align-items: center; */
   grid-template-areas:
-    "menu pos2 pos3 pos3 pos3 pos3 pos4 end"
-    "menu pos2 message middle middle action pos4 end"
-    "menu pos2 pos1 pos1 pos1 pos1 pos4 end";
+    "end end end"
+    "pos3 pos3 pos3"
+    "pos2 message pos4"
+    "pos2 middle pos4"
+    "pos2 middle pos4"
+    "pos1 pos1 pos1"
+    "pos1 pos1 pos1"
+    "pos1 pos1 pos1";
 
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   /* min-height: 300px; */
   /* flex: 1; */
 }
@@ -86,6 +91,7 @@
 .middle {
   grid-area: middle;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
