@@ -69,11 +69,18 @@
 
 .deck {
   grid-area: deck;
-  /* border: 5px dashed lightblue; */
+  border: 5px dashed lightblue;
 }
 .stack {
   grid-area: stack;
-  /* border: 5px dashed blue; */
+  border: 5px dashed blue;
+}
+
+.middle {
+  grid-area: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .middle {
