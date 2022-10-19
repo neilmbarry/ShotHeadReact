@@ -22,7 +22,7 @@ const Table = ({ className }) => {
   const playersLength = players.length;
 
   const playersUI = players.map((player, i) => {
-    console.log(classes["position" + (i + 1)]);
+    // console.log(classes["position" + (i + 1)]);
     return (
       <Player
         playerNumber={i}

@@ -10,7 +10,6 @@ const initialState = {
   loser: false,
   direction: 1,
   announcement: "",
-
   players: [],
   room: null,
 };
@@ -71,7 +70,7 @@ export const gameSlice = createSlice({
         faceUpCards: [],
         faceDownCards: [],
         message: "",
-        playing: false,
+        playing: true,
         hasSetFaceUpCards: false,
         hasToPickUp: false,
         id: action.payload.id,

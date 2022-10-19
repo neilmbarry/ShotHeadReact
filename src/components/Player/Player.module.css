@@ -14,6 +14,10 @@
   /* transition: all ease 0.3s; */
 }
 
+.pickup {
+  position: absolute;
+}
+
 .tableCards {
   position: relative;
   width: 100%;

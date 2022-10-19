@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import classes from "./Player.module.css";
 import Button from "../UI/Button";
 import CardContainer from "../Cards/CardContainer";
@@ -9,13 +9,14 @@ import {
   hasValidMove,
   getActiveHand,
 } from "../../controller/controller";
-import { motion } from "framer-motion";
+
 import { useSocket } from "../../contexts/SocketProvider";
 
 // import { leaveGame } from "../../controller/controller";
 import { useSelector } from "react-redux";
 
 const Player = React.memo(({ className, playerNumber, computer }) => {
+  console.warn("Player RERENDERED");
   const { deck, activePlayer, players, gameOver, currentPlayer, room } =
     useSelector((state) => state.game.value);
   const {
@@ -121,6 +122,13 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
       onClick={() => sortHandler()}
     />
   );
+  const pickupButton = (
+    <Button
+      text="P"
+      className={classes.pickup}
+      onClick={() => pickUpStackHandler()}
+    />
+  );
   const selectFaceUpButton = !gameOver &&
     playing &&
     !hasSetFaceUpCards &&
@@ -172,16 +180,10 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
     ></Button>
   );
 
-  const pleaseWait = !active &&
-    playing &&
-    !gameOver &&
-    hasSetFaceUpCards &&
-    !opponent && <h3>Please wait...</h3>;
-
   const spectating = !gameOver && !playing && <h3>Spectating...</h3>;
 
   return (
-    <motion.div className={classesList}>
+    <div className={classesList}>
       <div className={classes.tableCards} style={{ minHeight: faceDownHeight }}>
         <h4>{name}</h4>
         {sortButton}
@@ -224,11 +226,10 @@ const Player = React.memo(({ className, playerNumber, computer }) => {
           />
         )}
 
-        {pleaseWait}
-
+        {pickupButton}
         {spectating}
       </div>
-    </motion.div>
+    </div>
   );
 });
 

@@ -8,7 +8,6 @@ import { useSocket } from "./contexts/SocketProvider";
 import classes from "./App.module.css";
 
 import Table from "./components/Table/Table";
-import PlayerContainer from "./components/Player/PlayerContainer";
 import Modal from "./components/UI/Modal";
 import Home from "./components/Home/Home";
 import HomeButton from "./components/UI/HomeButton";

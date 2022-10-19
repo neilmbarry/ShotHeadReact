@@ -5,7 +5,7 @@
   margin: auto;
   /* justify-content: center; */
   /* max-width: 1000px; */
-  height: 100%;
+  height: 90%;
   margin: auto;
   border: 5px purple dashed;
   /* margin: auto; */
@@ -37,16 +37,16 @@
 .position2 {
   grid-area: pos2;
   /* border: 5px dashed orange; */
-  /* transform: rotate(90deg) translateY(-100px); */
+  transform: rotate(90deg) translateY(250px);
   /* justify-self: center;
   align-self: center;
   width: 100%;
   min-height: 200px; */
-  /* transform: rotate(270deg) translateY(50px); */
+  /* transform: rotate(270deg) translateY(0px); */
   /* width: 130%; */
   /* height: 100px; */
   /* justify-self: self-end; */
-  /* width: 20px; */
+  width: 250%;
   /* width: 400px; */
 }
 
@@ -65,11 +65,11 @@
 .position4 {
   grid-area: pos4;
   /* border: 5px dashed yellowgreen; */
-  /* transform: rotate(270deg) translateY(-100px);
-  min-height: 200px;
-  justify-self: center;
-  align-self: center;
-  width: 100%; */
+  transform: rotate(270deg) translateY(50px);
+  /* min-height: 200px; */
+  /* justify-self: center; */
+  /* align-self: center; */
+  width: 250%;
 }
 
 .deck {

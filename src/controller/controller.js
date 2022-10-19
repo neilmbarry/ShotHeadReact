@@ -201,21 +201,14 @@ const playerWithLowestStarter = () => {
 };
 
 const switchPlayer = (skip = 0) => {
-  // if (numberOfActivePlayers === 2 && skip) {
-  //   return;
-  // }
-  //What a mess, needs to be refactored
   let loopStop = 0;
-  // trouble with removing a winner from play and direction
   const direction = getDirection();
   let moves = direction * (1 + skip);
   while (moves !== 0 && loopStop < 10) {
     let move = getActivePlayer() + direction;
     if (move < 0) move += numberOfPlayers();
     store.dispatch(switchActivePlayer(move % numberOfPlayers()));
-    // if (!getActivePlayerInfo().ready || getActivePlayerInfo().winner) {
     if (!getActivePlayerInfo().playing) {
-      // console.log("Skipping over inactive player");
       loopStop++;
     } else {
       moves -= direction;
